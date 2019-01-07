@@ -103,13 +103,14 @@ if __name__ == "__main__":
     # Realsense pipeline
     pipeline = rs.pipeline()
     config = rs.config()
-    config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
-    config.enable_stream(rs.stream.infrared, 640, 480, rs.format.y8, 30)
-    config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
+    config.enable_stream(rs.stream.depth, 1280, 720, rs.format.z16, 30)
+    config.enable_stream(rs.stream.infrared, 1280, 720, rs.format.y8, 30)
+    config.enable_stream(rs.stream.color, 1280, 720, rs.format.bgr8, 30)
     profile = pipeline.start(config)
     depth_scale = profile.get_device().first_depth_sensor().get_depth_scale()
     print('Depth Scale: ' + str(depth_scale) + ' meters/unit')
 
+    
     print('Searching for json file')
     from pathlib import Path
     if Path('./realsense_cam_settings.json').exists():
@@ -134,8 +135,24 @@ if __name__ == "__main__":
             print('Loading config file')
             if advnc_mode is not None:
                 advnc_mode.load_json(json_string)
+                # Get each control's current value
+                print("Depth Control: \n", advnc_mode.get_depth_control())
+                print("RSM: \n", advnc_mode.get_rsm())
+                print("RAU Support Vector Control: \n", advnc_mode.get_rau_support_vector_control())
+                print("Color Control: \n", advnc_mode.get_color_control())
+                print("RAU Thresholds Control: \n", advnc_mode.get_rau_thresholds_control())
+                print("SLO Color Thresholds Control: \n", advnc_mode.get_slo_color_thresholds_control())
+                print("SLO Penalty Control: \n", advnc_mode.get_slo_penalty_control())
+                print("HDAD: \n", advnc_mode.get_hdad())
+                print("Color Correction: \n", advnc_mode.get_color_correction())
+                print("Depth Table: \n", advnc_mode.get_depth_table())
+                print("Auto Exposure Control: \n", advnc_mode.get_ae_control())
+                print("Census: \n", advnc_mode.get_census())
+                #advnc_mode.set_rsm(rs.STRsm.)
+                #advnc_mode.load_json(json_string)
     else:
         print('json does not exist, using default camera settings')
+    
 
     print('Starting computation')
     windowNotSet = True
@@ -180,11 +197,11 @@ if __name__ == "__main__":
         sel_y = randint(0, depth_image.shape[0] - 1)
         sel_x = randint(0, depth_image.shape[1] - 1)
         #a_bef = depth_image[sel_y, sel_x]
-        depth_image_scaled = cv2.convertScaleAbs(depth_image, alpha=depth_scale)
+        depth_image_scaled = cv2.convertScaleAbs(depth_image, alpha=0.03) #depth_scale)
         #a_aft = depth_image_scaled[sel_y, sel_x]
         #m_aft = (a_bef * depth_scale).astype(np.uint8)
         #print('Before: ' + str(a_bef) + ' After: auto: ' + str(a_aft) + ' manual: ' + str(m_aft))
-        depth_image_scaled = ((depth_image_scaled / depth_image_scaled.max()) * 255).astype(np.uint8)
+        #depth_image_scaled = ((depth_image_scaled / depth_image_scaled.max()) * 255).astype(np.uint8)
         depth_colormap = cv2.applyColorMap(depth_image_scaled, cv2.COLORMAP_JET)
         image = np.hstack((image, depth_colormap))
 
