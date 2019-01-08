@@ -10,10 +10,9 @@ from roypy_util.roypy_sample_utils import CameraOpener, add_camera_opener_option
 from roypy_util.roypy_platform_utils import PlatformHelper
 #import matplotlib.pyplot as plt
 
-
-class MyListener(roypy.IDepthDataListener):
+class DepthListener(roypy.IDepthDataListener):
     def __init__(self, q):
-        super(MyListener, self).__init__()
+        super(DepthListener, self).__init__()
         self.queue = q
 
     def onNewData(self, data):
@@ -25,8 +24,6 @@ class MyListener(roypy.IDepthDataListener):
         p = cv2.convertScaleAbs(p)
         #p = np.reshape(zarray, (640, 480)).astype(np.uint8)
         self.queue.append(p)
-
-
 
 def process_event_queue (q, painter, seconds):
     # create a loop that will run for the given amount of time
@@ -72,11 +69,11 @@ snapshot = False
 # we will use this queue to synchronize the callback with the main
 # thread, as drawing should happen in the main thread
 q = deque()
-l = MyListener(q)
+l = DepthListener(q)
 cap.registerDataListener(l)
 cap.setUseCase("MODE_5_45FPS_500")
 #cap.setExposureMode(MANUAL)
-cap.setExposureTime(100)
+cap.setExposureTime(80)
 print(cap.getCurrentUseCase())
 cap.startCapture()
 
