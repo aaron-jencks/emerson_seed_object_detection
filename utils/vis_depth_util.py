@@ -3,7 +3,6 @@ import numpy as np
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
-import pyrealsense2 as rs
 
 np.set_printoptions(threshold=np.nan)
 

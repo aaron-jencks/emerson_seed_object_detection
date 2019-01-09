@@ -1,7 +1,7 @@
 <annotation>
-	<folder>second half</folder>
+	<folder>Corn</folder>
 	<filename>corn-IR_391.jpg</filename>
-	<path>/home/aaron/Documents/workspace/my_github/emerson_seed_object_detection/pmd_implementation/converted_video/images/second half/corn-IR_391.jpg</path>
+	<path>C:\External\Seed Object Detection\Images\PMD flexx IR\Corn\corn-IR_391.jpg</path>
 	<source>
 		<database>Unknown</database>
 	</source>
@@ -17,22 +17,10 @@
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>18</xmin>
-			<ymin>77</ymin>
-			<xmax>33</xmax>
-			<ymax>94</ymax>
-		</bndbox>
-	</object>
-	<object>
-		<name>corn</name>
-		<pose>Unspecified</pose>
-		<truncated>0</truncated>
-		<difficult>0</difficult>
-		<bndbox>
-			<xmin>31</xmin>
-			<ymin>106</ymin>
-			<xmax>48</xmax>
-			<ymax>125</ymax>
+			<xmin>33</xmin>
+			<ymin>108</ymin>
+			<xmax>47</xmax>
+			<ymax>124</ymax>
 		</bndbox>
 	</object>
 </annotation>

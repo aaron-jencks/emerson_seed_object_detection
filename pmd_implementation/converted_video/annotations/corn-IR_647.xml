@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Corn</folder>
+	<filename>corn-IR_647.jpg</filename>
+	<path>C:\External\Seed Object Detection\Images\PMD flexx IR\Corn\corn-IR_647.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>224</width>
+		<height>170</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>corn</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>170</xmin>
+			<ymin>85</ymin>
+			<xmax>174</xmax>
+			<ymax>90</ymax>
+		</bndbox>
+	</object>
+</annotation>

@@ -9,7 +9,9 @@ from roypy_util.sample_camera_info import print_camera_info
 from roypy_util.roypy_sample_utils import CameraOpener, add_camera_opener_options
 from roypy_util.roypy_platform_utils import PlatformHelper
 #import matplotlib.pyplot as plt
+from roypy_util.roypy_classes import *
 
+"""
 class DepthListener(roypy.IDepthDataListener):
     def __init__(self, q):
         super(DepthListener, self).__init__()
@@ -39,6 +41,7 @@ def process_event_queue (q, painter, seconds):
             break
         else:
             painter.paint (item)
+"""
 
 platformhelper = PlatformHelper()
 parser = argparse.ArgumentParser (description="Creates a video from into the given output directory using the given device ID, use space to toggle recording, and 'k' to take a snapshot, hit esc or 'q' to quit", usage = __doc__)
@@ -69,7 +72,7 @@ snapshot = False
 # we will use this queue to synchronize the callback with the main
 # thread, as drawing should happen in the main thread
 q = deque()
-l = DepthListener(q)
+l = ImageListener(q)
 cap.registerDataListener(l)
 cap.setUseCase("MODE_5_45FPS_500")
 #cap.setExposureMode(MANUAL)
