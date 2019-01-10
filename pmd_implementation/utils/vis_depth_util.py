@@ -4,7 +4,7 @@ from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
 
-np.set_printoptions(threshold=np.nan)
+#np.set_printoptions(threshold=np.nan)
 
 def apply_depth_to_boxes(image, boxes, scores, depth_frame):
 	"""Draws a caption label in the center of the
@@ -24,7 +24,7 @@ def apply_depth_to_boxes(image, boxes, scores, depth_frame):
 
 	# Sets the font
 	try:
-		font = ImageFont.truetype('arial.ttf', 24)
+		font = ImageFont.truetype('arial.ttf', 8)
 	except IOError:
 		font = ImageFont.load_default()
 

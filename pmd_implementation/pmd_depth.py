@@ -7,7 +7,7 @@ import sys
 import time
 import numpy as np
 import tensorflow as tf
-import cv2
+#import cv2
 from random import *
 import argparse
 
@@ -59,12 +59,9 @@ if __name__ == "__main__":
     # thread, as drawing should happen in the main thread
     q = deque()
     q_depth = deque()
-    #l = ImageListener(q)
     l_depth = DepthListener(q, q_depth)
-    #cap.registerDataListener(l)
     cap.registerDataListener(l_depth)
     cap.setUseCase("MODE_5_45FPS_500")
-    #cap.setExposureMode(MANUAL)
     cap.setExposureTime(80)
     print(cap.getCurrentUseCase())
     cap.startCapture()
@@ -73,59 +70,40 @@ if __name__ == "__main__":
     windowNotSet = True
     while cap.isConnected():
         frame = None
-        depth_frame = None
+        depth_image = None
         # Collect the next frame if it's ready
         if len(q) > 0 and len(q_depth) > 0:
             frame = q.pop()
-            depth_frame = q_depth.pop()
+            depth_image = q_depth.pop()
+            time.sleep(0.05)
         else:
             # Otherwise sleep for 20 ms, guaranteeing a new frame next time
-            print('Sleeping because queue is: ' + str(q) + ' and listener queue is: ' + str(l.queue) + ' and is capturing: ' + str(cap.isCapturing()))
+            print('Sleeping because queue is: ' + str(q) + ' and listener queue is: ' + str(l_depth.queue) + ' and is capturing: ' + str(cap.isCapturing()))
             time.sleep(0.2)
             continue
             
-        if frame is not None and depth_frame is not None:
-            orig_image = np.stack((frame,)*3, axis=-1)
-            image = orig_image
+        if frame is not None and depth_image is not None:
+            image = np.stack((frame,)*3, axis=-1)
+            depth_image = ((depth_image - depth_image.min()) / depth_image.max() * 255).astype(np.uint8)
+            #depth_image = cv2.convertScaleAbs(depth_image)
 
-            [h, w] = image.shape[:2]
-            #image = cv2.resize(orig_image, (480, 640), interpolation=cv2.INTER_CUBIC)
-            #print (h, w)
-            # image = cv2.flip(image, 1)
-
-            (boxes, scores, classes, num_detections) = tDetector.run(image)
+            #(boxes, scores, classes, num_detections) = tDetector.run(image)
 
             # Draws bounding boxes
+            """
             vis_util.visualize_boxes_and_labels_on_image_array(
-                image,
+                image, depth_image,
                 np.squeeze(boxes),
                 np.squeeze(classes).astype(np.int32),
                 np.squeeze(scores),
                 category_index,
                 use_normalized_coordinates=True,
                 line_thickness=4)
+            """
 
-            # Draws the depth information
-            vis_depth_util.apply_depth_to_boxes(orig_image, np.squeeze(boxes), np.squeeze(scores), depth_frame)
-
-            if windowNotSet is True:
-                cv2.namedWindow("tensorflow based (%d, %d)" % (w, h), cv2.WINDOW_NORMAL)
-                windowNotSet = False
-
-            # This is the depth scale stuff, it can also be found in
-            # apply_depth_to_boxes
-            depth_image = depth_frame
-            sel_y = randint(0, depth_image.shape[0] - 1)
-            sel_x = randint(0, depth_image.shape[1] - 1)
-            #a_bef = depth_image[sel_y, sel_x]
-            depth_image_scaled = cv2.convertScaleAbs(depth_image, alpha=0.03) #depth_scale)
-            depth_colormap = cv2.applyColorMap(depth_image_scaled, cv2.COLORMAP_JET)
-            image = np.hstack((orig_image, depth_colormap))
-
-            cv2.imshow("tensorflow based (%d, %d)" % (w, h), image)
-        k = cv2.waitKey(1) & 0xff
-        if k == ord('q') or k == 27:
-            break
+            l_depth.paint(depth_image, image)
+            k = cv2.waitKey(1) & 0xff
+            if k == ord('q') or k == 27:
+                break
 
     cap.stopCapture()
-    cv2.destroyAllWindows()
