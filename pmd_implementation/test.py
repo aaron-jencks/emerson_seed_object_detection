@@ -21,6 +21,8 @@ from roypy_util.roypy_classes import *
 
 # Parser info
 parser = argparse.ArgumentParser(description="Used to take live video using the roypy camera.", usage=__doc__)
+parser.add_argument('-e', '--exposure', help='Exposure time to use', type=int, default=80)
+parser.add_argument('-m', '--cam_mode', help='Camera mode to user', type=str, default="MODE_5_45FPS_500")
 add_camera_opener_options (parser)
 options = parser.parse_args()
 
@@ -35,8 +37,8 @@ q = deque()
 q_depth = deque()
 l_depth = DepthListener(q, q_depth)
 cap.registerDataListener(l_depth)
-cap.setUseCase("MODE_5_45FPS_500")
-cap.setExposureTime(300)
+cap.setUseCase(options.cam_mode)
+cap.setExposureTime(options.exposure)
 print(cap.getCurrentUseCase())
 cap.startCapture()
 
@@ -65,6 +67,9 @@ tensorflow_thread.start()
 tens_ready = True
 tens_result = None
 tens_start_time = time.time()
+
+# sets up the display window
+cv2.namedWindow('frame', cv2.WINDOW_NORMAL)
 
 while True:
 	start_time = time.time()
@@ -109,11 +114,16 @@ while True:
 					use_normalized_coordinates=True,
 					line_thickness=4)
 
-			l_depth.paint(depth_image, image)
+			l_depth.paint(depth_image, image, 'frame')
 			#print(image.max())
 			k = cv2.waitKey(1) & 0xff
 			if k == ord('q') or k == 27:
 				break
+			elif k == 101:
+			    new_exp = int(input('Enter a integer value for exposure in uSec: '))
+			    cap.setExposureTime(new_exp)
+			elif k == 109:
+			    cap.setUseCase(input('Enter a new camera mode to use: '))
 	#print('This frame took {} seconds to compute'.format(time.time() - start_time))
 
 tensorflow_thread.stop()

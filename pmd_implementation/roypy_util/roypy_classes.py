@@ -55,14 +55,14 @@ class DepthListener(roypy.IDepthDataListener):
         p = garray.reshape (-1, data.width)
         self.gqueue.append(p)
 
-    def paint (self, data, data2):
+    def paint (self, data, data2, window_name='frame'):
         """Called in the main thread, with data containing one of the items that was added to the
         queue in onNewData.
         """
 
         new_data = cv2.applyColorMap(data, cv2.COLORMAP_JET)
         images = np.hstack((new_data, data2))
-        cv2.imshow('whatever', images)
+        cv2.imshow(window_name, images)
 
 def process_event_queue (q, painter, seconds):
     # create a loop that will run for the given amount of time

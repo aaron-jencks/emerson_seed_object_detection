@@ -84,10 +84,10 @@ if __name__ == "__main__":
             
         if frame is not None and depth_image is not None:
             image = np.stack((frame,)*3, axis=-1)
-            depth_image = ((depth_image - depth_image.min()) / depth_image.max() * 255).astype(np.uint8)
-            #depth_image = cv2.convertScaleAbs(depth_image)
+            #depth_image = ((depth_image - depth_image.min()) / depth_image.max() * 255).astype(np.uint8)
+            depth_image = cv2.convertScaleAbs(depth_image)
 
-            #(boxes, scores, classes, num_detections) = tDetector.run(image)
+            (boxes, scores, classes, num_detections) = tDetector.run(image)
 
             # Draws bounding boxes
             """

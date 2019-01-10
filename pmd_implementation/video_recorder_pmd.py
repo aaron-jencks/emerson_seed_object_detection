@@ -11,43 +11,13 @@ from roypy_util.roypy_platform_utils import PlatformHelper
 #import matplotlib.pyplot as plt
 from roypy_util.roypy_classes import *
 
-"""
-class DepthListener(roypy.IDepthDataListener):
-    def __init__(self, q):
-        super(DepthListener, self).__init__()
-        self.queue = q
-
-    def onNewData(self, data):
-        zvalues = []
-        for i in range(data.getNumPoints()):
-            zvalues.append(data.getGrayValue(i))
-        zarray = np.asarray(zvalues)
-        p = zarray.reshape (-1, data.width)
-        p = cv2.convertScaleAbs(p)
-        #p = np.reshape(zarray, (640, 480)).astype(np.uint8)
-        self.queue.append(p)
-
-def process_event_queue (q, painter, seconds):
-    # create a loop that will run for the given amount of time
-    t_end = time.time() + seconds
-    while time.time() < t_end:
-        try:
-            # try to retrieve an item from the queue.
-            # this will block until an item can be retrieved
-            # or the timeout of 1 second is hit
-            item = q.get(True, 1)
-        except queue.Empty:
-            # this will be thrown when the timeout is hit
-            break
-        else:
-            painter.paint (item)
-"""
-
 platformhelper = PlatformHelper()
 parser = argparse.ArgumentParser (description="Creates a video from into the given output directory using the given device ID, use space to toggle recording, and 'k' to take a snapshot, hit esc or 'q' to quit", usage = __doc__)
 add_camera_opener_options (parser)
 parser.add_argument('-o', '--output', help='The output path that the video will be created at, defaults to ./output.avi.', type=str, default='./output.avi')
-parser.add_argument ("--seconds", type=int, default=15, help="duration to capture data")
+parser.add_argument('-e', '--exposure', help='Exposure time to use', type=int, default=80)
+parser.add_argument('-m', '--cam_mode', help='Camera mode to user', type=str, default="MODE_5_45FPS_500")
+#parser.add_argument ("--seconds", type=int, default=15, help="duration to capture data")
 options = parser.parse_args()
 
 opener = CameraOpener (options)
@@ -74,9 +44,9 @@ snapshot = False
 q = deque()
 l = ImageListener(q)
 cap.registerDataListener(l)
-cap.setUseCase("MODE_5_45FPS_500")
+cap.setUseCase(options.cam_mode)
 #cap.setExposureMode(MANUAL)
-cap.setExposureTime(80)
+cap.setExposureTime(options.exposure)
 print(cap.getCurrentUseCase())
 cap.startCapture()
 
@@ -110,6 +80,11 @@ while cap.isConnected():
             elif k == 107:
                     snapshot = True
                     print('Collecting snapshot' if not isRecording else "Can't take a snapshot while recording silly, I'm already taking in frames")
+            elif k == 101:
+                    new_exp = int(input('Enter a integer value for exposure in uSec:'))
+                    cap.setExposureTime(new_exp)
+            elif k == 109:
+                    cap.setUseCase(input('Enter a new camera mode to use:'))
 cap.stopCapture()
 cap_temp.release()
 out.release()
