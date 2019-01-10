@@ -14,12 +14,14 @@ class LabelmapManager():
 		returns None if the label already exists"""
 
 		if not label in self.labelmap_dict:
+                        # Creates the new id
+                        if len(self.labelmap_dict) > 1:
+                                label_id = max([item for item in self.labelmap_dict.items()]) + 1
+                        else:
+                                label_id = 1
+                        self.labelmap_dict[label] = label_id
 
-			# Creates the new id
-			label_id = label_map_util.get_max_label_map_index(self.labelmap_dict) + 1
-			self.labelmap_dict[label] = label_id
-
-			return label_id
+                        return label_id
 		else:
 			return None
 
