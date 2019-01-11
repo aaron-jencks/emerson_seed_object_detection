@@ -11,16 +11,28 @@ from object_detection import model_lib
 import argparse
 import fnmatch
 import os, re
+from collections import deque
+import threading
 
 parser = argparse.ArgumentParser("""This module can automatically train multiple models on a single dataset, 
 it searches for any folder in the model directory supplied and then uses the .config file inside to train
 the model, it will automatically find the most recent ckpt file and use it for training.""" )
 parser.add_argument("--model_dir", help="The directory containing the model folders for your session", type=str, default="./models")
 parser.add_argument("--output_dir", help="The directory in each of the model folders to store the training results", type=str, default="./training")
-parser.add_argument("training_data", help="Directory containing the tfrecords", type=str)
+#parser.add_argument("training_data", help="Directory containing the tfrecords", type=str)
 parser.add_argument("--export_inference", help="Set this to true to export a frozen inference graph after training", action="store_true", default=False)
 parser.add_argument("-i", "--iterations", help="The training iterations for each model", type=int, default=50000)
 args = parser.parse_args()
+
+def verify_model_path(path):
+	"""Returns true if the directory is a model directory,
+	returns false otherwise"""
+	
+	if os.path.is_dir(path):
+		if find_file_matching_pattern(path, "*.config"):
+			if find_file_matching_pattern(path, "model.ckpt*", 3):
+				return True
+	return False
 
 def find_file_matching_pattern(path, pattern, min_match_count=1):
 	"""Finds the first valid file in a directory that
@@ -29,13 +41,13 @@ def find_file_matching_pattern(path, pattern, min_match_count=1):
 	matches = list(fnmatch.filter(os.listdir(path), pattern))
 	return matches[0] if len(matches) > 0 else None
 
-def retrieve_model_list():
+def retrieve_model_list(m_path):
 	"""Finds all valid directories in the given model directory
 	and returns a list containing them all"""
 
 	model_list = []
-	for f in os.listdir(args.model_dir):
-		path = os.path.join(args.model_dir, f)
+	for f in os.listdir(m_path):
+		path = os.path.join(m_path, f)
 		if os.path.is_dir(path):
 			if find_file_matching_pattern(path, "*.config"):
 				if find_file_matching_pattern(path, "model.ckpt*", 3):
@@ -49,11 +61,14 @@ def retrieve_model_list():
 
 	return model_list
 
-def create_output_dirs(model_list):
+def create_output_dirs(model_list, dir_name):
 	"""Creates the output training directories for each of the given models"""
 
 	for m in model_list:
-		os.mkdir(os.path.join(m, args.output_dir))
+		try:
+			os.mkdir(os.path.join(m, dir_name))
+		except:
+			continue
 
 def find_ckpt_prefix(model_path):
 	"""Finds the highest ckpt prefix of the ckpt files
@@ -65,7 +80,7 @@ def find_ckpt_prefix(model_path):
 		response_string += "-" + str(number)
 	return response_string
 
-def create_inference_graph(model_path):
+def create_inference_graph(model_path, output_dir):
 	"""Exports a models training progress as a path"""
 
 	pipeline_config = pipeline_pb2.TrainEvalPipelineConfig()
@@ -74,10 +89,10 @@ def create_inference_graph(model_path):
 	text_format.Merge('', pipeline_config)
 	exporter.export_inference_graph(
 		"image_tensor", pipeline_config, find_ckpt_prefix(model_path),
-		os.path.join(model_path, args.output_dir), input_shape=None,
+		os.path.join(model_path, output_dir), input_shape=None,
 		write_inference_graph=False)
 
-def train_model(model_path):
+def train_model(model_path, iterations):
 	"""Trains a model using the default parameters"""
 
 	config = tf.estimator.RunConfig(model_dir=model_path)
@@ -86,7 +101,7 @@ def train_model(model_path):
 		run_config=config,
 		hparams=model_hparams.create_hparams(None),
 		pipeline_config_path=os.path.join(model_path, find_file_matching_pattern(model_path, "*.config")),
-		train_steps=args.iterations,
+		train_steps=iterations,
 		sample_1_of_n_eval_examples=1,
 		sample_1_of_n_eval_on_train_examples=(5))
 	estimator = train_and_eval_dict['estimator']
@@ -107,18 +122,43 @@ def train_model(model_path):
 	# Currently only a single Eval Spec is allowed.
 	tf.estimator.train_and_evaluate(estimator, train_spec, eval_specs[0])
 
-if __name__ == "__main__":
-	print('Finding models')
-	model_list = retrieve_model_list()
-	print('Creating output directories')
-	create_output_dirs(model_list)
-	for m in model_list:
-		print('Training {}'.format(m))
-		train_model(m)
-		if args.export_inference:
-			print('Exporting inference graph')
-			create_inference_graph(m)
+class trainer(threading.thread):
 
+	def __init__(self, model_dir, output_dir="./training", export_inference=True, iterations=50000):
+		threading.thread.__init__(self)
+		self.model_queue = deque()
+		self.output_dir = output_dir
+		self.export_inference = export_inference
+		self.iterations = iterations
+		self.add_models(model_dir)
+
+	def train(self):
+		while len(self.model_queue) > 0:
+			m = self.model_queue.pop()
+			create_output_dirs([m], self.output_dir)
+			print('Training {}'.format(m))
+			train_model(m, self.iterations)
+			if self.export_inference:
+				print('Exporting inference graph')
+				create_inference_graph(m, self.output_dir)
+
+	def add_model(self, model_dir):
+		"""Adds a model from the given directory to the training list"""
+		if verify_model_path(model_dir):
+			self.model_queue.append(model_dir)
+
+	def add_models(self, model_dir):
+		"""Adds a directory of models to the training list"""
+		model_list = retrieve_model_list(model_dir)
+		for m in model_list:
+			self.add_model(m)
+
+	def run(self):
+		self.train()
+
+if __name__ == "__main__":
+	t = trainer(args.model_dir, args.output_dir, args.export_inference, args.iterations)
+	t.start()
 
 
 
