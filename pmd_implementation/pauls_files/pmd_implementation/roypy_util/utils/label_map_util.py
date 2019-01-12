@@ -135,6 +135,6 @@ def get_label_map_dict(label_map_path):
   """
   label_map = load_labelmap(label_map_path)
   label_map_dict = {}
-  for item in label_map.item:
+  for item in label_map.items():
     label_map_dict[item.name] = item.id
   return label_map_dict

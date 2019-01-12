@@ -16,7 +16,7 @@ def apply_depth_to_boxes(image, boxes, scores, depth_frame):
 	# Converts the depth_frame into an image
 	depth_image = depth_frame
 	#depth_scale = profile.get_device().first_depth_sensor().get_depth_scale()
-	depth_image = cv2.convertScaleAbs(depth_image)
+	depth_image = cv2.convertScaleAbs(depth_image, alpha=0.03)
 
 	# Drawing functions
 	draw = ImageDraw.Draw(image_pil)

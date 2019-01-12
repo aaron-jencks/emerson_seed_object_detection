@@ -2,12 +2,18 @@ import time
 import numpy as np
 import cv2
 
-import roypy
+from roypy_util import roypy
 from collections import deque
 import queue
-from sample_camera_info import print_camera_info
-from roypy_sample_utils import CameraOpener, add_camera_opener_options
-from roypy_platform_utils import PlatformHelper
+from roypy_util.sample_camera_info import print_camera_info
+from roypy_util.roypy_sample_utils import CameraOpener, add_camera_opener_options
+from roypy_util.roypy_platform_utils import PlatformHelper
+
+# Fixes Segmentation fault upon import of matplotlib using anaconda
+# https://github.com/matplotlib/matplotlib/issues/9294/
+import matplotlib as mpl
+mpl.use('TkAgg')
+import matplotlib.pyplot as plt
 
 class ImageListener(roypy.IDepthDataListener):
     def __init__(self, q):
@@ -41,30 +47,27 @@ class DepthListener(roypy.IDepthDataListener):
         gvalues = []
         for i in range(data.getNumPoints()):
             zvalues.append(data.getZ(i))
-            gvalues.append(data.getGrayValue(i))           
-        #print(points)
+            gvalues.append(data.getGrayValue(i))
         zarray = np.asarray(zvalues)
-        garray = np.asanyarray(gvalues)
-        #print(zarray)
+        garray = np.asarray(gvalues)
         p = zarray.reshape (-1, data.width)
-        print(p)
-        #p = cv2.normalize(p, None, 255, 0, cv2.NORM_MINMAX, cv2.CV_8UC1)
-        p = p.astype(np.uint8)
-        #print(p)
-        #p = cv2.convertScaleAbs(p)
-        #print(p)
-        #p = np.reshape(zarray, (640, 480)).astype(np.uint8)
-        
         self.queue.append(p)
-        pg = garray.reshape (-1, data.width)
-        pg = cv2.convertScaleAbs(pg)
-        #p = np.reshape(zarray, (640, 480)).astype(np.uint8)
-        self.gqueue.append(pg)
+        p = garray.reshape (-1, data.width)
+        self.gqueue.append(p)
+
+    def paint (self, data, data2, window_name='frame'):
+        """Called in the main thread, with data containing one of the items that was added to the
+        queue in onNewData.
+        """
+
+        new_data = cv2.applyColorMap(data, cv2.COLORMAP_JET)
+        images = np.hstack((new_data, data2))
+        cv2.imshow(window_name, images)
 
 def process_event_queue (q, painter, seconds):
     # create a loop that will run for the given amount of time
     t_end = time.time() + seconds
-    while time.time() < t_end:
+    while time.time() < t_end or seconds < 0:
         try:
             # try to retrieve an item from the queue.
             # this will block until an item can be retrieved
