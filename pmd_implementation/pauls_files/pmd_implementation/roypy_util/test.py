@@ -12,12 +12,12 @@ from utils import visualization_utils_color as vis_util
 from utils import vis_depth_util
 from utils.model_util import TensorflowDetectorThread
 
-from roypy_util import roypy
+import roypy
 from collections import deque
-from roypy_util.sample_camera_info import print_camera_info
-from roypy_util.roypy_sample_utils import CameraOpener, add_camera_opener_options
-from roypy_util.roypy_platform_utils import PlatformHelper
-from roypy_util.roypy_classes import *
+from sample_camera_info import print_camera_info
+from roypy_sample_utils import CameraOpener, add_camera_opener_options
+from roypy_platform_utils import PlatformHelper
+from roypy_classes import *
 
 # Parser info
 parser = argparse.ArgumentParser(description="Used to take live video using the roypy camera.", usage=__doc__)
@@ -48,10 +48,10 @@ print("getFrameRate", cap.getFrameRate())
 
 print('Setting up paths')
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
-PATH_TO_CKPT = './models/current/frozen_graph/frozen_inference_graph.pb'
+PATH_TO_CKPT = '/frozen_inference_graph.pb'
 
 # List of the strings that is used to add correct label for each box.
-PATH_TO_LABELS = './protos/seed_label_map.pbtxt'
+PATH_TO_LABELS = '/protos/seed_label_map.pbtxt'
 
 NUM_CLASSES = 2
 
