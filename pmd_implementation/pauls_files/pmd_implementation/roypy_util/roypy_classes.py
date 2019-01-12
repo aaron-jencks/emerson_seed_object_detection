@@ -2,18 +2,20 @@ import time
 import numpy as np
 import cv2
 
-from roypy_util import roypy
+import roypy
 from collections import deque
 import queue
-from roypy_util.sample_camera_info import print_camera_info
-from roypy_util.roypy_sample_utils import CameraOpener, add_camera_opener_options
-from roypy_util.roypy_platform_utils import PlatformHelper
+from sample_camera_info import print_camera_info
+from roypy_sample_utils import CameraOpener, add_camera_opener_options
+from roypy_platform_utils import PlatformHelper
 
+"""
 # Fixes Segmentation fault upon import of matplotlib using anaconda
 # https://github.com/matplotlib/matplotlib/issues/9294/
 import matplotlib as mpl
 mpl.use('TkAgg')
 import matplotlib.pyplot as plt
+"""
 
 class ImageListener(roypy.IDepthDataListener):
     def __init__(self, q):
