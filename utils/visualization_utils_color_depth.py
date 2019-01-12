@@ -26,6 +26,8 @@ import PIL.ImageColor as ImageColor
 import PIL.ImageDraw as ImageDraw
 import PIL.ImageFont as ImageFont
 import cv2
+from math import sqrt
+import pyrealsense2 as rs
 
 STANDARD_COLORS = [
     'AliceBlue', 'Chartreuse', 'Aqua', 'Aquamarine', 'Azure', 'Beige', 'Bisque',
@@ -143,7 +145,7 @@ def draw_bounding_box_on_image(image,
         font=font)
     text_bottom -= text_height - 2 * margin
 
-def visualize_boxes_and_labels_on_image_array(image, depth_image,
+def visualize_boxes_and_labels_on_image_array(image, depth_image, profile,
                                               boxes,
                                               classes,
                                               scores,
@@ -216,6 +218,8 @@ def visualize_boxes_and_labels_on_image_array(image, depth_image,
 
     # Scales the depth data into range
     region_of_interest = depth_image[top:bottom, left:right].astype(float)
+    #print(region_of_interest)
+
     m, _, _, _ = cv2.mean(region_of_interest)
     display_string_list = box_to_display_str_map[box]
     display_string_list.append("Depth: {}".format(round(m, 3)))

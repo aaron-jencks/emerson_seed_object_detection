@@ -74,25 +74,37 @@ cv2.namedWindow('frame', cv2.WINDOW_NORMAL)
 while True:
 	start_time = time.time()
 	if len(q) > 0 and len(q_depth) > 0:
-		frame = q.pop()
-		depth_image = q_depth.pop()
-		#time.sleep(0.05)
+		try:
+			frame = q.pop()
+			depth_image_orig = q_depth.pop()
+			#time.sleep(0.05)
+		except Exception as e:
+			# Most likely queue is empty
+			print('Skipping iteration because: {}'.format(e))
+			continue
+
+		# Skips some frames if the processor is too far behind the camera.
 		if len(q) > 20 or len(q_depth) > 20:
 			print('Falling behind, skipping {} frames'.format(len(q)))
 			q.clear()
 			q_depth.clear()
 		    
-		if frame is not None and depth_image is not None:
+		if frame is not None and depth_image_orig is not None:
 			image = np.stack((frame,)*3, axis=-1)
 			# Apparently the grayscale is returning values of more than 2000
 			image = ((image - image.min()) / image.max() * 255).astype(np.uint8)
 			#print(image.size)
-			if depth_image.max() is not 0:
+			if depth_image_orig.max() is not 0:
 				# Converts to a floating point scale from 0-1
-				depth_image = ((depth_image - depth_image.min()) / depth_image.max() * 255).astype(np.uint8)
+				depth_image = ((depth_image_orig - depth_image_orig.min()) / depth_image_orig.max() * 255).astype(np.uint8)
+			else:
+				# Clones the image if maximum is zero
+				depth_image = depth_image_orig.copy()
 
 			if tens_ready:
-				thread_in.append((depth_image, image))
+				# It doesn't actually use both images right now, but it might in the future
+				# Use original so that the depth values are correct
+				thread_in.append((depth_image_orig, image))
 				tens_start_time = time.time()
 				tens_ready = False
 
@@ -104,9 +116,11 @@ while True:
 
 			if tens_result:
 				# Allows for drawing of old data to make it not blink up and disappear
+				# Use original depth image for accurate depth information depth_image_orig,
+				# Not depth_image
 				(boxes, scores, classes, num_detections) = tens_result
 				vis_util.visualize_boxes_and_labels_on_image_array(
-					image, depth_image,
+					image, depth_image_orig,
 					np.squeeze(boxes),
 					np.squeeze(classes).astype(np.int32),
 					np.squeeze(scores),
@@ -114,6 +128,7 @@ while True:
 					use_normalized_coordinates=True,
 					line_thickness=4)
 
+			# Use the converted depth image here for the picture
 			l_depth.paint(depth_image, image, 'frame')
 			#print(image.max())
 			k = cv2.waitKey(1) & 0xff

@@ -163,6 +163,8 @@ class trainer(threading.Thread):
 if __name__ == "__main__":
 	t = trainer(args.model_dir, args.output_dir, args.export_inference, args.iterations)
 	t.start()
+	while t.isAlive():
+		t.add_model(input('Type a path here to enqueue more models: '))
 
 
 
