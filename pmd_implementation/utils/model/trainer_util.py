@@ -14,6 +14,10 @@ import os, re
 from collections import deque
 import threading
 
+from keras.backend.tensorflow_backend import set_session
+
+from object_detection import model_hparams
+
 parser = argparse.ArgumentParser("""This module can automatically train multiple models on a single dataset, 
 it searches for any folder in the model directory supplied and then uses the .config file inside to train
 the model, it will automatically find the most recent ckpt file and use it for training.""" )
@@ -28,7 +32,7 @@ def verify_model_path(path):
 	"""Returns true if the directory is a model directory,
 	returns false otherwise"""
 	
-	if os.path.is_dir(path):
+	if os.path.isdir(path):
 		if find_file_matching_pattern(path, "*.config"):
 			if find_file_matching_pattern(path, "model.ckpt*", 3):
 				return True
@@ -48,7 +52,7 @@ def retrieve_model_list(m_path):
 	model_list = []
 	for f in os.listdir(m_path):
 		path = os.path.join(m_path, f)
-		if os.path.is_dir(path):
+		if os.path.isdir(path):
 			if find_file_matching_pattern(path, "*.config"):
 				if find_file_matching_pattern(path, "model.ckpt*", 3):
 					model_list.append(path)
@@ -84,11 +88,11 @@ def create_inference_graph(model_path, output_dir):
 	"""Exports a models training progress as a path"""
 
 	pipeline_config = pipeline_pb2.TrainEvalPipelineConfig()
-	with tf.gfile.GFile(os.path.join(model_path, '*.config'), 'r') as f:
+	with tf.gfile.GFile(os.path.join(model_path, find_file_matching_pattern(model_path, "*.config")), 'r') as f:
 		text_format.Merge(f.read(), pipeline_config)
 	text_format.Merge('', pipeline_config)
 	exporter.export_inference_graph(
-		"image_tensor", pipeline_config, find_ckpt_prefix(model_path),
+		"image_tensor", pipeline_config, os.path.join(model_path, find_ckpt_prefix(model_path)),
 		os.path.join(model_path, output_dir), input_shape=None,
 		write_inference_graph=False)
 
@@ -122,10 +126,10 @@ def train_model(model_path, iterations):
 	# Currently only a single Eval Spec is allowed.
 	tf.estimator.train_and_evaluate(estimator, train_spec, eval_specs[0])
 
-class trainer(threading.thread):
+class trainer(threading.Thread):
 
 	def __init__(self, model_dir, output_dir="./training", export_inference=True, iterations=50000):
-		threading.thread.__init__(self)
+		threading.Thread.__init__(self)
 		self.model_queue = deque()
 		self.output_dir = output_dir
 		self.export_inference = export_inference
