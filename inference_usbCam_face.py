@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 # pylint: disable=C0103
 # pylint: disable=E1101
@@ -8,9 +7,11 @@ import time
 import numpy as np
 import tensorflow as tf
 import cv2
+from collections import deque
 
 from utils import label_map_util
 from utils import visualization_utils_color as vis_util
+from utils.model_util import TensorflowDetectorThread
 
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
 PATH_TO_CKPT = './model/frozen_inference_graph_face.pb'
@@ -76,6 +77,15 @@ class TensoflowFaceDector(object):
 
 
 if __name__ == "__main__":
+
+    thread_in = deque()
+    thread_out = deque()
+    tensorflow_thread = TensorflowDetectorThread(PATH_TO_CKPT, thread_in, thread_out)
+    tensorflow_thread.start()
+    tens_ready = True
+    tens_result = None
+    tens_start_time = time.time()
+
     import sys
     if len(sys.argv) != 2:
         print ("usage:%s (cameraID | filename) Detect faces\
@@ -100,16 +110,33 @@ if __name__ == "__main__":
         #print (h, w)
         image = cv2.flip(image, 1)
 
-        (boxes, scores, classes, num_detections) = tDetector.run(image)
+        if tens_ready:
+            # It doesn't actually use both images right now, but it might in the future
+            # Use original so that the depth values are correct
+            image_np = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            thread_in.append((None, image_np))
+            tens_start_time = time.time()
+            tens_ready = False
 
-        vis_util.visualize_boxes_and_labels_on_image_array(
-            image,
-            np.squeeze(boxes),
-            np.squeeze(classes).astype(np.int32),
-            np.squeeze(scores),
-            category_index,
-            use_normalized_coordinates=True,
-            line_thickness=4)
+        if len(thread_out) > 0:
+            print('Updating bounding boxes, this iteration took {}'.format(time.time() - tens_start_time))
+            #print(image.shape)
+            tens_result = thread_out.pop()
+            tens_ready = True
+
+        if tens_result:
+            # Allows for drawing of old data to make it not blink up and disappear
+            # Use original depth image for accurate depth information depth_image_orig,
+            # Not depth_image
+            (boxes, scores, classes, num_detections) = tens_result
+            vis_util.visualize_boxes_and_labels_on_image_array(
+                image,
+                np.squeeze(boxes),
+                np.squeeze(classes).astype(np.int32),
+                np.squeeze(scores),
+                category_index,
+                use_normalized_coordinates=True,
+                line_thickness=4)
 
         if windowNotSet is True:
             cv2.namedWindow("tensorflow based (%d, %d)" % (w, h), cv2.WINDOW_NORMAL)
@@ -120,4 +147,6 @@ if __name__ == "__main__":
         if k == ord('q') or k == 27:
             break
 
+    tensorflow_thread.stop()
     cap.release()
+    cv2.destroyAllWindows()
