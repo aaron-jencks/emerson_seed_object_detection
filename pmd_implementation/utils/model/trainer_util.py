@@ -85,16 +85,20 @@ def find_ckpt_prefix(model_path):
 	return response_string
 
 def create_inference_graph(model_path, output_dir):
-	"""Exports a models training progress as a path"""
+        """Exports a models training progress as a path"""
 
-	pipeline_config = pipeline_pb2.TrainEvalPipelineConfig()
-	with tf.gfile.GFile(os.path.join(model_path, find_file_matching_pattern(model_path, "*.config")), 'r') as f:
-		text_format.Merge(f.read(), pipeline_config)
-	text_format.Merge('', pipeline_config)
-	exporter.export_inference_graph(
-		"image_tensor", pipeline_config, os.path.join(model_path, find_ckpt_prefix(model_path)),
-		os.path.join(model_path, output_dir), input_shape=None,
-		write_inference_graph=False)
+        try:
+                with tf.variable_scope("", reuse=tf.AUTO_REUSE):
+                        pipeline_config = pipeline_pb2.TrainEvalPipelineConfig()
+                        with tf.gfile.GFile(os.path.join(model_path, find_file_matching_pattern(model_path, "*.config")), 'r') as f:
+                                text_format.Merge(f.read(), pipeline_config)
+                        text_format.Merge('', pipeline_config)
+                        exporter.export_inference_graph(
+                                "image_tensor", pipeline_config, os.path.join(model_path, find_ckpt_prefix(model_path)),
+                                os.path.join(model_path, output_dir), input_shape=None,
+                                write_inference_graph=False)
+        except Exception as e:
+                print(e)
 
 def train_model(model_path, iterations):
 	"""Trains a model using the default parameters"""
@@ -143,8 +147,12 @@ class trainer(threading.Thread):
 			print('Training {}'.format(m))
 			train_model(m, self.iterations)
 			if self.export_inference:
-				print('Exporting inference graph')
-				create_inference_graph(m, self.output_dir)
+                                try:
+                                        print('Exporting inference graph')
+                                        create_inference_graph(m, self.output_dir)
+                                except Exception as e:
+                                        print('Exporting failed due to {}'.format(e))
+                                        continue
 
 	def add_model(self, model_dir):
 		"""Adds a model from the given directory to the training list"""
@@ -163,8 +171,6 @@ class trainer(threading.Thread):
 if __name__ == "__main__":
 	t = trainer(args.model_dir, args.output_dir, args.export_inference, args.iterations)
 	t.start()
-	while t.isAlive():
-		t.add_model(input('Type a path here to enqueue more models: '))
 
 
 
