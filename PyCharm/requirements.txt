@@ -1,7 +1,6 @@
 # This file may be used to create an environment using:
 # $ conda create --name <env> --file <this file>
 # platform: linux-64
-_tflow_select=2.3.0=mkl
 absl-py=0.7.0=py27_0
 appdirs=1.4.3=py27h28b3542_0
 asn1crypto=0.24.0=py27_0
