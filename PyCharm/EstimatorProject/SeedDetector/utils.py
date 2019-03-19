@@ -11,10 +11,7 @@ def train(train_dict, test_dict, iterations, model_dir, batch_size, tensors_to_l
 
     estimator = generate_model(model_dir)
 
-    print(train_dict)
-    train_input_fn = get_input_fn(train_dict, batch_size)
-    print(train_input_fn)
-    eval_input_fn = get_input_fn(test_dict, batch_size)
+    print("Given {} training examples and {} testing examples".format(len(train_dict["data"]), len(test_dict["data"])))
 
     # Executes either with or without logging depending on size of dictionary
     if len(tensors_to_log) > 0:
@@ -25,7 +22,7 @@ def train(train_dict, test_dict, iterations, model_dir, batch_size, tensors_to_l
     else:
         estimator.train(input_fn=lambda: get_input_fn(train_dict, batch_size), steps=iterations)
 
-    return estimator.evaluate(input_fn=lambda: get_input_fn(test_dict, batch_size))
+    return estimator.evaluate(input_fn=lambda: get_input_fn(test_dict, batch_size), steps=1)
 
 
 def indefinite_train(train_dict, test_dict, batch_iterations, model_dir, batch_size, logged_tensors={}):
