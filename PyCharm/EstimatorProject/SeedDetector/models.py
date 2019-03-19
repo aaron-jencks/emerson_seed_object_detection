@@ -9,36 +9,34 @@ def estimator_model(input_dict:dict):
 def cnn_model_fn(features, labels, mode):
     """Model function for CNN."""
     # Input Layer
-    input_layer = tf.reshape(features["x"], [-1, 28, 28, 1])
+    input_layer = tf.reshape(features, [-1, 28, 28, 1])
 
     # Convolutional Layer #1
-    conv1 = tf.layers.conv2d(
-        inputs=input_layer,
+    conv1 = tf.keras.layers.Conv2D(
         filters=32,
         kernel_size=[5, 5],
         padding="same",
-        activation=tf.nn.relu)
+        activation=tf.nn.relu)(input_layer)
 
     # Pooling Layer #1
-    pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[2, 2], strides=2)
+    pool1 = tf.keras.layers.MaxPooling2D(pool_size=[2, 2], strides=2)(conv1)
 
     # Convolutional Layer #2 and Pooling Layer #2
-    conv2 = tf.layers.conv2d(
-        inputs=pool1,
+    conv2 = tf.keras.layers.Conv2D(
         filters=64,
         kernel_size=[5, 5],
         padding="same",
-        activation=tf.nn.relu)
-    pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[2, 2], strides=2)
+        activation=tf.nn.relu)(pool1)
+    pool2 = tf.keras.layers.MaxPooling2D(pool_size=[2, 2], strides=2)(conv2)
 
     # Dense Layer
     pool2_flat = tf.reshape(pool2, [-1, 7 * 7 * 64])
-    dense = tf.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.relu)
-    dropout = tf.layers.dropout(
-        inputs=dense, rate=0.4, training=mode == tf.estimator.ModeKeys.TRAIN)
+    dense = tf.keras.layers.Dense(units=1024, activation=tf.nn.relu)(pool2_flat)
+    dropout = tf.keras.layers.Dropout(rate=0.4)(
+        dense, training=mode == tf.estimator.ModeKeys.TRAIN)
 
     # Logits Layer
-    logits = tf.layers.dense(inputs=dropout, units=10)
+    logits = tf.keras.layers.Dense(units=10)(dropout)
 
     predictions = {
         # Generate predictions (for PREDICT and EVAL mode)
@@ -90,5 +88,4 @@ def get_input_fn(data, labels, batch_size):
         batch_size=batch_size,
         num_epochs=None,
         shuffle=True
-
     )
