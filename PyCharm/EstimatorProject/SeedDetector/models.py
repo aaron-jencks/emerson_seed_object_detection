@@ -2,6 +2,10 @@ import tensorflow as tf
 import tensorflow.estimator as te
 
 
+def estimator_model(input_dict:dict):
+    pass
+
+
 def cnn_model_fn(features, labels, mode):
     """Model function for CNN."""
     # Input Layer
