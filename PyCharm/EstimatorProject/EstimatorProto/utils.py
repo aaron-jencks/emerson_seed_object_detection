@@ -24,9 +24,9 @@ def train_path(root_path: str, iterations: int, model_dir: str, batch_size: int,
 
         estimator.train(input_fn=lambda: get_input_fn(root_path, batch_size), steps=iterations, hooks=[logging_hook])
     else:
-        estimator.train(input_fn=lambda: get_input_fn(train_dict, batch_size), steps=iterations)
+        estimator.train(input_fn=lambda: get_input_fn(root_path, batch_size), steps=iterations)
 
-    return estimator.evaluate(input_fn=lambda: get_input_fn(test_dict, batch_size), steps=1)
+    return estimator.evaluate(input_fn=lambda: get_input_fn(root_path, batch_size), steps=1)
 
 
 def train_dictionary(train_dict: dict, test_dict: dict, iterations: int, model_dir: str, batch_size: int, tensors_to_log={}):
@@ -102,30 +102,18 @@ def test(model_dir, tensors_to_log={}):
     train_dictionary(train_dict, test_dict, iterations, model_dir, batch_size, tensors_to_log)
 
 
-def test_directory(model_dir: str, tmp_dir: str = "", tensors_to_log={}):
-
-    import numpy as np
+def test_directory(model_dir: str, tensors_to_log={}):
 
     tf.logging.set_verbosity(tf.logging.INFO)
 
-    if len(tmp_dir) is 0:
-        pass
+    TRAIN_URL = "http://download.tensorflow.org/data/iris_training.csv"
+    TEST_URL = "http://download.tensorflow.org/data/iris_test.csv"
 
-    # Load training and eval data
-    ((train_data, train_labels),
-     (eval_data, eval_labels)) = tf.keras.datasets.mnist.load_data()
-
-    train_data = train_data / np.float32(255)
-    train_labels = train_labels.astype(np.int32)  # not required
-
-    eval_data = eval_data / np.float32(255)
-    eval_labels = eval_labels.astype(np.int32)  # not required
-
-    train_dict = {"data": train_data, "labels": train_labels}
-    test_dict = {"data": eval_data, "labels": eval_labels}
+    train_path = tf.keras.utils.get_file(TRAIN_URL.split('/')[-1], TRAIN_URL)
+    test_path = tf.keras.utils.get_file(TEST_URL.split('/')[-1], TEST_URL)
 
     batch_size = 100
     iterations = 1000
 
-    train_dictionary(train_dict, test_dict, iterations, model_dir, batch_size, tensors_to_log)
+    train_path(train_path, test_path, iterations, model_dir, batch_size, tensors_to_log)
 
