@@ -1,6 +1,5 @@
 import tensorflow as tf
-import random
-import pathlib
+import os
 
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
@@ -32,27 +31,58 @@ def load_and_preprocess_from_path_label(path: str, label: str):
     return load_and_preprocess_image(path), label
 
 
-def get_dataset(root_path: str):
+def image_extraction_fn(data_record):
+    """Parses a tf.Example from the tfrecord data"""
+
+    features = {
+        'image/height': tf.FixedLenFeature([], tf.int64),
+        'image/width': tf.FixedLenFeature([], tf.int64),
+        'image/filename': tf.FixedLenFeature([], tf.string),
+        'image/source_id': tf.FixedLenFeature([], tf.string),
+        'image/encoded': tf.FixedLenFeature([], tf.string),
+        'image/format': tf.FixedLenFeature([], tf.string),
+        'image/object/bbox/xmin': tf.VarLenFeature(tf.float32),
+        'image/object/bbox/xmax': tf.VarLenFeature(tf.float32),
+        'image/object/bbox/ymin': tf.VarLenFeature(tf.float32),
+        'image/object/bbox/ymax': tf.VarLenFeature(tf.float32),
+        'image/object/class/text': tf.VarLenFeature(tf.string),
+        'image/object/class/label': tf.VarLenFeature(tf.int64),
+    }
+
+    sample = tf.parse_single_example(data_record, features)
+
+    image_tf = sample["image/encoded"]
+    labels = sample["image/object/class/label"]
+    xmins = sample["image/object/bbox/xmin"]
+    xmaxs = sample["image/object/bbox/xmax"]
+    ymins = sample["image/object/bbox/ymin"]
+    ymaxs = sample["image/object/bbox/ymax"]
+
+    raw_img = tf.cond(tf.image.is_jpeg(image_tf),
+                      lambda: tf.image.decode_jpeg(image_tf),
+                      lambda: tf.image.decode_png(image_tf))
+    img = tf.image.resize(raw_img, (600, 400))
+    # shape = tf.stack([sample["image/height"], sample["image/width"]])
+
+    return [img, labels.values[0]]  # (labels, xmins, xmaxs, ymins, ymaxs)
+
+
+def get_dataset(root_path: str, record_prefix: str):
     """Finds all image files located in the root
     directory and loads them into a tf.Dataset
     object."""
+    import fnmatch
 
-    print("Creating images")
-    all_image_paths = list(root_path.glob('*/*'))
-    all_image_paths = [str(path) for path in all_image_paths]
-    random.shuffle(all_image_paths)
+    print("Creating dataset")
+    files_in_dir = os.listdir(root_path)
+    pattern = "{}*".format(record_prefix)
+    all_records = [os.path.join(root_path, path)
+                   for path in fnmatch.filter(files_in_dir, pattern)]
 
-    print("Creating labels")
-    label_names = sorted(item.name for item in root_path.glob('*/') if item.is_dir())
-    label_to_index = dict((name, index) for index, name in enumerate(label_names))
-    all_image_labels = [label_to_index[pathlib.Path(path).parent.name]
-                        for path in all_image_paths]
+    ds = tf.data.TFRecordDataset(all_records)
+    ds = ds.map(image_extraction_fn)
 
-    print("Creating combined dataset")
-    ds = tf.data.Dataset.from_tensor_slices((all_image_paths, all_image_labels))
-    image_label_ds = ds.map(load_and_preprocess_from_path_label)
-
-    return image_label_ds, len(all_image_paths)
+    return ds
 
 
 def get_input_fn(root_path, batch_size: int):
@@ -63,8 +93,9 @@ def get_input_fn(root_path, batch_size: int):
 
     if isinstance(root_path, str):
         # Try to read the folder of images, if it's a string
-        ds, cnt = get_dataset(root_path)
-        ds = ds.shuffle(cnt).repeat().batch(batch_size)
+        record_prefix = os.path.basename(root_path)
+        ds = get_dataset(os.path.dirname(root_path), record_prefix)
+        ds = ds.shuffle(1000).repeat().batch(batch_size)
 
     elif isinstance(root_path, dict):
         # Directly turn into a dataset if it's a dictionary

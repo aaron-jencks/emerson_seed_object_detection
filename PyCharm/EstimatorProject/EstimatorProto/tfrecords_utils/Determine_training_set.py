@@ -1,30 +1,38 @@
 from random import shuffle
-import os, fnmatch, pathlib, shutil
+import os
+import fnmatch
+import pathlib
+import shutil
 
-def read_train_val():
+
+def read_train_val(root_path: str):
 	"""Reads the names of all image files from the ./images/raw/ directory and then
 	splits it up into multiple parts to be used by training and testing
 	int the typical 90%/10% ratio."""
-	
+
 	# Maps the directory for image files and reads in all of the lines and then shuffles them
-	files = list(map(lambda x: "./images/raw/" + x, fnmatch.filter(os.listdir("./images/raw/"), "*.jpg")))
+	files = list(map(lambda x: os.path.join(root_path, "images/raw/") + x,
+					 fnmatch.filter(os.listdir(os.path.join(root_path, "images/raw/")), "*.jpg")))
+
 	shuffle(files)
-	
+
 	for name in files:
 		print(name)
-	
+
 	# Splits the files into two arrays of train values, and test values
 	split_loc = int(len(files) * 0.9)
 	train_values = files[:split_loc]
 	test_values = files[split_loc:]
-	return (train_values, test_values)
-	
+	return train_values, test_values
+
+
 def copy_files(file_list, dst):
 	"""Copies a list of files to another directory"""
 	for file in file_list:
-		print("Copying " + file + " to " + dst)
+		print("Copying " + os.path.basename(file) + " to " + dst)
 		shutil.copy(file, dst)
-	
+
+
 if __name__ == '__main__':
 	"""Separates the image files in the ./images/raw/ directory into two categories
 	then moves them into two directories, ./images/train/, and ./images/test/."""
