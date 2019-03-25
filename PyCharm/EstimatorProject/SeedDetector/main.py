@@ -6,6 +6,8 @@ from Display.util import get_constrained_input
 import os
 import pathlib
 
+from EstimatorProto.data_utils import find_min_dim
+
 
 def convert_tfr(root_path: str):
     """Converts the xml annotations and the images
@@ -15,7 +17,6 @@ def convert_tfr(root_path: str):
 
     (train, test) = find_xml_files(root_path)
 
-    print("Converting to pandas df")
     train_df = xml_to_csv(train)
     test_df = xml_to_csv(test)
 
@@ -27,7 +28,8 @@ def convert_tfr(root_path: str):
 
 def split_dataset(root_path: str):
     """Splits the dataset using the tools from the
-    Determine_training_set.py file"""
+    Determine_training_set.py file, returns the minimum dimensions
+    of the images found"""
 
     print("Finding the image directories and converting them.")
 
@@ -45,6 +47,8 @@ def split_dataset(root_path: str):
     # Copies the files into their respective directories
     copy_files(train, train_dir)
     copy_files(test, test_dir)
+
+    return find_min_dim(train + test)
 
 
 if __name__ == "__main__":

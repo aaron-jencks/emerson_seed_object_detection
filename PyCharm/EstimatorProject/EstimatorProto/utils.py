@@ -5,6 +5,8 @@ from .models import generate_model
 from .data_utils import get_input_fn
 import os
 
+from tqdm import tqdm
+
 
 def train_path(root_path: str, iterations: int, model_dir: str, batch_size: int, resolution=(28, 28), tensors_to_log={}):
     """Trains the nn for given number of iterations
@@ -27,11 +29,11 @@ def train_path(root_path: str, iterations: int, model_dir: str, batch_size: int,
         logging_hook = tf.train.LoggingTensorHook(
             tensors=tensors_to_log, every_n_iter=50)
 
-        estimator.train(input_fn=lambda: get_input_fn(train_rec, batch_size), steps=iterations, hooks=[logging_hook])
+        estimator.train(input_fn=lambda: get_input_fn(train_rec, batch_size, resolution), steps=iterations, hooks=[logging_hook])
     else:
-        estimator.train(input_fn=lambda: get_input_fn(train_rec, batch_size), steps=iterations)
+        estimator.train(input_fn=lambda: get_input_fn(train_rec, batch_size, resolution), steps=iterations)
 
-    return estimator.evaluate(input_fn=lambda: get_input_fn(test_rec, batch_size), steps=1)
+    return estimator.evaluate(input_fn=lambda: get_input_fn(test_rec, batch_size, resolution), steps=1)
 
 
 def train_dictionary(train_dict: dict, test_dict: dict, iterations: int, model_dir: str, batch_size: int, tensors_to_log={}):
@@ -107,28 +109,18 @@ def test(model_dir, tensors_to_log={}):
     train_dictionary(train_dict, test_dict, iterations, model_dir, batch_size, tensors_to_log)
 
 
-def test_directory(model_dir: str, tensors_to_log={},
+def test_directory(tensors_to_log={},
                    skip_conversion: bool = False, skip_split: bool = False, skip_tfr: bool = False):
     import urllib
-    import tempfile
-    import pathlib
     import tarfile
     import fnmatch
     import shutil
 
+    from EstimatorProto.data_utils import setup_temp_model_dir
+
     tf.logging.set_verbosity(tf.logging.INFO)
 
-    temp_dir = os.path.join(tempfile.gettempdir(), "Emerson_Toolkit/Path_Test")
-    data_dir = os.path.join(temp_dir, "data")
-
-    # Creates the file hierarchy in the temporary directory
-    print("Creating temporary workspace")
-    image_dir = os.path.join(temp_dir, "data/images")
-    annotation_dir = os.path.join(temp_dir, "data/annotations")
-    pathlib.Path(image_dir).mkdir(parents=True, exist_ok=True)
-    pathlib.Path(os.path.join(image_dir, "raw")).mkdir(parents=True, exist_ok=True)
-    pathlib.Path(annotation_dir).mkdir(parents=True, exist_ok=True)
-    pathlib.Path(os.path.join(data_dir, "data")).mkdir(parents=True, exist_ok=True)
+    temp_ctx, temp_dir, data_dir, image_dir, annotation_dir, model_dir = setup_temp_model_dir("Path_Test")
 
     if not skip_conversion:
         IMAGE_URL = "http://www.robots.ox.ac.uk/~vgg/data/pets/data/images.tar.gz"
@@ -162,18 +154,22 @@ def test_directory(model_dir: str, tensors_to_log={},
 
         print("Extracting")
         tarfile.open(image_path).extractall(data_dir)
-        for f in fnmatch.filter(os.listdir(image_dir), "*.jpg"):
+        for f in tqdm(fnmatch.filter(os.listdir(image_dir), "*.jpg")):
             shutil.move(os.path.join(image_dir, f), os.path.join(os.path.join(image_dir, "raw"), os.path.basename(f)))
         tarfile.open(annotation_path).extractall(data_dir)
     else:
         print("Skipping the download and extraction")
 
     from SeedDetector.main import split_dataset, convert_tfr
+    from EstimatorProto.data_utils import find_min_dim
 
     if not skip_split:
-        split_dataset(data_dir)
+        min_dim = split_dataset(data_dir)
     else:
         print("Skipping the dataset split")
+        # Gotta ensure that we have the minimum dimensions, even if we don't split the dataset.
+        min_dim = find_min_dim(list(map(lambda x: os.path.join(image_dir, "raw/") + x,
+                                        fnmatch.filter(os.listdir(os.path.join(image_dir, "raw/")), "*.jpg"))))
 
     if not skip_tfr:
         convert_tfr(data_dir)
@@ -183,5 +179,8 @@ def test_directory(model_dir: str, tensors_to_log={},
     batch_size = 1
     iterations = 1000
 
-    train_path(data_dir, iterations, model_dir, batch_size, (600, 400), tensors_to_log)
+    train_path(data_dir, iterations, model_dir, batch_size, min_dim, tensors_to_log)
+
+    print("Cleaning up directory")
+    temp_ctx.cleanup()
 

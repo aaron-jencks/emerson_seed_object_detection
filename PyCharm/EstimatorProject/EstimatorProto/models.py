@@ -5,14 +5,14 @@ import tensorflow.estimator as te
 def cnn_model_fn(features, labels, mode, params):
     """Model function for CNN."""
     # Input Layer
-    input_layer = tf.reshape(features, [-1, params["height"], params["width"], 3])
+    input_layer = tf.reshape(features, [-1, params["height"], params["width"], 1])
 
     # Convolutional Layer #1
-    act = tf.nn.relu
     conv1 = tf.keras.layers.Conv2D(
         filters=32,
         kernel_size=[5, 5],
-        activation=act)(input_layer)
+        padding='same',
+        activation=tf.nn.relu)(input_layer)
 
     # Pooling Layer #1
     pool1 = tf.keras.layers.MaxPooling2D(pool_size=[2, 2], strides=2)(conv1)
@@ -21,21 +21,25 @@ def cnn_model_fn(features, labels, mode, params):
     conv2 = tf.keras.layers.Conv2D(
         filters=64,
         kernel_size=[5, 5],
+        padding='same',
         activation=tf.nn.relu)(pool1)
     pool2 = tf.keras.layers.MaxPooling2D(pool_size=[2, 2], strides=2)(conv2)
 
     # Dense Layer
-    pool2_flat = tf.reshape(pool2, [-1, 7 * 7 * 64])
+    # pool2_flat = tf.reshape(pool2, [-1, int(params["height"] / 4) * int(params["width"] / 4) * 64])
+    pool2_flat = tf.keras.layers.Flatten()(pool2)
     dense = tf.keras.layers.Dense(units=1024, activation=tf.nn.relu)(pool2_flat)
     dropout = tf.keras.layers.Dropout(rate=0.4)(
         dense, training=mode == te.ModeKeys.TRAIN)
 
     # Logits Layer
-    logits = tf.keras.layers.Dense(units=3)(dropout)
+    logits = tf.keras.layers.Dense(units=10)(dropout)
+
+    pred_index = tf.argmax(input=logits, axis=1)
 
     predictions = {
         # Generate predictions (for PREDICT and EVAL mode)
-        "classes": tf.argmax(input=logits, axis=1),
+        "classes": pred_index,
         # Add `softmax_tensor` to the graph. It is used for PREDICT and by the
         # `logging_hook`.
         "probabilities": tf.nn.softmax(logits, name="softmax_tensor")

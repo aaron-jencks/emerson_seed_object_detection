@@ -3,6 +3,7 @@ import os
 import fnmatch
 import pathlib
 import shutil
+from tqdm import tqdm
 
 
 def read_train_val(root_path: str):
@@ -23,13 +24,14 @@ def read_train_val(root_path: str):
 	split_loc = int(len(files) * 0.9)
 	train_values = files[:split_loc]
 	test_values = files[split_loc:]
+
 	return train_values, test_values
 
 
 def copy_files(file_list, dst):
 	"""Copies a list of files to another directory"""
-	for file in file_list:
-		print("Copying " + os.path.basename(file) + " to " + dst)
+	print("Copying {} files".format(len(file_list)))
+	for file in tqdm(file_list):
 		shutil.copy(file, dst)
 
 
