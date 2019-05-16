@@ -5,17 +5,24 @@ import cv2
 import queue
 from roypy_sample_utils import CameraOpener
 from .roypy_sample_utils_custom import CameraOpenerExternTrig
+from data_structures.lists import LinkedList
 
 
 def get_camera(options, filename=None):
     """Finds the requested pmd camera and opens it for viewing"""
 
-    if options.external_trig:
-        opener = CameraOpenerExternTrig(options)
-    else:
-        opener = CameraOpener(options)
+    manager = roypy.CameraManager()
 
-    return opener.open_camera() if filename is None else opener.open_recording(filename)
+    cap = manager.createCamera() if filename is None else manager.createCamera(filename)
+
+    cap.initialize()
+
+    # if options.external_trig:
+    #     opener = CameraOpenerExternTrig(options)
+    # else:
+    #     opener = CameraOpener(options)
+
+    return cap
 
 
 class ImageListener(roypy.IDepthDataListener):
@@ -24,18 +31,16 @@ class ImageListener(roypy.IDepthDataListener):
         self.queue = q
 
     def onNewData(self, data):
-        zvalues = []
-        for i in range(data.getNumPoints()):
-            try:
-                zvalues.append(data.getGrayValue(i))
-            except Exception as e:
-                print(e)
-        try:
-            zarray = np.asarray(zvalues)
-            p = zarray.reshape (-1, data.width)
-            p = cv2.convertScaleAbs(p)
-        except Exception as e:
-            print(e)
+        zvalues = [data.getGrayValue(i) for i in range(data.getNumPoints())]
+        # for i in range(data.getNumPoints()):
+        #     zvalues.append(data.getGrayValue(i))
+        # try:
+        zarray = np.asarray(zvalues)
+        p = zarray.reshape (-1, data.width)
+        p = cv2.convertScaleAbs(p)
+        # p = zvalues
+        # except Exception as e:
+        #     print(e)
         # p = np.reshape(zarray, (640, 480)).astype(np.uint8)
         self.queue.append(p)
 
@@ -47,11 +52,9 @@ class DepthListener(roypy.IDepthDataListener):
         self.gqueue = q
 
     def onNewData(self, data):
-        zvalues = []
-        gvalues = []
-        for i in range(data.getNumPoints()):
-            zvalues.append(data.getZ(i))
-            gvalues.append(data.getGrayValue(i))
+        r = range(data.getNumPoints())
+        zvalues = [data.getZ(i) for i in r]
+        gvalues = [data.getGrayValue(i) for i in r]
         zarray = np.asarray(zvalues)
         garray = np.asarray(gvalues)
         p = zarray.reshape (-1, data.width)

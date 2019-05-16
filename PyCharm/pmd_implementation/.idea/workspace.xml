@@ -2,11 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="00bfeffd-59c1-41cd-a576-5b86c13c510a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/video_util/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/video_util/collection_util.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/video_util/depth_averager.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/video_util/file_io.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/video_util/roypy_sample_utils_custom.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data_structures/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data_structures/basics.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data_structures/lists.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/video_util/data_util.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/video_util/display_util/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/video_util/display_util/img_depth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/video_util/collection_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/video_util/collection_util.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/video_util/depth_averager.py" beforeDir="false" afterPath="$PROJECT_DIR$/video_util/depth_averager.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,29 +23,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/video_util/collection_util.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="56" column="43" selection-start-line="56" selection-start-column="43" selection-end-line="56" selection-end-column="43" />
-              <folding>
-                <element signature="e#0#12#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/video_util/roypy_sample_utils_custom.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_3.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="24" column="23" selection-start-line="23" selection-end-line="24" selection-end-column="23" />
+            <state relative-caret-position="315">
+              <caret line="24" column="14" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -50,49 +33,91 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/video_util/depth_averager.py">
+        <entry file="file://$USER_HOME$/anaconda3/envs/royale/libroyale-3.21.1.70-LINUX-x86-64Bit/python/roypy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="282" column="91" selection-start-line="282" selection-start-column="91" selection-end-line="282" selection-end-column="91" />
+            <state relative-caret-position="517">
+              <caret line="1125" column="1" lean-forward="true" selection-start-line="1125" selection-start-column="1" selection-end-line="1125" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/anaconda3/envs/royale/libroyale-3.21.1.70-LINUX-x86-64Bit/python/roypy_sample_utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-810">
               <folding>
-                <element signature="e#0#31#0" expanded="true" />
-                <element signature="e#367#2040#0" />
-                <element signature="e#2083#2593#0" />
-                <element signature="e#2636#3010#0" />
-                <element signature="e#3190#3236#0" />
-                <element signature="e#4603#4631#0" />
-                <element signature="e#4412#4449#0" />
-                <element signature="e#4550#4589#0" />
-                <element signature="e#5124#5152#0" />
-                <element signature="e#5191#5222#0" />
-                <element signature="e#5355#5387#0" />
-                <element signature="e#5740#5787#0" />
-                <element signature="e#6176#6211#0" />
-                <element signature="e#6322#6371#0" />
-                <element signature="e#8029#8089#0" />
-                <element signature="e#9267#9321#0" />
-                <element signature="e#11333#11379#0" />
+                <element signature="e#595#1004#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/site-packages/PIL/Image.py">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="36855">
-              <caret line="2462" selection-start-line="2462" selection-end-line="2462" />
+            <state relative-caret-position="195">
+              <caret line="13" column="14" selection-start-line="5" selection-start-column="2" selection-end-line="13" selection-end-column="14" />
+              <folding>
+                <element signature="e#0#44#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/video_util/file_io.py">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_3.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="11" selection-start-line="11" selection-end-line="11" />
+            <state relative-caret-position="360">
+              <caret line="24" column="23" selection-start-line="23" selection-end-line="24" selection-end-column="23" />
               <folding>
-                <element signature="e#0#21#0" expanded="true" />
+                <element signature="e#0#12#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/video_util/depth_averager.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="525">
+              <caret line="123" column="32" selection-start-line="123" selection-start-column="32" selection-end-line="123" selection-end-column="32" />
+              <folding>
+                <element signature="e#0#31#0" expanded="true" />
+                <element signature="e#508#2181#0" />
+                <element signature="e#2224#2772#0" />
+                <element signature="e#5326#5354#0" />
+                <element signature="e#5577#5619#0" />
+                <element signature="e#5847#5875#0" />
+                <element signature="e#6512#6559#0" />
+                <element signature="e#6948#6983#0" />
+                <element signature="e#10080#10134#0" />
+                <element signature="e#10819#10847#0" />
+                <element signature="e#11031#11076#0" />
+                <element signature="e#11706#11752#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data_structures/lists.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="24" column="105" selection-start-line="24" selection-start-column="105" selection-end-line="24" selection-end-column="105" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/video_util/display_util/img_depth.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="382">
+              <caret line="73" column="27" selection-start-line="73" selection-start-column="27" selection-end-line="73" selection-end-column="27" />
+              <folding>
+                <element signature="e#0#44#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -133,18 +158,14 @@
         <option value="$APPLICATION_CONFIG_DIR$/scratches/matplotlib/widgets.py" />
         <option value="$PROJECT_DIR$/video_util/argparse.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_3.py" />
-        <option value="$PROJECT_DIR$/video_util/collection_util.py" />
+        <option value="$PROJECT_DIR$/data_structures/basics.py" />
+        <option value="$PROJECT_DIR$/video_util/data_util.py" />
+        <option value="$PROJECT_DIR$/data_structures/lists.py" />
+        <option value="$PROJECT_DIR$/video_util/display_util/img_depth.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_1.py" />
         <option value="$PROJECT_DIR$/video_util/depth_averager.py" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectConfigurationFiles">
-    <option name="files">
-      <list>
-        <option value="$PROJECT_DIR$/.idea/pmd_implementation.iml" />
-        <option value="$PROJECT_DIR$/.idea/misc.xml" />
-        <option value="$PROJECT_DIR$/.idea/modules.xml" />
-        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
+        <option value="$PROJECT_DIR$/video_util/collection_util.py" />
+        <option value="$USER_HOME$/anaconda3/envs/royale/libroyale-3.21.1.70-LINUX-x86-64Bit/python/roypy.py" />
       </list>
     </option>
   </component>
@@ -175,7 +196,20 @@
               <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
               <item name="pmd_implementation" type="47feb1d3:ProjectViewModuleNode" />
               <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
+              <item name="data_structures" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pmd_implementation" type="47feb1d3:ProjectViewModuleNode" />
+              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
               <item name="video_util" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pmd_implementation" type="47feb1d3:ProjectViewModuleNode" />
+              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
+              <item name="video_util" type="462c0819:PsiDirectoryNode" />
+              <item name="display_util" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
@@ -210,6 +244,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
     <property name="last_opened_file_path" value="$USER_HOME$/anaconda3/envs/royale/libroyale-3.21.1.70-LINUX-x86-64Bit/python" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -275,6 +310,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="scratch_1" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="pmd_implementation" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_1.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="scratch_3" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="pmd_implementation" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -320,6 +376,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.depth_averager" />
+        <item itemvalue="Python.scratch_1" />
         <item itemvalue="Python.scratch_3" />
         <item itemvalue="Python.widgets" />
         <item itemvalue="Python.scratch" />
@@ -350,14 +407,34 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1080" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24986821" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24986821" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" x="1920" y="376" width="1366" height="704" id="Run" order="2" type="WINDOWED" visible="true" weight="0.32944915" />
-      <window_info anchor="bottom" x="1920" y="376" width="1366" height="704" id="Debug" maximized="true" order="3" type="WINDOWED" visible="true" weight="0.3993644" />
+      <window_info anchor="bottom" x="3918" y="191" width="1221" height="625" id="Run" order="2" type="WINDOWED" weight="0.32944915" />
+      <window_info anchor="bottom" x="1920" y="376" width="1366" height="704" id="Debug" maximized="true" order="3" type="WINDOWED" weight="0.3993644" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32944915" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32944915" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32838982" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" x="3286" y="37" width="1920" height="1043" id="Python Console" order="10" type="WINDOWED" visible="true" weight="0.32944915" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24986821" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" x="1920" y="376" width="1366" height="704" id="Run" maximized="true" order="2" type="WINDOWED" weight="0.32944915" />
+      <window_info anchor="bottom" x="1920" y="376" width="1366" height="704" id="Debug" maximized="true" order="3" type="WINDOWED" weight="0.3993644" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32944915" />
@@ -368,28 +445,26 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout>
+    </layout-to-restore>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/video_util/depth_averager.py</url>
-          <line>129</line>
-          <option name="timeStamp" value="7" />
+          <url>file://$PROJECT_DIR$/data_structures/lists.py</url>
+          <line>48</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/video_util/display_util/img_depth.py</url>
+          <line>62</line>
+          <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/video_util/argparse.py" />
-    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/site-packages/PIL/Image.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36855">
-          <caret line="2462" selection-start-line="2462" selection-end-line="2462" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/matplotlib/widgets.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
@@ -400,56 +475,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/video_util/file_io.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
           <caret line="40" selection-start-line="40" selection-end-line="40" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda3/envs/royale/libroyale-3.21.1.70-LINUX-x86-64Bit/python/roypy_sample_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#595#1004#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/video_util/roypy_sample_utils_custom.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_3.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="24" column="23" selection-start-line="23" selection-end-line="24" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/video_util/collection_util.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="56" column="43" selection-start-line="56" selection-start-column="43" selection-end-line="56" selection-end-column="43" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
@@ -505,29 +534,138 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/video_util/roypy_sample_utils_custom.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/video_util/file_io.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/site-packages/PIL/Image.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="862">
+          <caret line="2462" selection-start-line="2462" selection-end-line="2462" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_structures/basics.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="61" selection-start-line="61" selection-end-line="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/video_util/data_util.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="750">
+          <caret line="50" column="28" lean-forward="true" selection-start-line="50" selection-start-column="28" selection-end-line="50" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#4#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/site-packages/numpy/ma/core.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="485">
+          <caret line="638" selection-start-line="638" selection-end-line="638" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_structures/lists.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="105" selection-start-line="24" selection-start-column="105" selection-end-line="24" selection-end-column="105" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="23" selection-start-line="23" selection-end-line="24" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="14" selection-start-line="5" selection-start-column="2" selection-end-line="13" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/video_util/depth_averager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="282" column="91" selection-start-line="282" selection-start-column="91" selection-end-line="282" selection-end-column="91" />
+        <state relative-caret-position="525">
+          <caret line="123" column="32" selection-start-line="123" selection-start-column="32" selection-end-line="123" selection-end-column="32" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
-            <element signature="e#367#2040#0" />
-            <element signature="e#2083#2593#0" />
-            <element signature="e#2636#3010#0" />
-            <element signature="e#3190#3236#0" />
-            <element signature="e#4603#4631#0" />
-            <element signature="e#4412#4449#0" />
-            <element signature="e#4550#4589#0" />
-            <element signature="e#5124#5152#0" />
-            <element signature="e#5191#5222#0" />
-            <element signature="e#5355#5387#0" />
-            <element signature="e#5740#5787#0" />
-            <element signature="e#6176#6211#0" />
-            <element signature="e#6322#6371#0" />
-            <element signature="e#8029#8089#0" />
-            <element signature="e#9267#9321#0" />
-            <element signature="e#11333#11379#0" />
+            <element signature="e#508#2181#0" />
+            <element signature="e#2224#2772#0" />
+            <element signature="e#5326#5354#0" />
+            <element signature="e#5577#5619#0" />
+            <element signature="e#5847#5875#0" />
+            <element signature="e#6512#6559#0" />
+            <element signature="e#6948#6983#0" />
+            <element signature="e#10080#10134#0" />
+            <element signature="e#10819#10847#0" />
+            <element signature="e#11031#11076#0" />
+            <element signature="e#11706#11752#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/video_util/display_util/img_depth.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="382">
+          <caret line="73" column="27" selection-start-line="73" selection-start-column="27" selection-end-line="73" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/royale/libroyale-3.21.1.70-LINUX-x86-64Bit/python/roypy_sample_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-810">
+          <folding>
+            <element signature="e#595#1004#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/video_util/collection_util.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="24" column="14" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/royale/libroyale-3.21.1.70-LINUX-x86-64Bit/python/roypy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="517">
+          <caret line="1125" column="1" lean-forward="true" selection-start-line="1125" selection-start-column="1" selection-end-line="1125" selection-end-column="1" />
         </state>
       </provider>
     </entry>

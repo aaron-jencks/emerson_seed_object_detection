@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from video_util.argparse_util import get_parser_options
 import math
-from video_util.collection_util import get_camera, DepthListener
+from video_util.collection_util import get_camera, DepthListener, ImageListener
 from collections import deque
 import numpy as np
 
@@ -10,10 +10,10 @@ from mpl_toolkits.mplot3d import Axes3D
 
 import matplotlib.widgets as widg
 from matplotlib.path import Path as pth
-from matplotlib import cm
-from matplotlib.ticker import LinearLocator, FormatStrFormatter
 import time
-import cv2
+
+from video_util.display_util.img_depth import *
+from video_util.data_util import *
 
 
 class Point:
@@ -89,40 +89,6 @@ class SelectFromCollection(object):
         self.poly.disconnect_events()
 
 
-def get_mask(verts, current_image):
-    ny, nx = np.shape(current_image)
-    # Create vertex coordinates for each grid cell...
-    # (<0,0> is at the top left of the grid in this system)
-    x, y = np.meshgrid(np.arange(nx), np.arange(ny))
-    x, y = x.flatten(), y.flatten()
-    points = np.vstack((x, y)).T
-
-    roi_path = pth(verts)
-    grid = roi_path.contains_points(points).reshape((ny, nx))
-
-    return grid
-
-
-def draw_3d_scatter(ax, depths, h: int, w: int, validator, interpolation: int = 10):
-    """Creates 3 arrays of points the correspond to valid depth points on the image,
-    then plots them onto the given axis"""
-
-    x = []
-    y = []
-    z = []
-
-    # filters the depth image for only valid points and those that have depths > 0
-    for r in range(0, w, interpolation):
-        for c in range(0, h, interpolation):
-            if validator(r, c) and depths[r][c] != 0:
-                x.append(width - r)
-                y.append(c)
-                z.append(depth_image[r][c])
-
-    # Plots the points
-    ax.scatter(y, x, z, c=z, cmap='plasma', vmin=0, vmax=max(z))
-
-
 if __name__ == "__main__":
 
     # region Setup
@@ -152,8 +118,33 @@ if __name__ == "__main__":
     # region Opens rrf file and sets up camera
 
     cap = get_camera(args, filename)
-    # cap.setUseCase("MODE_5_45FPS_500")
+    cases = cap.getCameraInfo()
+    for case in range(cases.size()):
+        print(str(cases[case]))
+    print(cap.getMaxFrameRate())
+    # cap.setUseCase("MODE_PLAYBACK")
     # cap.setExposureTime(150)
+
+    # endregion
+
+    # region Trying to read in video before viewing
+
+    q = deque()
+    q_depth = deque()
+    l_depth = ImageListener(q)  # DepthListener(q, q_depth)
+    cap.registerDataListener(l_depth)
+
+    cap.startCapture()
+
+    print("Reading video file")
+    i = 0
+    while cap.isConnected():
+        # if len(q) > 0 and len(q_depth) > 0:
+        #     q.pop()
+        #     q_depth.pop()
+        #     print("\r{}".format(i), end='')
+        #     i += 1
+        print('\r{}'.format(len(q)), end='')
 
     # endregion
 
@@ -173,11 +164,8 @@ if __name__ == "__main__":
 
     plt.ion()
 
-    disp = plt.figure(figsize=[10, 5])
-
-    ax = disp.add_subplot(121)
-
-    dmp = disp.add_subplot(122, projection='3d')
+    # Generates the side-by-side window layout
+    disp, ax, dmp = generate_side_by_side()
     dmp.set_zlim([0, 5])
 
     disp.subplots_adjust(bottom=0.2)
@@ -202,22 +190,15 @@ if __name__ == "__main__":
 
     # region Sets up the buttons
 
-    dimensions = [0.7, 0.05, 0.1, 0.075]
-
     # region Sets up the ROI button
 
-    but_ax = plt.axes(arg=dimensions)
-    but = widg.Button(but_ax, 'ROI')
-    but.on_clicked(click)
+    but = create_generic_button(0.7, 0.05, 'ROI', click)
 
     # endregion
 
     # region Sets up the stop button
 
-    dimensions[0] = 0.59
-    another_ax = plt.axes(arg=dimensions)
-    but2 = widg.Button(another_ax, 'STOP')
-    but2.on_clicked(stop)
+    but2 = create_generic_button(0.59, 0.05, 'STOP', stop)
 
     # endregion
 
@@ -257,15 +238,10 @@ if __name__ == "__main__":
 
             # region Paints the grayscale image to the screen
 
-            # # Draw rgb image
+            # # Create rgb image
             # image = np.stack((frame,)*3, axis=-1)
             # # print(image)
-            try:
-                # img = Image.fromarray(image)
-                ax.pcolormesh(frame, cmap='gray')
-                ax.invert_yaxis()
-            except Exception as e:
-                print(e)
+            display_grayscale(ax, frame)
 
             # endregion
 
@@ -298,25 +274,17 @@ if __name__ == "__main__":
 
                 # region Selects the points in the ROI that have a depth > 0
 
-                selection = []
-                for row in range(width):
-                    for p in range(height):
-                        if crop[row][p] and depth_image[row][p] != 0:
-                            x_coord.append(row)
-                            y_coord.append(height - p)
-                            selection.append(depth_image[row][p])
+                x_coord, y_coord, selection = apply_mask(crop, depth_image)
 
                 # endregion
 
                 # Calculates the average depth
-                m = sum(selection) / len(selection) if len(selection) > 0 else 0
+                m = find_mean(selection)
 
                 # region Prints the average depth text
 
-                min_x = min(x_coord)
-                max_x = max(x_coord)
-                min_y = min(y_coord)
-                max_y = max(y_coord)
+                min_x, max_x = find_mins_maxes(x_coord)
+                min_y, max_y = find_mins_maxes(y_coord)
 
                 # prints the average depth text
                 ax.text((max_x - min_x) / 2 + min_x - 50,
@@ -324,21 +292,21 @@ if __name__ == "__main__":
                         "Average depth: {}".format(round(m, 1)), fontdict={"color": 'r', "backgroundcolor": 'k'})
 
                 # Plots the point cloud, but only for points in the ROI
-                draw_3d_scatter(dmp, depth_image, height, width, lambda r, c: crop[r][c], 3)
+                draw_3d_scatter(dmp, depth_image, lambda r, c: crop[c][r], interpolation=3)
 
                 # endregion
 
                 # region Sets the axis limits on the 3d plot so that the image doesn't jump around as much
 
-                dmp.set_xlim([min_y, max_y])
-                dmp.set_zlim([0, 5])
-                dmp.set_ylim([min_x, max_x])
+                scale_display(dmp, [min_y, max_y], [min_x, max_x], [0, 5])
+
+                dmp.invert_yaxis()
 
                 # endregion
 
             else:
                 # Plots the point cloud
-                draw_3d_scatter(dmp, depth_image, height, width, lambda r, c: True)
+                draw_3d_scatter(dmp, depth_image)
 
                 # region Code for creating a surface instead of points
 
@@ -354,9 +322,9 @@ if __name__ == "__main__":
 
                 # region Sets the axis limits on the 3d plot so that the image doesn't jump around as much
 
-                dmp.set_xlim([0, height])
-                dmp.set_zlim([0, 5])
-                dmp.set_ylim([0, width])
+                scale_display(dmp, [0, height], [0, width], [0, 5])
+
+                dmp.invert_yaxis()
 
                 # endregion
 
