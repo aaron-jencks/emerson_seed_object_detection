@@ -1,3 +1,5 @@
+import pyximport; pyximport.install()
+import video_util.cy_collection_util as cu
 import roypy
 import time
 import numpy as np
@@ -31,17 +33,7 @@ class ImageListener(roypy.IDepthDataListener):
         self.queue = q
 
     def onNewData(self, data):
-        zvalues = [data.getGrayValue(i) for i in range(data.getNumPoints())]
-        # for i in range(data.getNumPoints()):
-        #     zvalues.append(data.getGrayValue(i))
-        # try:
-        zarray = np.asarray(zvalues)
-        p = zarray.reshape (-1, data.width)
-        p = cv2.convertScaleAbs(p)
-        # p = zvalues
-        # except Exception as e:
-        #     print(e)
-        # p = np.reshape(zarray, (640, 480)).astype(np.uint8)
+        p = cu.convert_gray(data)
         self.queue.append(p)
 
 
@@ -52,16 +44,9 @@ class DepthListener(roypy.IDepthDataListener):
         self.gqueue = q
 
     def onNewData(self, data):
-        r = range(data.getNumPoints())
-        zvalues = [data.getZ(i) for i in r]
-        gvalues = [data.getGrayValue(i) for i in r]
-        zarray = np.asarray(zvalues)
-        garray = np.asarray(gvalues)
-        p = zarray.reshape (-1, data.width)
-        self.queue.append(p)
-        p = garray.reshape (-1, data.width)
-        p = cv2.convertScaleAbs(p)
-        self.gqueue.append(p)
+        zarray, garray = cu.convert_raw(data)
+        self.queue.append(zarray)
+        self.gqueue.append(garray)
 
     def paint (self, data, data2, window_name='frame'):
         """Called in the main thread, with data containing one of the items that was added to the

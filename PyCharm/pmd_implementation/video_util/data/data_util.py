@@ -3,6 +3,9 @@ from matplotlib.path import Path as MPth
 import numpy as np
 
 
+processor = None
+
+
 def find_mins_maxes(arr: list) -> tuple:
     """Finds the minimum and maximum of the given list and returns them as (min, max)"""
 
@@ -30,6 +33,17 @@ def get_mask(verts, current_image):
     return grid
 
 
+def __in_mask(row, col, mask, image):
+    return mask[col][row] and image[col][row]
+
+
+def __append_if_in_mask(row, col, mask, image, x_coord, y_coord, depth):
+    if __in_mask(row, col, mask, image):
+        x_coord.append(col)
+        y_coord.append(row)
+        depth.append(image[col][row])
+
+
 def apply_mask(mask, image) -> tuple:
     """Applies the boolean mask returned by get_mask() to a 2D image, returns a tuple of 3 lists
 
@@ -44,15 +58,23 @@ def apply_mask(mask, image) -> tuple:
 
     width, height = np.shape(image)
 
-    x_coord = LinkedList()
-    y_coord = LinkedList()
-    selection = LinkedList()
+    x_coord = []
+    y_coord = []
+    selection = []
 
-    for col in range(width):
-        for row in range(height):
-            if mask[col][row] and image[col][row]:
-                x_coord.append(col)
-                y_coord.append(row)
-                selection.append(image[col][row])
+    if processor is None:
+        for col in range(width):
+            for row in range(height):
+                if mask[col][row] and image[col][row]:
+                    x_coord.append(col)
+                    y_coord.append(row)
+                    selection.append(image[col][row])
+    else:
+        col = range(height)
+
+        def iter_col(r: int):
+            processor.execute(col, lambda c: __append_if_in_mask(r, c, mask, image, x_coord, y_coord, selection))
+
+        processor.execute(range(width), iter_col)
 
     return x_coord, y_coord, selection

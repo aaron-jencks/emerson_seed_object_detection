@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../../SeedDetector" />
+    <content url="file://$MODULE_DIR$/../../Seed_Image_Dataset" />
+    <content url="file://$MODULE_DIR$/../../facial-recognition-modification" />
     <content url="file://$MODULE_DIR$" />
-    <content url="file://$USER_HOME$/anaconda3/envs/royale/libroyale-3.21.1.70-LINUX-x86-64Bit/python" />
-    <orderEntry type="jdk" jdkName="Python 3.5 (royale_backup)" jdkType="Python SDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TestRunnerService">

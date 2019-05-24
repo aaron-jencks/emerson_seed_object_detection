@@ -1,10 +1,47 @@
 from data_structures.lists import LinkedList
 # Required even though it's never used, it registers the '3d' perspective for plt.axes
 from mpl_toolkits.mplot3d import Axes3D
+import pyximport; pyximport.install()
 import matplotlib.widgets as widg
 from matplotlib.path import Path as MPth
 import matplotlib.pyplot as plt
 import numpy as np
+from array import array
+
+import video_util.display_util.cy_scatter as ct
+
+from PyQt5 import QtGui
+import pyqtgraph as pg
+
+
+processor = None
+
+
+def create_qt_window():
+    app = QtGui.QGuiApplication([])
+
+    w = QtGui.QWidget()
+
+    roi_btn = QtGui.QPushButton('roi')
+    exit_btn = QtGui.QPushButton('exit')
+
+    image = pg.PlotWidget()
+    pointcloud = pg.PlotWidget()
+
+    layout = QtGui.QGridLayout()
+    w.setLayout(layout)
+
+    layout.addWidget(roi_btn, 2, 2)
+    layout.addWidget(exit_btn, 2, 2)
+
+    layout.addWidget(image, 1, 0)
+    layout.addWidget(pointcloud, 1, 2)
+
+    w.show()
+
+    app.exec_()
+
+    return image, pointcloud, roi_btn, exit_btn
 
 
 def generate_side_by_side(fig_size: iter = None) -> tuple:
@@ -27,7 +64,7 @@ def generate_side_by_side(fig_size: iter = None) -> tuple:
     return fig, img, dpc
 
 
-def display_grayscale(ax: plt.axes, frame, cmap: str = 'gray'):
+def display_grayscale(ax, frame, cmap: str = 'gray', init: bool = False):
     """Displays the given image onto the axes using the pcolormesh with the given colormap.
 
     ax: The plt.axes to draw on.
@@ -36,11 +73,17 @@ def display_grayscale(ax: plt.axes, frame, cmap: str = 'gray'):
 
     cmap: [optional] A string describing the type of colormap to use for the image, default is 'gray'."""
 
-    ax.pcolormesh(frame, cmap=cmap)
-    ax.invert_yaxis()
+    if init:
+        ax = ax.imshow(frame, cmap=cmap)
+    else:
+        ax.set_data(frame)
+    # ax.invert_yaxis()
+
+    return ax
 
 
-def draw_3d_scatter(ax: plt.axes, depths, validator=lambda r, c: True, h: int = -1, w: int = -1, interpolation: int = 10):
+def draw_3d_scatter(ax, depths, validator=lambda r, c: True, h: int = -1, w: int = -1,
+                    interpolation: int = 10, init: bool = False):
     """Creates 3 arrays of points the correspond to valid depth points on the image,
     then plots them onto the given axis.
 
@@ -56,26 +99,17 @@ def draw_3d_scatter(ax: plt.axes, depths, validator=lambda r, c: True, h: int = 
 
     interpolation: [optional] The number of pixels to skip between points, default is 10"""
 
-    # Handles if h or w is -1 (default)
-    if h < 0 or w < 0:
-        height, width = np.shape(depths)
-        h = height if h < 0 else h
-        w = width if w < 0 else w
-
-    x = LinkedList()
-    y = LinkedList()
-    z = LinkedList()
-
-    # filters the depth image for only valid points and those that have depths > 0
-    for r in range(0, w, interpolation):
-        for c in range(0, h, interpolation):
-            if validator(r, c) and depths[c][r] != 0:
-                x.append(w - r)
-                y.append(c)
-                z.append(depths[c][r])
+    x, y, z = ct.scatter_data(depths.astype(float), validator, h, w, interpolation)
 
     # Plots the points
-    ax.scatter(x, y, z, c=z, cmap='plasma', vmin=0, vmax=max(z))
+    if init:
+        ax, = pg.plot(x, y, z)  # , c=z, cmap='plasma', vmin=0, vmax=max(z))
+    else:
+        ax.xdata = x
+        ax.ydata = y
+        ax.zdata = z
+
+    return ax
 
 
 def scale_display(ax: plt.axes, x_dims: iter = None, y_dims: iter = None, z_dims: iter = None):

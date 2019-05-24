@@ -1,19 +1,25 @@
-import matplotlib.pyplot as plt
+import argparse
 from video_util.argparse_util import get_parser_options
 import math
-from video_util.collection_util import get_camera, DepthListener, ImageListener
+from video_util.collection_util import get_camera, DepthListener
 from collections import deque
-import numpy as np
 
-# Required import, registers '3d' projection
-from mpl_toolkits.mplot3d import Axes3D
-
-import matplotlib.widgets as widg
-from matplotlib.path import Path as pth
 import time
+from PIL import Image
 
 from video_util.display_util.img_depth import *
-from video_util.data_util import *
+import video_util.data.data_util
+import video_util.display_util.img_depth
+from video_util.data.data_util import *
+from video_util.data.multiprocessing_data_op import MPProcessor
+
+import pyrealsense2 as rs
+import cv2
+
+import pyximport; pyximport.install()
+import video_util.cy_collection_util as cu
+
+pmd = False
 
 
 class Point:
@@ -95,16 +101,21 @@ if __name__ == "__main__":
 
     # region Argument parsing and input collection
 
-    parser = get_parser_options("File for find the average depth of a section of a video captured by the camera")
+    if pmd:
+        parser = get_parser_options("File for find the average depth of a section of a video captured by the camera")
+    else:
+        parser = argparse.ArgumentParser(
+            "File for find the average depth of a section of a video captured by the camera")
     parser.add_argument("--filename", '-f', type=str, default="", required=False)
     parser.add_argument("--region", '-r', type=str, default="", required=False, help="""To specify the region, simply type in a series of integers with a space separating them
     For rectangle: each int represents the rectangle corners in the order top right bottom left
     For freeform: each set of two ints represents a coordinate of the polygon""")
     parser.add_argument("--shape", '-s', type=str, default="", choices=["", "rectangle", "freeform"], required=False)
+    parser.add_argument("--cam", '-c', action='store_true')
 
     args = parser.parse_args()
 
-    if args.filename == "":
+    if args.filename == "" and not args.cam:
         filename = input("File to analyze? ")
     else:
         filename = args.filename
@@ -117,58 +128,88 @@ if __name__ == "__main__":
 
     # region Opens rrf file and sets up camera
 
-    cap = get_camera(args, filename)
-    cases = cap.getCameraInfo()
-    for case in range(cases.size()):
-        print(str(cases[case]))
-    print(cap.getMaxFrameRate())
-    # cap.setUseCase("MODE_PLAYBACK")
-    # cap.setExposureTime(150)
+    if pmd:
+        cap = get_camera(args, filename)
+        # cases = cap.getCameraInfo()
+        # for case in range(cases.size()):
+        #     print(str(cases[case]))
+        # print(cap.getMaxFrameRate())
+        # cap.setUseCase("MODE_PLAYBACK")
+        # cap.setExposureTime(150)
+    else:
+        pipeline = rs.pipeline()
+        config = rs.config()
+        config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
+        config.enable_stream(rs.stream.infrared, 640, 480, rs.format.y8, 30)
+        config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
+        # cap = pipeline.start(config)
+        # depth_scale = cap.get_device().first_depth_sensor().get_depth_scale()
+        # print('Depth Scale: ' + str(depth_scale) + ' meters/unit')
 
     # endregion
 
     # region Trying to read in video before viewing
 
-    q = deque()
-    q_depth = deque()
-    l_depth = ImageListener(q)  # DepthListener(q, q_depth)
-    cap.registerDataListener(l_depth)
-
-    cap.startCapture()
-
-    print("Reading video file")
-    i = 0
-    while cap.isConnected():
-        # if len(q) > 0 and len(q_depth) > 0:
-        #     q.pop()
-        #     q_depth.pop()
-        #     print("\r{}".format(i), end='')
-        #     i += 1
-        print('\r{}'.format(len(q)), end='')
+    if pmd:
+        # q = deque()
+        # q_depth = deque()
+        # l_depth = ImageListener(q)  # DepthListener(q, q_depth)
+        # cap.registerDataListener(l_depth)
+        #
+        # cap.startCapture()
+        #
+        # print("Reading video file")
+        # i = 0
+        # while cap.isConnected():
+        #     # if len(q) > 0 and len(q_depth) > 0:
+        #     #     q.pop()
+        #     #     q_depth.pop()
+        #     #     print("\r{}".format(i), end='')
+        #     #     i += 1
+        #     print('\r{}'.format(len(q)), end='')
+        pass
+    else:
+        pass
 
     # endregion
 
     # region Hooks up the queues
 
-    q = deque()
-    q_depth = deque()
-    l_depth = DepthListener(q, q_depth)
-    cap.registerDataListener(l_depth)
+    if pmd:
+        q = deque()
+        q_depth = deque()
+        l_depth = DepthListener(q, q_depth)
+        cap.registerDataListener(l_depth)
 
     # endregion
 
     # Starts playback
-    cap.startCapture()
+    if pmd:
+        cap.startCapture()
+    else:
+        cap = pipeline.start(config)  # realsense api
+        depth_scale = cap.get_device().first_depth_sensor().get_depth_scale()
+        print('Depth Scale: ' + str(depth_scale) + ' meters/unit')
 
     # region Prepares plt window
 
-    plt.ion()
+    # plt.ion()
+    #
+    # # Generates the side-by-side window layout
+    # disp, ax, dmp = generate_side_by_side()
+    # dmp.set_zlim([0, 1])
+    #
+    # disp.subplots_adjust(bottom=0.2)
 
-    # Generates the side-by-side window layout
-    disp, ax, dmp = generate_side_by_side()
-    dmp.set_zlim([0, 5])
+    disp = pg.GraphicsWindow()
+    ax = pg.image(title='Grayscale video')
+    disp.addPlot(ax, row=0, col=0)
+    dmp = pg.plot(title='Pointcloud')
+    disp.addPlot(dmp, row=0, col=1)
 
-    disp.subplots_adjust(bottom=0.2)
+    first_frame = True
+    dmp_true = dmp
+    ax_true = ax
 
     # endregion
 
@@ -192,37 +233,55 @@ if __name__ == "__main__":
 
     # region Sets up the ROI button
 
-    but = create_generic_button(0.7, 0.05, 'ROI', click)
+    # but = create_generic_button(0.7, 0.05, 'ROI', click)
 
     # endregion
 
     # region Sets up the stop button
 
-    but2 = create_generic_button(0.59, 0.05, 'STOP', stop)
+    # but2 = create_generic_button(0.59, 0.05, 'STOP', stop)
 
     # endregion
 
     # Draws the buttons onto the canvas initially
-    plt.show(block=False)
+    # plt.show(block=False)
 
     # endregion
 
+    # processor = MPProcessor()
+    # video_util.data.data_util.processor = processor
+    # video_util.display_util.img_depth.processor = processor
+
     # endregion
 
-    while cap.isConnected():
+    while not pmd or cap.isConnected():
         frame = None
         depth_image = None
-        if len(q) > 0 and len(q_depth) > 0:
+        if not pmd or (len(q) > 0 and len(q_depth) > 0):
 
             # region Camera frame collection and management
 
-            frame = q.pop()
-            depth_image = q_depth.pop()
+            if pmd:
+                frame = q.pop()
+                depth_image = q_depth.pop()
 
-            if len(q) > 25 or len(q_depth) > 25:
-                print("video running behind, clearing queues")
-                q.clear()
-                q_depth.clear()
+                if len(q) > 25 or len(q_depth) > 25:
+                    print("video running behind, clearing queues")
+                    q.clear()
+                    q_depth.clear()
+            else:
+                while True:
+                    try:
+                        frames = pipeline.wait_for_frames()
+                        break
+                    except Exception as e:
+                        print(e)
+                        print("Trying again")
+
+                frame, depth_image = cu.convert_realsense(frames, depth_scale)
+                # print(depth_image)
+                if depth_image is None:
+                    continue
 
             # endregion
 
@@ -231,7 +290,7 @@ if __name__ == "__main__":
 
             # region Resets the painting canvas
 
-            ax.clear()
+            # ax.clear()
             dmp.clear()
 
             # endregion
@@ -241,7 +300,7 @@ if __name__ == "__main__":
             # # Create rgb image
             # image = np.stack((frame,)*3, axis=-1)
             # # print(image)
-            display_grayscale(ax, frame)
+            ax_true = display_grayscale(ax if first_frame else ax_true, Image.fromarray(frame), init=first_frame)
 
             # endregion
 
@@ -292,13 +351,14 @@ if __name__ == "__main__":
                         "Average depth: {}".format(round(m, 1)), fontdict={"color": 'r', "backgroundcolor": 'k'})
 
                 # Plots the point cloud, but only for points in the ROI
-                draw_3d_scatter(dmp, depth_image, lambda r, c: crop[c][r], interpolation=3)
+                dmp_true = draw_3d_scatter(dmp if first_frame else dmp_true, depth_image, lambda r, c: crop[c][r],
+                                           interpolation=3)
 
                 # endregion
 
                 # region Sets the axis limits on the 3d plot so that the image doesn't jump around as much
 
-                scale_display(dmp, [min_y, max_y], [min_x, max_x], [0, 5])
+                scale_display(dmp, [min_y, max_y], [min_x, max_x], [0, 1])
 
                 dmp.invert_yaxis()
 
@@ -306,7 +366,8 @@ if __name__ == "__main__":
 
             else:
                 # Plots the point cloud
-                draw_3d_scatter(dmp, depth_image)
+                dmp_true = draw_3d_scatter(dmp if first_frame else dmp_true, depth_image,
+                                           interpolation=10, init=first_frame)
 
                 # region Code for creating a surface instead of points
 
@@ -322,7 +383,7 @@ if __name__ == "__main__":
 
                 # region Sets the axis limits on the 3d plot so that the image doesn't jump around as much
 
-                scale_display(dmp, [0, height], [0, width], [0, 5])
+                scale_display(dmp, [0, height], [0, width], [0, depth_image.max()])
 
                 dmp.invert_yaxis()
 
@@ -332,12 +393,16 @@ if __name__ == "__main__":
 
             # region Repaints the window
 
-            dmp.invert_zaxis()
+            # dmp.invert_zaxis()
 
-            plt.draw()
-            plt.pause(0.001)
+            disp.canvas.draw()
+            disp.canvas.flush_events()
+            plt.pause(0.000000000001)
 
             # endregion
+
+            if first_frame:
+                first_frame = False
 
         else:
             time.sleep(0.5)
@@ -371,7 +436,11 @@ if __name__ == "__main__":
 
         # endregion
 
-    cap.stopCapture()
+    if pmd:
+        cap.stopCapture()
+    else:
+        pipeline.stop()
+
     plt.close(disp)
 
 
