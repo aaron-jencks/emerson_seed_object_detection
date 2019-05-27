@@ -2,47 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="00bfeffd-59c1-41cd-a576-5b86c13c510a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../../.idea/emerson_seed_object_detection.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/aaron.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/display/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/display/qt.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/cam_util/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/cam_util/cam_ctrl_util.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/cam_util/cy_collection_util.pyx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/cam_util/daemons.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/data_structures/Q.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/data_structures/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/data_structures/sorting.pxd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/data_structures/sorting.pyx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/data_structures/state_machine.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/data_util/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/data_util/cy_scatter.pyx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/data_util/daemons.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/data_util/data_proc_util.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/dependencies/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/display_util/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/display_util/daemons.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/display_util/display_util.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/roypy_util/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/roypy_util/swig_util.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/video_util/cy_collection_util.pyx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/video_util/data/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/video_util/data/multiprocessing_data_op.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/video_util/display_util/cy_scatter.pyx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/pmd_implementation.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/pmd_implementation.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/video_util/collection_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/video_util/collection_util.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/video_util/data_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/video_util/data/data_util.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/video_util/depth_averager.py" beforeDir="false" afterPath="$PROJECT_DIR$/video_util/depth_averager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/video_util/display_util/img_depth.py" beforeDir="false" afterPath="$PROJECT_DIR$/video_util/display_util/img_depth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pmd_implementation/cam_util/cam_ctrl_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/pmd_implementation/cam_util/cam_ctrl_util.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pmd_implementation/data_util/cy_scatter.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/pmd_implementation/data_util/cy_scatter.pyx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pmd_implementation/data_util/daemons.py" beforeDir="false" afterPath="$PROJECT_DIR$/pmd_implementation/data_util/daemons.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pmd_implementation/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/pmd_implementation/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -76,15 +40,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pmd_implementation/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="31">
-              <caret line="203" column="55" selection-start-line="203" selection-start-column="55" selection-end-line="203" selection-end-column="55" />
+            <state relative-caret-position="-405">
+              <caret line="15" column="16" lean-forward="true" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
               <folding>
                 <element signature="e#0#79#0" expanded="true" />
-                <element signature="e#2358#2850#0" />
-                <element signature="e#2900#3366#0" />
-                <element signature="e#3403#3787#0" />
-                <element signature="e#3824#6618#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="405">
+              <caret line="27" column="24" lean-forward="true" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -92,8 +61,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pmd_implementation/data_util/cy_scatter.pyx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="18" column="31" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="31" />
+            <state relative-caret-position="464">
+              <caret line="176" selection-start-line="176" selection-end-line="176" />
             </state>
           </provider>
         </entry>
@@ -101,8 +70,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pmd_implementation/data_util/daemons.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="601">
-              <caret line="61" column="112" selection-start-line="60" selection-start-column="6" selection-end-line="61" selection-end-column="112" />
+            <state relative-caret-position="15">
+              <caret line="1" column="80" selection-start-line="1" selection-start-column="80" selection-end-line="1" selection-end-column="80" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pmd_implementation/cam_util/cam_ctrl_util.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret line="1" column="80" selection-start-line="1" selection-start-column="36" selection-end-line="1" selection-end-column="80" />
             </state>
           </provider>
         </entry>
@@ -127,6 +108,7 @@
       <find>self.data</find>
       <find>disp_q_tx</find>
       <find>@cython</find>
+      <find>mid</find>
     </findStrings>
     <replaceStrings>
       <replace>verts</replace>
@@ -140,6 +122,7 @@
       <replace>msg</replace>
       <replace>disp_ctrl_update</replace>
       <replace># @cython</replace>
+      <replace>m</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$APPLICATION_CONFIG_DIR$/scratches</dir>
@@ -185,21 +168,22 @@
         <option value="$PROJECT_DIR$/pmd_implementation/data_structures/state_machine.py" />
         <option value="$PROJECT_DIR$/pmd_implementation/cam_util/daemons.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/new/scratch_1.py" />
-        <option value="$PROJECT_DIR$/pmd_implementation/cam_util/cam_ctrl_util.py" />
         <option value="$PROJECT_DIR$/pmd_implementation/dependencies/display_util/string_display_util.py" />
         <option value="$PROJECT_DIR$/pmd_implementation/data_structures/sorting.pxd" />
         <option value="$PROJECT_DIR$/pmd_implementation/data_structures/sorting.pyx" />
-        <option value="$PROJECT_DIR$/pmd_implementation/data_util/cy_scatter.pyx" />
+        <option value="$PROJECT_DIR$/pmd_implementation/cam_util/cam_ctrl_util.py" />
         <option value="$PROJECT_DIR$/pmd_implementation/data_util/daemons.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+        <option value="$PROJECT_DIR$/pmd_implementation/data_util/cy_scatter.pyx" />
         <option value="$PROJECT_DIR$/pmd_implementation/main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="170" />
-    <option name="y" value="118" />
-    <option name="width" value="1026" />
-    <option name="height" value="557" />
+    <option name="x" value="1920" />
+    <option name="y" value="25" />
+    <option name="width" value="1920" />
+    <option name="height" value="1055" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -230,67 +214,12 @@
             </path>
             <path>
               <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pmd_implementation" type="47feb1d3:ProjectViewModuleNode" />
-              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="data_structures" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pmd_implementation" type="47feb1d3:ProjectViewModuleNode" />
-              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="data_util" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pmd_implementation" type="47feb1d3:ProjectViewModuleNode" />
-              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="dependencies" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pmd_implementation" type="47feb1d3:ProjectViewModuleNode" />
-              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="dependencies" type="462c0819:PsiDirectoryNode" />
-              <item name="display_util" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pmd_implementation" type="47feb1d3:ProjectViewModuleNode" />
-              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="video_util" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pmd_implementation" type="47feb1d3:ProjectViewModuleNode" />
-              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="video_util" type="462c0819:PsiDirectoryNode" />
-              <item name="display_util" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
               <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
             </path>
             <path>
               <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
               <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
               <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
-            </path>
-            <path>
-              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
-              <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
-              <item name="emerson_pmd" type="1e004dc1:ScratchProjectViewPane$MyRootNode$1$1" />
-            </path>
-            <path>
-              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
-              <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
-              <item name="emerson_pmd" type="1e004dc1:ScratchProjectViewPane$MyRootNode$1$1" />
-              <item name="new" type="1e004dc1:ScratchProjectViewPane$MyRootNode$1$1" />
             </path>
           </expand>
           <select />
@@ -301,7 +230,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
-    <property name="last_opened_file_path" value="$USER_HOME$/anaconda3/envs/royale_backup" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -328,27 +257,6 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.main">
-    <configuration name="depth_averager" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="pmd_implementation" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/video_util" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/video_util/depth_averager.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="pmd_implementation" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -383,6 +291,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/display/qt.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="scratch (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="pmd_implementation" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -436,10 +365,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.scratch (1)" />
         <item itemvalue="Python.scratch_1" />
         <item itemvalue="Python.qt" />
         <item itemvalue="Python.scratch" />
-        <item itemvalue="Python.depth_averager" />
       </list>
     </recent_temporary>
   </component>
@@ -466,23 +395,23 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="-2" width="1920" height="1082" extended-state="6" />
+    <frame x="1920" y="25" width="1920" height="1055" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23745997" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23721665" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" x="1920" y="367" width="1366" height="713" id="Run" maximized="true" order="2" type="WINDOWED" weight="0.32633787" />
+      <window_info active="true" anchor="bottom" x="0" y="28" width="1920" height="1052" id="Run" maximized="true" order="2" type="WINDOWED" visible="true" weight="0.32633787" />
       <window_info anchor="bottom" x="1920" y="367" width="1366" height="713" id="Debug" maximized="true" order="3" type="WINDOWED" weight="0.39664218" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32944915" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32944915" />
-      <window_info anchor="bottom" auto_hide="true" x="3735" y="541" width="1366" height="303" id="Terminal" order="8" weight="0.3221406" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" auto_hide="true" x="3286" y="28" width="1920" height="1052" id="Python Console" maximized="true" order="10" type="WINDOWED" weight="0.32843652" />
+      <window_info anchor="bottom" auto_hide="true" x="3735" y="541" width="1366" height="303" id="Terminal" order="8" weight="0.32181427" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" weight="0.32937366" />
+      <window_info anchor="bottom" auto_hide="true" x="1920" y="55" width="1920" height="1025" id="Python Console" maximized="true" order="10" type="WINDOWED" weight="0.32843652" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -528,24 +457,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/pmd_implementation/main.py</url>
-          <line>106</line>
+          <line>107</line>
           <option name="timeStamp" value="47" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pmd_implementation/main.py</url>
-          <option name="timeStamp" value="52" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/video_util/roypy_sample_utils_custom.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/video_util/file_io.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -556,13 +474,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/site-packages/PIL/Image.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="862">
-          <caret line="2462" selection-start-line="2462" selection-end-line="2462" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/site-packages/PIL/Image.py" />
     <entry file="file://$PROJECT_DIR$/data_structures/basics.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="312">
@@ -570,20 +482,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/site-packages/numpy/ma/core.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="485">
-          <caret line="638" selection-start-line="638" selection-end-line="638" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda3/envs/royale/libroyale-3.21.1.70-LINUX-x86-64Bit/python/roypy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="517">
-          <caret line="1125" column="1" selection-start-line="1125" selection-start-column="1" selection-end-line="1125" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/site-packages/numpy/ma/core.py" />
+    <entry file="file://$USER_HOME$/anaconda3/envs/royale/libroyale-3.21.1.70-LINUX-x86-64Bit/python/roypy.py" />
     <entry file="file://$PROJECT_DIR$/video_util/argparse_util.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -603,22 +503,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="31" selection-end-line="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda3/envs/royale/libroyale-3.21.1.70-LINUX-x86-64Bit/python/roypy_sample_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#595#1004#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_2.py" />
+    <entry file="file://$USER_HOME$/anaconda3/envs/royale/libroyale-3.21.1.70-LINUX-x86-64Bit/python/roypy_sample_utils.py" />
     <entry file="file://$PROJECT_DIR$/data_structures/lists.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
@@ -639,37 +525,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/multiprocessing/reduction.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="49" selection-start-line="49" selection-end-line="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_3.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="24" column="23" selection-start-line="23" selection-end-line="24" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/site-packages/pyximport/pyxbuild.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="100" selection-start-line="100" selection-end-line="100" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/fast.pyx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="16" lean-forward="true" selection-end-line="19" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/multiprocessing/reduction.py" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_3.py" />
+    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/site-packages/pyximport/pyxbuild.py" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/fast.pyx" />
     <entry file="file://$PROJECT_DIR$/video_util/display_util/cy_scatter.pyx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="840">
@@ -677,20 +536,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_4.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="16" selection-end-line="24" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_5.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" selection-start-line="6" selection-end-line="6" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_4.py" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_5.py" />
     <entry file="file://$PROJECT_DIR$/video_util/data/multiprocessing_data_op.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
@@ -701,13 +548,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/threading.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="861" selection-start-line="861" selection-end-line="861" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/threading.py" />
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydevd_bundle/pydevd_breakpoints.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="305">
@@ -773,57 +614,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/multiprocessing/managers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="157" selection-start-line="157" selection-end-line="157" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/new/scratch.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
-          <folding>
-            <element signature="e#0#44#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="37" column="49" lean-forward="true" selection-start-line="14" selection-start-column="4" selection-end-line="37" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/new/scratch_1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="32" column="49" lean-forward="true" selection-start-line="10" selection-start-column="4" selection-end-line="32" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/multiprocessing/managers.py" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/new/scratch.py" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/scratch_1.py" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/new/scratch_1.py" />
     <entry file="file://$PROJECT_DIR$/pmd_implementation/data_util/data_proc_util.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$USER_HOME$/.pyxbld/temp.linux-x86_64-3.5/pyrex/pmd_implementation/data_util/cy_scatter.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-100">
-          <caret line="3126" selection-start-line="3126" selection-end-line="3126" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/site-packages/pyqtgraph/opengl/items/GLScatterPlotItem.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="755">
-          <caret line="148" selection-start-line="148" selection-end-line="148" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pmd_implementation/cam_util/cy_collection_util.pyx">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$USER_HOME$/.pyxbld/temp.linux-x86_64-3.5/pyrex/pmd_implementation/data_util/cy_scatter.c" />
+    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/site-packages/pyqtgraph/opengl/items/GLScatterPlotItem.py" />
     <entry file="file://$PROJECT_DIR$/pmd_implementation/cam_util/daemons.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -834,13 +633,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/distutils/unixccompiler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="119" selection-start-line="119" selection-end-line="119" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/distutils/unixccompiler.py" />
     <entry file="file://$PROJECT_DIR$/pmd_implementation/data_structures/state_machine.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="871">
@@ -848,10 +641,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/site-packages/IPython/core/interactiveshell.py">
+    <entry file="file://$USER_HOME$/anaconda3/envs/royale/lib/python3.5/site-packages/IPython/core/interactiveshell.py" />
+    <entry file="file://$PROJECT_DIR$/pmd_implementation/dependencies/display_util/string_display_util.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="2960" selection-start-line="2960" selection-end-line="2960" />
+        <state relative-caret-position="825">
+          <caret line="139" selection-start-line="139" selection-end-line="139" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pmd_implementation/data_structures/sorting.pxd">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="80" selection-start-line="5" selection-start-column="80" selection-end-line="5" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pmd_implementation/data_structures/sorting.pyx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="281">
+          <caret line="62" column="16" selection-start-line="62" selection-start-column="16" selection-end-line="62" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -872,61 +683,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pmd_implementation/dependencies/display_util/string_display_util.py">
+    <entry file="file://$PROJECT_DIR$/pmd_implementation/data_util/daemons.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="825">
-          <caret line="139" selection-start-line="139" selection-end-line="139" />
+        <state relative-caret-position="15">
+          <caret line="1" column="80" selection-start-line="1" selection-start-column="80" selection-end-line="1" selection-end-column="80" />
           <folding>
-            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pmd_implementation/cam_util/cam_ctrl_util.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="98">
-          <caret line="75" selection-start-line="75" selection-end-line="75" />
+        <state>
+          <caret line="1" column="80" selection-start-line="1" selection-start-column="36" selection-end-line="1" selection-end-column="80" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pmd_implementation/data_structures/sorting.pxd">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="80" selection-start-line="5" selection-start-column="80" selection-end-line="5" selection-end-column="80" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/pmd_implementation/cam_util/cy_collection_util.pyx">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/pmd_implementation/data_structures/sorting.pyx">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="62" column="16" selection-start-line="62" selection-start-column="16" selection-end-line="62" selection-end-column="16" />
+        <state relative-caret-position="405">
+          <caret line="27" column="24" lean-forward="true" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pmd_implementation/data_util/cy_scatter.pyx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="18" column="31" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pmd_implementation/data_util/daemons.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="601">
-          <caret line="61" column="112" selection-start-line="60" selection-start-column="6" selection-end-line="61" selection-end-column="112" />
+        <state relative-caret-position="464">
+          <caret line="176" selection-start-line="176" selection-end-line="176" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pmd_implementation/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="31">
-          <caret line="203" column="55" selection-start-line="203" selection-start-column="55" selection-end-line="203" selection-end-column="55" />
+        <state relative-caret-position="-405">
+          <caret line="15" column="16" lean-forward="true" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
           <folding>
             <element signature="e#0#79#0" expanded="true" />
-            <element signature="e#2358#2850#0" />
-            <element signature="e#2900#3366#0" />
-            <element signature="e#3403#3787#0" />
-            <element signature="e#3824#6618#0" />
           </folding>
         </state>
       </provider>

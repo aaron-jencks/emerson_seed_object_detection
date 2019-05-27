@@ -13,20 +13,45 @@ cdef extern from "math.h":
 
 
 # @cython.cdivision(True)
-# @cython.boundscheck(False)
+@cython.boundscheck(False)
 cpdef find_formula(double low, double mid, double up):
     cdef double a, b, c
+    cdef double x1_1, x2_1, x1_2, x2_2, x1_3, x2_3, x1_4, x2_4, x1_5, x2_5, x1_6
+    cdef double y1, y2, y3, y4, y5, y6
     # TODO Handle zero division
 
-    a = (low / 2 - mid + up / 2) / ((low - mid) * (low - up) * (mid - up))
-    b = 0.5 / (mid - low) - a * (low - mid)
-    c = 0 - a * low * low - b * low
+    x1_1 = low * low
+    x2_1 = low
+
+    x1_2 = mid * mid
+    x2_2 = mid
+
+    x1_3 = up * up
+    x2_3 = up
+
+    x1_4 = x1_1 - x1_2
+    x2_4 = x2_1 - x2_2
+
+    x1_5 = x1_3 - x1_2
+    x2_5 = x2_3 - x2_2
+
+    x1_6 = x1_4 * x2_5 - x1_5 * x2_4
+    y6 = x2_4 - x2_5
+
+    # y6 = x1_6 * a
+    a = y6 / x1_6
+
+    # y5 = x1_5 * a + x2_5 * b
+    b = (-1 - x1_5 * a) / x2_5
+
+    # y1 = x1_1 * a + x2_1 * b + c
+    c = 0 - (x1_1 * a + x2_1 * b)
 
     return a, b, c
 
 
 # @cython.cdivision(True)
-# @cython.boundscheck(False)
+@cython.boundscheck(False)
 cpdef create_color_data(double[:, :] depths, double min, double mid, double max):
     cdef double[:, :] colors = np.zeros(shape=(depths.shape[0], 4), dtype=float)
 
@@ -57,7 +82,7 @@ cpdef create_color_data(double[:, :] depths, double min, double mid, double max)
 
 
 # @cython.cdivision(True)
-# @cython.boundscheck(False)
+@cython.boundscheck(False)
 cpdef split_data(double[:, :] frame, int h, int w, int num):
 
     cdef int row_col_len = int(sqrt(num))
@@ -83,7 +108,7 @@ cpdef split_data(double[:, :] frame, int h, int w, int num):
 
 
 # @cython.cdivision(True)
-# @cython.boundscheck(False)
+@cython.boundscheck(False)
 cpdef concatenate_bits(double[:, :, :] points, long[:] counts):
 
     cdef int sum = 0, i, j
@@ -109,7 +134,7 @@ cpdef concatenate_bits(double[:, :, :] points, long[:] counts):
 
 
 # @cython.cdivision(True)
-# @cython.boundscheck(False)
+@cython.boundscheck(False)
 cpdef convert_to_points(double[:, :, :] bits, int h, int w, int interpolation):
 
     cdef int max_num = w * h
@@ -149,7 +174,7 @@ cpdef convert_to_points(double[:, :, :] bits, int h, int w, int interpolation):
 
 
 # @cython.cdivision(True)
-# @cython.boundscheck(False)
+@cython.boundscheck(False)
 cpdef scatter_data(double[:, :] depths, object validator=None,
                          int h=-1, int w=-1, int interpolation=1):
 
