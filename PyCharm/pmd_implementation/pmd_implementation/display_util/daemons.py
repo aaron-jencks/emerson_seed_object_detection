@@ -91,7 +91,7 @@ class DisplayMachine(QMainWindow):
         widg.resize(widg.sizeHint())
 
         self.widgets[msg.data['id']] = widg
-        self.grid.addWidget(widg, msg.data['row'], msg.data['col'])
+        self.grid.addWidget(widg, msg.data['row'], msg.data['col'], msg.data['rowSpan'], msg.data['columnSpan'])
         # widg = QWidget()
         # widg.setLayout(self.grid)
         # self.state_queue.append(JMsg('set_widget', widg))

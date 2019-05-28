@@ -11,6 +11,7 @@ class CamCtrl(ThreadedSocketedStateMachine):
         self.pmd = False
         self.cam = None
         self.configuration = {}
+        self.resolution = None
 
         self.states['start_cam'] = self.start_cam
         self.states['reset_cam'] = self.reset_cam
@@ -25,6 +26,14 @@ class CamCtrl(ThreadedSocketedStateMachine):
             self.cam.disconnect()
         self.cam = None
 
+    @property
+    def width(self):
+        return self.resolution[0] if self.resolution is not None else -1
+
+    @property
+    def height(self):
+        return self.resolution[1] if self.resolution is not None else -1
+
     def find_cam(self):
         """Finds a hardware camera to use, if pmd is True, then finds a pmd camera, otherwise,
         finds a realsense camera"""
@@ -32,6 +41,7 @@ class CamCtrl(ThreadedSocketedStateMachine):
         self.cam = PMDCam() if self.pmd else RealsenseCam()
         self.configure_cam()
         self.cam.connect()
+        self.resolution = self.cam.resolution
 
     def start_cam(self):
         self.reset_cam()

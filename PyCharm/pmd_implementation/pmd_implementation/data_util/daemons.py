@@ -23,21 +23,25 @@ class DataDaemon(ThreadedSocketedStateMachine):
         # region Color map stuff
 
         self.cmap_low = 0
-        self.cmap_mid = 150
-        self.cmap_up = 300
+        self.cmap_mid = 1.5
+        self.cmap_up = 3
         # self.curve_a = 0
         # self.curve_b = 0
         # self.curve_c = 0
         self.center_x = 0
         self.center_y = 0
         self.center_z = 0
+        self.cmap_up_to_date = True
 
         # endregion
+
+        self.scale = 1.0
 
         self.states['frame'] = self.process
         self.states['up'] = self.set_up
         self.states['mid'] = self.set_mid
         self.states['low'] = self.set_low
+        self.states['scale'] = self.set_scale
 
     def __recieve_msg(self, msg: JMsg):
         self.state_queue.append(msg)
@@ -48,15 +52,22 @@ class DataDaemon(ThreadedSocketedStateMachine):
 
     def set_low(self):
         self.cmap_low = self.data.data
+        self.cmap_up_to_date = True
         # self.find_curve()
 
     def set_mid(self):
         self.cmap_mid = self.data.data
+        self.cmap_up_to_date = True
         # self.find_curve()
 
     def set_up(self):
         self.cmap_up = self.data.data
+        self.cmap_up_to_date = True
         # self.find_curve()
+
+    def set_scale(self):
+        self.scale = self.data.data
+        self.cmap_up_to_date = True
 
     # def find_curve(self):
     #     self.curve_a, self.curve_b, self.curve_c = ct.find_formula(self.cmap_low, self.cmap_mid, self.cmap_up)

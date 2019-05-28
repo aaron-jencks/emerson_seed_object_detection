@@ -12,7 +12,49 @@ cdef extern from "math.h":
     double sqrt(double x)
 
 
-# @cython.cdivision(True)
+cdef int c_count = os.cpu_count()
+
+
+@cython.cdivision(True)
+@cython.boundscheck(False)
+cpdef apply_depth_scale(double[:, :] coordinates, double scale):
+
+    cdef double[:, :] temp_depths
+    cdef int i, j
+    cdef int r = coordinates.shape[0]
+
+    if coordinates.shape[0] > 0:
+        # print(coordinates.shape)
+        temp_depths = np.zeros(shape=(coordinates.shape[0], coordinates.shape[1]), dtype=float)
+
+        for i in prange(r, nogil=True, num_threads=c_count):
+            for j in range(2):
+                temp_depths[i, j] = coordinates[i, j]
+            temp_depths[i, 2] = coordinates[i, 2] * scale
+
+    return np.asarray(temp_depths)
+
+
+@cython.cdivision(True)
+@cython.boundscheck(False)
+cpdef create_color_depth_image(double[:, :] coordinates, double[:, :] colors, int image_height, int image_width):
+    cdef double[:, :, :] depth_image = np.zeros(shape=(image_height, image_width, 3), dtype=float)
+    cdef int i, j, k
+
+    cdef int num_coords = coordinates.shape[0]
+    cdef int x, y
+
+    for i in prange(num_coords, nogil=True, num_threads=c_count):
+        x = int(coordinates[i, 0])
+        y = int(coordinates[i, 1])
+
+        for j in range(3):
+            depth_image[y, x, j] = colors[i, j]
+
+    return np.asarray(depth_image)
+
+
+@cython.cdivision(True)
 @cython.boundscheck(False)
 cpdef find_formula(double low, double mid, double up):
     cdef double a, b, c
@@ -50,12 +92,10 @@ cpdef find_formula(double low, double mid, double up):
     return a, b, c
 
 
-# @cython.cdivision(True)
+@cython.cdivision(True)
 @cython.boundscheck(False)
 cpdef create_color_data(double[:, :] depths, double min, double mid, double max):
     cdef double[:, :] colors = np.zeros(shape=(depths.shape[0], 4), dtype=float)
-
-    cdef int c_count = os.cpu_count()
 
     cdef double r_a, r_b, r_c, g_a, g_b, g_c, b_a, b_b, b_c
 
@@ -73,15 +113,15 @@ cpdef create_color_data(double[:, :] depths, double min, double mid, double max)
         g = g_a * z * z + g_b * z + g_c
         b = b_a * z * z + b_b * z + b_c
 
-        colors[i, 0] = r
-        colors[i, 1] = g
-        colors[i, 2] = b
+        colors[i, 0] = r if 0 <= r <= 1 else 0 if r < 0 else 1
+        colors[i, 1] = g if 0 <= g <= 1 else 0 if g < 0 else 1
+        colors[i, 2] = b if 0 <= b <= 1 else 0 if b < 0 else 1
         colors[i, 3] = 1
 
     return np.asarray(colors)
 
 
-# @cython.cdivision(True)
+@cython.cdivision(True)
 @cython.boundscheck(False)
 cpdef split_data(double[:, :] frame, int h, int w, int num):
 
@@ -91,7 +131,6 @@ cpdef split_data(double[:, :] frame, int h, int w, int num):
     cdef int h_inc = h // row_col_len
 
     cdef double[:, :, :] bits = np.zeros(shape=(num, w_inc, h_inc), dtype=float)
-    cdef int c_count = os.cpu_count()
     cdef int i, j, k, ij, ik
     cdef double temp
 
@@ -104,15 +143,14 @@ cpdef split_data(double[:, :] frame, int h, int w, int num):
                 temp = frame[ik * h_inc + k, ij * w_inc + j]
                 bits[i, j, k] = temp
 
-    return np.asarray(bits)
+    return bits
 
 
-# @cython.cdivision(True)
+@cython.cdivision(True)
 @cython.boundscheck(False)
 cpdef concatenate_bits(double[:, :, :] points, long[:] counts):
 
     cdef int sum = 0, i, j
-    cdef int c_count = os.cpu_count()
 
     for i in prange(points.shape[0], nogil=True, num_threads=c_count):
         sum += counts[i]
@@ -130,15 +168,14 @@ cpdef concatenate_bits(double[:, :, :] points, long[:] counts):
             conc[sum - 1 + j, 1] = points[i, j, 1]
             conc[sum - 1 + j, 2] = points[i, j, 2]
 
-    return np.asarray(conc)
+    return conc
 
 
-# @cython.cdivision(True)
+@cython.cdivision(True)
 @cython.boundscheck(False)
 cpdef convert_to_points(double[:, :, :] bits, int h, int w, int interpolation):
 
     cdef int max_num = w * h
-    cdef int c_count = os.cpu_count()
     cdef int row_col_len = int(sqrt(c_count))
     cdef int h_inc = h // row_col_len, w_inc = w // row_col_len
 
@@ -173,7 +210,7 @@ cpdef convert_to_points(double[:, :, :] bits, int h, int w, int interpolation):
     return np.asarray(points), np.asarray(counts)
 
 
-# @cython.cdivision(True)
+@cython.cdivision(True)
 @cython.boundscheck(False)
 cpdef scatter_data(double[:, :] depths, object validator=None,
                          int h=-1, int w=-1, int interpolation=1):
@@ -183,8 +220,6 @@ cpdef scatter_data(double[:, :] depths, object validator=None,
         h = depths.shape[0] if h < 0 else h
         w = depths.shape[1] if w < 0 else w
         # print("h is {} and w is {}".format(h, w))
-
-    cdef int c_count = os.cpu_count()
 
     cdef double[:, :, :] bits = split_data(depths, h, w, c_count)
     # print("bits shape is {}".format(bits.shape))

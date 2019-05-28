@@ -8,7 +8,7 @@ import cv2
 
 @cython.boundscheck(False)
 cpdef convert_realsense(object frames, double scale):
-    frame = np.asanyarray(frames.get_infrared_frame().get_data())
+    frame = np.rot90(np.asanyarray(frames.get_infrared_frame().get_data()))
     depth_image = cv2.convertScaleAbs(np.asanyarray(frames.get_depth_frame().get_data()), alpha=scale)
     depth_image = depth_image / depth_image.max()
     
@@ -46,6 +46,9 @@ cpdef convert_raw(object data):
     for i in r_rng:
         z_val[i] = data.getZ(i)
         g_val[i] = data.getGrayValue(i)
+
+    cdef np.ndarray img = np.asarray(cv2.convertScaleAbs(convert_array(g_val, data.width)))
+    img = np.rot90(img)
         
-    return convert_array(z_val, data.width), cv2.convertScaleAbs(convert_array(g_val, data.width))
+    return convert_array(z_val, data.width), img
     
