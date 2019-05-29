@@ -13,6 +13,48 @@ cdef extern from "math.h":
 
 
 cdef int c_count = os.cpu_count()
+cdef int c_count_square = int(sqrt(c_count))
+
+
+# @cython.cdivision(True)
+# @cython.boundscheck(False)
+cpdef get_roi_coords_matrix(int height, int width):
+
+    cdef int length = height * width
+
+    cdef double[:, :, :] xys = np.zeros(shape=(height, width, 2), dtype=float)
+
+    cdef int i, j
+
+    for i in range(height):  # , nogil=True, num_threads=c_count_square):
+        for j in range(width):  # , num_threads=c_count_square):
+            xys[i, j, 0] = i
+            xys[i, j, 1] = j
+
+    return np.asarray(xys, dtype=float)
+
+
+# @cython.cdivision(True)
+# @cython.boundscheck(False)
+cpdef apply_roi(double[:, :] depths, double[:, :, :] roi_coords):
+
+    cdef int h = roi_coords.shape[0], w = roi_coords.shape[1]
+    cdef int i, j, ii, ij, length = h * w
+    cdef double x, y
+
+    cdef double[:, :] points = np.zeros(shape=(length, 3), dtype=float)
+
+    for i in prange(h, nogil=True, num_threads=c_count_square):
+        ii = i * w
+        for j in prange(w, num_threads=c_count_square):
+            ij = ii + j
+            x = roi_coords[i, j, 0]
+            y = roi_coords[i, j, 1]
+            points[ij, 0] = x
+            points[ij, 1] = y
+            points[ij, 2] = depths[int(x), int(y)]
+
+    return np.asarray(points)
 
 
 @cython.cdivision(True)
@@ -32,7 +74,9 @@ cpdef apply_depth_scale(double[:, :] coordinates, double scale):
                 temp_depths[i, j] = coordinates[i, j]
             temp_depths[i, 2] = coordinates[i, 2] * scale
 
-    return np.asarray(temp_depths)
+        return np.asarray(temp_depths)
+    else:
+        return coordinates
 
 
 @cython.cdivision(True)
@@ -134,10 +178,10 @@ cpdef split_data(double[:, :] frame, int h, int w, int num):
     cdef int i, j, k, ij, ik
     cdef double temp
 
-    for i in prange(num, nogil=True, num_threads=c_count):
+    for i in prange(num, nogil=True, num_threads=c_count_square):
         ij = i // row_col_len
         ik = i - row_col_len * ij
-        for j in prange(w_inc):
+        for j in prange(w_inc, num_threads=c_count_square):
             for k in prange(h_inc):
                 # print("Calculating index with parts {} {} {} for a result of {}".format(ij, w_inc, j, ij * w_inc + j))
                 temp = frame[ik * h_inc + k, ij * w_inc + j]

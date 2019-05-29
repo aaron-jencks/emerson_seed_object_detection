@@ -17,6 +17,8 @@ import pyximport
 pyximport.install(setup_args={"include_dirs": np.get_include()})
 import pmd_implementation.data_util.cy_scatter as ct
 
+import time
+
 
 class DepthAverager(QThread, StateMachine):
     """Manages the depth averaging for this application"""
@@ -37,6 +39,9 @@ class DepthAverager(QThread, StateMachine):
         self.disp_ctrl = disp_daemon
         self.scatter = None
         self.gray = None
+        self.use_roi = False
+        self.roi = None
+        self.roi_coords = None
         self.set_status('Loading...')
         self.init_widget()
 
@@ -57,6 +62,17 @@ class DepthAverager(QThread, StateMachine):
         self.data_proc = DataDaemon()
         self.data_proc.start()
         self.data_proc.tx.connect(self.plot_cloud)
+
+        # endregion
+
+        # region Hooks up the UI
+
+        # region Hooks up the ImageItem
+
+        self.img_item = pg.ImageItem()
+        self.disp_ctrl.widgets['img'].addItem(self.img_item)
+
+        # endregion
 
         # region Hooks up the slider bars
 
@@ -120,6 +136,14 @@ class DepthAverager(QThread, StateMachine):
 
         # endregion
 
+        # region Hooks up the ROI button
+
+        # self.disp_ctrl.widgets['roi_btn'].clicked.connect()
+
+        self.update_roi(True)
+
+        # endregion
+
         # endregion
 
         self.prev_skipped = False
@@ -140,7 +164,22 @@ class DepthAverager(QThread, StateMachine):
         img = msg.data[0]
         depth = msg.data[1]
 
+        img_disp = self.disp_ctrl.widgets['img']
+        img_disp.setImage(img)
+
         if len(self.data_proc.state_queue) < self.data_proc.buffer_limit:
+
+            if self.use_roi:
+
+                # Generates the roi coordinates only if the roi has been changed, this takes a long time (~50 ms)
+                if self.roi_coords is None:
+                    self.roi_coords = self.roi.getArrayRegion(ct.get_roi_coords_matrix(img.shape[0], img.shape[1]),
+                                                              img_disp.getImageItem())
+                    self.data_proc.rx.emit(JMsg('enable_roi', self.roi_coords))
+
+            else:
+                self.data_proc.rx.emit(JMsg('disable_roi'))
+
             self.data_proc.rx.emit(JMsg('frame', depth))
             if self.prev_skipped:
                 print()
@@ -155,13 +194,6 @@ class DepthAverager(QThread, StateMachine):
             self.frame_count += 1
 
             self.set_status(not_string)
-
-        img_disp = self.disp_ctrl.widgets['img']
-
-        img_disp.setImage(img)
-
-        # self.gray = self.disp_ctrl.widgets['img'].getImageItem()
-        # self.gray.rotate(90, 320, 240, 0, local=True)
 
     def plot_cloud(self, data, colors):
         """Plots the pointcloud onto the window."""
@@ -187,8 +219,8 @@ class DepthAverager(QThread, StateMachine):
         # region Sets up the roi and exit buttons
 
         # self.disp_ctrl_update.emit(JMsg('create_button',
-        #                            get_text_widg_dict('roi', 'roi_btn', 2, 0,
-        #                                               'Create a new <b>ROI</b> (region of interest)' +
+        #                            get_text_widg_dict('roi', 'roi_btn', 1, 1, col_span=3,
+        #                                               tip='Create a new <b>ROI</b> (region of interest)' +
         #                                               ' or edit the current one.')))
         #
         # self.disp_ctrl_update.emit(JMsg('create_button',
@@ -290,6 +322,31 @@ class DepthAverager(QThread, StateMachine):
 
         self.set_slider_limits()
         self.reset_status()
+
+    def update_roi(self, enable: bool = True):
+        """Triggered when the ROI of the image changes"""
+
+        if enable and not self.use_roi:
+            self.set_status("Enabling ROI")
+            self.use_roi = True
+            if self.roi is None:
+                self.roi = pg.PolyLineROI([[10, 10], [20, 200], [100, 300], [300, 100]],
+                                          closed=True, movable=True, removable=True)
+                self.roi.sigRegionChangeFinished.connect(self.update_roi)
+                self.roi.sigRemoveRequested.connect(lambda: self.update_roi(False))
+            self.disp_ctrl.widgets['img'].getView().addItem(self.roi)
+            self.roi_coords = None  # Flags for the generation of coords on the next frame.
+            self.reset_status()
+
+        if not enable and self.use_roi:
+            self.set_status("Disabling ROI")
+            self.use_roi = False
+            self.disp_ctrl.widgets['img'].getView().removeItem(self.roi)
+            self.reset_status()
+
+    def toggle_roi(self):
+        self.use_roi = not self.use_roi
+        self.update_roi(self.use_roi)
 
     def set_slider_limits(self):
         """Updates the limits of the slider values so that they don't exceed each other."""

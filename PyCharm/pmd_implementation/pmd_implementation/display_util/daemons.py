@@ -20,7 +20,7 @@ class DisplayMachine(QMainWindow):
     def __init__(self, app: QApplication):
         super().__init__()
         self.app = app
-        self.window = DisplayWindow()
+        self.window = QMainWindow()
         self.grid = QGridLayout()
         self.widgets = {}
         self.states = {}

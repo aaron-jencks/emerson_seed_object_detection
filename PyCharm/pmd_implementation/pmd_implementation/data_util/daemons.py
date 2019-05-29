@@ -35,6 +35,12 @@ class DataDaemon(ThreadedSocketedStateMachine):
 
         # endregion
 
+        # region roi stuff
+
+        self.roi_coords = None
+
+        # endregion
+
         self.scale = 1.0
 
         self.states['frame'] = self.process
@@ -42,6 +48,8 @@ class DataDaemon(ThreadedSocketedStateMachine):
         self.states['mid'] = self.set_mid
         self.states['low'] = self.set_low
         self.states['scale'] = self.set_scale
+        self.states['enable_roi'] = self.set_roi_coords
+        self.states['disable_roi'] = self.unset_roi_coords
 
     def __recieve_msg(self, msg: JMsg):
         self.state_queue.append(msg)
@@ -69,6 +77,12 @@ class DataDaemon(ThreadedSocketedStateMachine):
         self.scale = self.data.data
         self.cmap_up_to_date = True
 
+    def set_roi_coords(self):
+        self.roi_coords = self.data.data
+
+    def unset_roi_coords(self):
+        self.roi_coords = None
+
     # def find_curve(self):
     #     self.curve_a, self.curve_b, self.curve_c = ct.find_formula(self.cmap_low, self.cmap_mid, self.cmap_up)
 
@@ -79,7 +93,12 @@ class DataDaemon(ThreadedSocketedStateMachine):
             # bits = ct.split_data(self.data.data, self.data.data.shape[0], self.data.data.shape[1], 4)
             # points, counts = ct.convert_to_points(bits, self.data.data.shape[0], self.data.data.shape[1], 1)
             # result = ct.concatenate_bits(points, counts)
-            result = ct.scatter_data(self.data.data)
+
+            if self.roi_coords is None:
+                result = ct.scatter_data(self.data.data)
+            else:
+                result = ct.apply_roi(self.data.data, self.roi_coords)
+
             colors = ct.create_color_data(result, self.cmap_low, self.cmap_mid, self.cmap_up)
 
             # print("Frame took {} seconds to process".format(round(time.time() - start, 3)))
