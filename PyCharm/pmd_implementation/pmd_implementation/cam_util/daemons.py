@@ -8,16 +8,18 @@ class CamCtrl(ThreadedSocketedStateMachine):
     def __init__(self):
         super().__init__()
 
-        self.pmd = False
+        self.pmd = True
         self.cam = None
         self.configuration = {}
         self.resolution = None
+        self.file = ""
 
         self.states['start_cam'] = self.start_cam
         self.states['reset_cam'] = self.reset_cam
         self.states['configure_cam'] = self.configure_cam
         self.states['start_cap'] = self.start_capture
         self.states['stop_cap'] = self.stop_capture
+        self.states['filename'] = self.update_filename
 
     def __del__(self):
         if self.cam is not None and self.cam.isConnected:
@@ -34,17 +36,21 @@ class CamCtrl(ThreadedSocketedStateMachine):
     def height(self):
         return self.resolution[1] if self.resolution is not None else -1
 
+    def update_filename(self):
+        self.file = self.data.data
+
     def find_cam(self):
         """Finds a hardware camera to use, if pmd is True, then finds a pmd camera, otherwise,
         finds a realsense camera"""
 
-        self.cam = PMDCam() if self.pmd else RealsenseCam()
+        self.cam = PMDCam(self.file) if self.pmd else RealsenseCam()
         self.configure_cam()
         self.cam.connect()
         self.resolution = self.cam.resolution
 
     def start_cam(self):
-        self.reset_cam()
+        if self.cam is None or not self.cam.isConnected:
+            self.find_cam()
         self.start_capture()
 
     def reset_cam(self):
@@ -59,7 +65,9 @@ class CamCtrl(ThreadedSocketedStateMachine):
 
         # Collects and sends off a frame if there isn't anything else the daemon needs to do
         if self.cam is not None and self.cam.isCapturing:
-            self.tx.emit(JMsg('frame_update', self.cam.get_frame()))
+            frames = self.cam.get_frame()
+            if frames is not None:
+                self.tx.emit(JMsg('frame_update', frames))
 
     def configure_cam(self):
 

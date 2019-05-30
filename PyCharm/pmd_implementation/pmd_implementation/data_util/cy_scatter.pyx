@@ -7,6 +7,8 @@ import numpy as np
 import pyqtgraph as pg
 import os
 
+from pmd_implementation.data_structures.sorting cimport heapsort
+
 
 cdef extern from "math.h":
     double sqrt(double x)
@@ -16,8 +18,8 @@ cdef int c_count = os.cpu_count()
 cdef int c_count_square = int(sqrt(c_count))
 
 
-# @cython.cdivision(True)
-# @cython.boundscheck(False)
+@cython.cdivision(True)
+@cython.boundscheck(False)
 cpdef get_roi_coords_matrix(int height, int width):
 
     cdef int length = height * width
@@ -26,21 +28,21 @@ cpdef get_roi_coords_matrix(int height, int width):
 
     cdef int i, j
 
-    for i in range(height):  # , nogil=True, num_threads=c_count_square):
-        for j in range(width):  # , num_threads=c_count_square):
+    for i in prange(height, nogil=True, num_threads=c_count_square):
+        for j in prange(width, num_threads=c_count_square):
             xys[i, j, 0] = i
             xys[i, j, 1] = j
 
     return np.asarray(xys, dtype=float)
 
 
-# @cython.cdivision(True)
-# @cython.boundscheck(False)
+@cython.cdivision(True)
+@cython.boundscheck(False)
 cpdef apply_roi(double[:, :] depths, double[:, :, :] roi_coords):
 
     cdef int h = roi_coords.shape[0], w = roi_coords.shape[1]
     cdef int i, j, ii, ij, length = h * w
-    cdef double x, y
+    cdef int x, y
 
     cdef double[:, :] points = np.zeros(shape=(length, 3), dtype=float)
 
@@ -48,13 +50,41 @@ cpdef apply_roi(double[:, :] depths, double[:, :, :] roi_coords):
         ii = i * w
         for j in prange(w, num_threads=c_count_square):
             ij = ii + j
-            x = roi_coords[i, j, 0]
-            y = roi_coords[i, j, 1]
-            points[ij, 0] = x
-            points[ij, 1] = y
-            points[ij, 2] = depths[int(x), int(y)]
+            x = int(roi_coords[i, j, 1])
+            y = int(roi_coords[i, j, 0])
+            if depths[x, y] > 0:
+                points[ij, 0] = x
+                points[ij, 1] = y
+                points[ij, 2] = depths[x, y]
 
     return np.asarray(points)
+
+
+@cython.cdivision(True)
+@cython.boundscheck(False)
+cpdef average_depth(double[:, :] coordinates):
+    cdef double sum = 0, current = 0, mn = 1000, mx = 0
+    cdef int count = 0, i
+    cdef int length = coordinates.shape[0]
+
+    cdef double[:] depths = np.zeros(shape=length, dtype=float)
+
+    for i in range(length):  # , nogil=True, num_threads=c_count):
+        current = coordinates[i, 2]
+
+        if current < mn:
+            mn = current
+        if current > mx:
+            mx = current
+
+        sum += current
+        count += 1
+
+    if count > 0:
+        # heapsort(depths)  # Puts them in order so that we can just pull the min/max out of the 0th and last elements
+        return sum / float(count), mn, mx
+    else:
+        return 0, 0, 0
 
 
 @cython.cdivision(True)
@@ -62,17 +92,21 @@ cpdef apply_roi(double[:, :] depths, double[:, :, :] roi_coords):
 cpdef apply_depth_scale(double[:, :] coordinates, double scale):
 
     cdef double[:, :] temp_depths
-    cdef int i, j
+    cdef int i, j, int_scale = int(scale)
     cdef int r = coordinates.shape[0]
+    cdef double actual_scale = scale
 
     if coordinates.shape[0] > 0:
         # print(coordinates.shape)
         temp_depths = np.zeros(shape=(coordinates.shape[0], coordinates.shape[1]), dtype=float)
 
+        # for i in prange(int_scale, nogil=True, num_threads=c_count):
+        #     actual_scale *= 10
+
         for i in prange(r, nogil=True, num_threads=c_count):
             for j in range(2):
                 temp_depths[i, j] = coordinates[i, j]
-            temp_depths[i, 2] = coordinates[i, 2] * scale
+            temp_depths[i, 2] = coordinates[i, 2] * actual_scale
 
         return np.asarray(temp_depths)
     else:
@@ -157,101 +191,12 @@ cpdef create_color_data(double[:, :] depths, double min, double mid, double max)
         g = g_a * z * z + g_b * z + g_c
         b = b_a * z * z + b_b * z + b_c
 
-        colors[i, 0] = r if 0 <= r <= 1 else 0 if r < 0 else 1
-        colors[i, 1] = g if 0 <= g <= 1 else 0 if g < 0 else 1
-        colors[i, 2] = b if 0 <= b <= 1 else 0 if b < 0 else 1
+        colors[i, 0] = r if z < max and 0 <= r <= 1 else 0 if z < max and r < 0 else 1
+        colors[i, 1] = g if min < z < max and 0 <= g <= 1 else 0
+        colors[i, 2] = b if z > min and 0 <= b <= 1 else 0 if z > min and b < 0 else 1
         colors[i, 3] = 1
 
     return np.asarray(colors)
-
-
-@cython.cdivision(True)
-@cython.boundscheck(False)
-cpdef split_data(double[:, :] frame, int h, int w, int num):
-
-    cdef int row_col_len = int(sqrt(num))
-    # print("frame shape is: {}, w is {}, and h is {}".format(frame.shape, w, h))
-    cdef int w_inc = w // row_col_len
-    cdef int h_inc = h // row_col_len
-
-    cdef double[:, :, :] bits = np.zeros(shape=(num, w_inc, h_inc), dtype=float)
-    cdef int i, j, k, ij, ik
-    cdef double temp
-
-    for i in prange(num, nogil=True, num_threads=c_count_square):
-        ij = i // row_col_len
-        ik = i - row_col_len * ij
-        for j in prange(w_inc, num_threads=c_count_square):
-            for k in prange(h_inc):
-                # print("Calculating index with parts {} {} {} for a result of {}".format(ij, w_inc, j, ij * w_inc + j))
-                temp = frame[ik * h_inc + k, ij * w_inc + j]
-                bits[i, j, k] = temp
-
-    return bits
-
-
-@cython.cdivision(True)
-@cython.boundscheck(False)
-cpdef concatenate_bits(double[:, :, :] points, long[:] counts):
-
-    cdef int sum = 0, i, j
-
-    for i in prange(points.shape[0], nogil=True, num_threads=c_count):
-        sum += counts[i]
-
-    cdef double[:, :] conc = np.zeros(shape=(sum, 3), dtype=float)
-
-    for i in prange(points.shape[0], nogil=True, num_threads=c_count):
-
-        sum = 0
-        for j in range(i):
-            sum = sum + counts[j]
-
-        for j in range(counts[i]):
-            conc[sum - 1 + j, 0] = points[i, j, 0]
-            conc[sum - 1 + j, 1] = points[i, j, 1]
-            conc[sum - 1 + j, 2] = points[i, j, 2]
-
-    return conc
-
-
-@cython.cdivision(True)
-@cython.boundscheck(False)
-cpdef convert_to_points(double[:, :, :] bits, int h, int w, int interpolation):
-
-    cdef int max_num = w * h
-    cdef int row_col_len = int(sqrt(c_count))
-    cdef int h_inc = h // row_col_len, w_inc = w // row_col_len
-
-    cdef double[:, :, :] points = np.zeros(shape=(c_count, max_num, 3), dtype=float)
-    cdef long[:] counts = np.zeros(shape=c_count, dtype=int)
-
-    cdef int count = 0
-    cdef int i, r, c, ri, ci, ir, ic, it
-
-    cdef int[:] w_list = array.array('i', range(0, w_inc, interpolation))
-    cdef int[:] h_list = array.array('i', range(0, h_inc, interpolation))
-
-    for i in prange(c_count, nogil=True, num_threads=c_count):
-        ic = i // row_col_len
-        ir = i - row_col_len * ic
-        # ic = row_col_len - ic
-        count = 0
-        for ri in range(h_list.shape[0]):
-            r = h_list[ri]
-            for ci in range(w_list.shape[0]):
-                c = w_list[ci]
-                if bits[i, c, r] != 0:
-                    # if i == 2 or i == 3:
-                    #     print("x is ({} * {}) + {} for {}".format(ic, w_inc, c, (ic * w_inc) + c))
-                    #     print("y is ({} * {}) + {} for {}".format(ir, h_inc, r, (ir * h_inc) + r))
-                    points[i, count, 0] = (ic * w_inc) + c
-                    points[i, count, 1] = (ir * h_inc) + r
-                    points[i, count, 2] = bits[i, c, r]
-                    count = count + 1
-        counts[i] = count
-
-    return np.asarray(points), np.asarray(counts)
 
 
 @cython.cdivision(True)
@@ -265,14 +210,21 @@ cpdef scatter_data(double[:, :] depths, object validator=None,
         w = depths.shape[1] if w < 0 else w
         # print("h is {} and w is {}".format(h, w))
 
-    cdef double[:, :, :] bits = split_data(depths, h, w, c_count)
-    # print("bits shape is {}".format(bits.shape))
+    cdef double[:, :] points = np.zeros(shape=(h * w, 3), dtype=float)
+    cdef int count = 0
 
-    cdef double[:, :, :] points
-    cdef long[:] counts
+    cdef int i, j, k, ii, ij
 
-    points, counts = convert_to_points(bits, h, w, interpolation)
+    for i in prange(h, nogil=True, num_threads=c_count_square):
+        ii = i * w
+        for j in prange(w, num_threads=c_count_square):
+            if depths[i, j] > 0:
+                ij = ii + j
+                points[ij, 0] = j
+                points[ij, 1] = i
+                points[ij, 2] = depths[i, j]
+                count += 1
 
-    cdef double[:, :] concatenated = concatenate_bits(points, counts)
+    points = np.resize(points, (count, 3))
 
-    return np.asarray(concatenated)  # , x_cen, y_cen, z_cen
+    return np.asarray(points)

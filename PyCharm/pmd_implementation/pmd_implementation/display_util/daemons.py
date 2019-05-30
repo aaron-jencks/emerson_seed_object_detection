@@ -57,6 +57,7 @@ class DisplayMachine(QMainWindow):
         self.states['hide'] = self.window.hide
         self.states['create_button'] = self.create_button
         self.states['create_label'] = self.create_label
+        self.states['create_text_entry'] = self.create_line_edit
         self.states['create_slider'] = self.create_slider
         self.states['create_widget'] = self.create_widget
 
@@ -100,7 +101,11 @@ class DisplayMachine(QMainWindow):
 
     def create_widget(self, msg: JMsg):
         """Creates a custom widget based on the arguments and type given"""
-        temp = msg.data['type'](**msg.data['kwargs'], parent=self.window)
+        if 'kwargs' in msg.data:
+            temp = msg.data['type'](**msg.data['kwargs'], parent=self.window)
+        else:
+            temp = msg.data['type'](parent=self.window)
+
         self.__create_widget(temp, msg)
 
     def create_button(self, msg: JMsg):
@@ -113,6 +118,11 @@ class DisplayMachine(QMainWindow):
         """Creates a new label with the given arguments"""
         msg.data['type'] = QLabel
         msg.data['kwargs'] = {'text': msg.data['text']}
+        self.create_widget(msg)
+
+    def create_line_edit(self, msg: JMsg):
+        """Creates a new lineEdit (text entry) box with the given arguments"""
+        msg.data['type'] = QLineEdit
         self.create_widget(msg)
 
     def create_slider(self, msg: JMsg):

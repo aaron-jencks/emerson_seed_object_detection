@@ -7,8 +7,8 @@ import numpy as np
 import os
 
 
-# @cython.cdivision(True)
-# @cython.boundscheck(False)
+@cython.cdivision(True)
+@cython.boundscheck(False)
 cdef void heapify(double[:] arr, int length, int index):
 
     cdef int largest = index
@@ -30,8 +30,8 @@ cdef void heapify(double[:] arr, int length, int index):
         heapify(arr, length, largest)
 
 
-# @cython.cdivision(True)
-# @cython.boundscheck(False)
+@cython.cdivision(True)
+@cython.boundscheck(False)
 cpdef heapsort(double[:] arr):
     cdef int n = arr.shape[0]
 
@@ -59,8 +59,8 @@ cpdef binary_search(double[:] arr, double value, bint ascending, bint round_up):
     """Performs a binary search for a value in the array, returns the closest element it found,
     rounding up if specified, but defaults to rounding down."""
 
-    cdef length, mid, start = 0, stop = arr.shape[0]
-    cdef double, current
+    cdef int length, mid, start = 0, stop = arr.shape[0]
+    cdef double current
 
     length = stop - start
     mid = start + (length >> 1)

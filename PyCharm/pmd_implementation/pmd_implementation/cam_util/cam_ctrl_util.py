@@ -1,10 +1,17 @@
 import numpy as np
 import pyximport; pyximport.install(setup_args={"include_dirs":np.get_include()})
 import pmd_implementation.cam_util.cy_collection_util as cu
+
 import pyrealsense2 as rs
+
 import roypy
+import roypy_platform_utils
+import roypy_sample_utils
+import sample_camera_info
+import argparse
 
 from collections import deque
+from queue import Queue
 
 
 class Cam:
@@ -12,6 +19,7 @@ class Cam:
         self.cap = None
         self.isConnected = False
         self.isCapturing = False
+        self.resolution = None
 
     def connect(self):
         """Connects to the hardware camera"""
@@ -48,13 +56,15 @@ class RealsenseCam(Cam):
         self.framerate = 30
 
     def connect(self):
-        self.cap = self.pipeline.start(self.config)
-        self.isConnected = True
+        if not self.isConnected:
+            self.cap = self.pipeline.start(self.config)
+            self.isConnected = True
 
     def disconnect(self):
-        self.pipeline.stop()
-        self.cap = None
-        self.isConnected = False
+        if self.isConnected:
+            self.pipeline.stop()
+            self.cap = None
+            self.isConnected = False
 
     def start_capture(self):
         if not self.isConnected:
@@ -138,20 +148,27 @@ class DepthListener(roypy.IDepthDataListener):
 
     def onNewData(self, data):
         zarray, garray = cu.convert_raw(data)
-        self.queue.append(zarray)
-        self.gqueue.append(garray)
+        self.queue.put(zarray)
+        self.gqueue.put(garray)
 
 # endregion
 
 
 class PMDCam(Cam):
-    def __init__(self):
+    def __init__(self, file: str = ""):
         super().__init__()
 
-        self.options = {}
-        self.manager = roypy.CameraManager()
-        self.frame_q = deque()
-        self.depth_q = deque()
+        self.platform = roypy_platform_utils.PlatformHelper()
+
+        self.file = file
+
+        parser = argparse.ArgumentParser()
+        roypy_sample_utils.add_camera_opener_options(parser)
+        self.options = parser.parse_args()
+
+        self.manager = roypy_sample_utils.CameraOpener(self.options)
+        self.frame_q = Queue(maxsize=10)
+        self.depth_q = Queue(maxsize=10)
         self.listener = DepthListener(self.frame_q, self.depth_q)
         self.exposure = 80
         self.mode = 'MODE_5_45FPS_500'
@@ -159,10 +176,15 @@ class PMDCam(Cam):
     # region Built-ins
 
     def connect(self):
-        self.cap = self.manager.createCamera()
-        self.cap.initialize()
-        self.cap.setUseCase(self.mode)
-        self.cap.setExposureTime(self.exposure)
+
+        if self.file == "":
+            self.cap = self.manager.open_camera()
+            self.cap.setUseCase(self.mode)
+            self.cap.setExposureTime(self.exposure)
+            sample_camera_info.print_camera_info(self.cap)
+        else:
+            self.cap = self.manager.open_recording(self.file)
+
         self.cap.registerDataListener(self.listener)
         self.isConnected = True
 
@@ -182,11 +204,11 @@ class PMDCam(Cam):
             self.isCapturing = False
 
     def get_frame(self) -> list:
-        if len(self.depth_q) > 0 and len(self.frame_q) > 0:
-            frame = self.frame_q.popleft()
-            depth = self.depth_q.popleft()
+        if not self.depth_q.empty() and not self.frame_q.empty():
+            frame = self.frame_q.get()
+            depth = self.depth_q.get()
 
-            if len(self.frame_q) > 10 or len(self.depth_q) > 10:
+            if self.frame_q.full() or self.depth_q.full():
                 self.flush_queues()
 
             return [frame, depth]

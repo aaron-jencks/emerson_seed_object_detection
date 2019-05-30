@@ -9,8 +9,8 @@ import cv2
 @cython.boundscheck(False)
 cpdef convert_realsense(object frames, double scale):
     frame = np.rot90(np.asanyarray(frames.get_infrared_frame().get_data()))
-    depth_image = cv2.convertScaleAbs(np.asanyarray(frames.get_depth_frame().get_data()), alpha=scale)
-    depth_image = depth_image / depth_image.max()
+    depth_image = np.multiply(np.asanyarray(frames.get_depth_frame().get_data()), scale)
+    # depth_image = depth_image / depth_image.max()
     
     return frame, depth_image
 

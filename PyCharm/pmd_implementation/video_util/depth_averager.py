@@ -19,7 +19,7 @@ import cv2
 import pyximport; pyximport.install()
 import video_util.cy_collection_util as cu
 
-pmd = False
+pmd = True
 
 
 class Point:

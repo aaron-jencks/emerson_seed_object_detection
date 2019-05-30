@@ -7,7 +7,7 @@ from pmd_implementation.data_util.daemons import DataDaemon
 from pmd_implementation.dependencies.display_util.string_display_util import print_notification, print_warning
 
 from PyQt5.QtCore import Qt, QThread
-from PyQt5.QtWidgets import QApplication, QSlider
+from PyQt5.QtWidgets import QApplication
 import pyqtgraph as pg
 import pyqtgraph.opengl as pgl
 
@@ -17,8 +17,6 @@ import pyximport
 pyximport.install(setup_args={"include_dirs": np.get_include()})
 import pmd_implementation.data_util.cy_scatter as ct
 
-import time
-
 
 class DepthAverager(QThread, StateMachine):
     """Manages the depth averaging for this application"""
@@ -26,6 +24,7 @@ class DepthAverager(QThread, StateMachine):
     slider_scale = 1000
     slider_max = 3
     slider_min = 0
+    depth_scale_max = 10
 
     def __init__(self, disp_daemon: DisplayMachine):
         super().__init__()
@@ -52,8 +51,8 @@ class DepthAverager(QThread, StateMachine):
         self.cam_ctrl = CamCtrl()
         self.cam_ctrl_tx = self.cam_ctrl.rx
         self.cam_ctrl.tx.connect(self.plot_data)
-        self.init_camera()
         self.cam_ctrl.start()
+        self.init_camera()
 
         # endregion
 
@@ -81,7 +80,7 @@ class DepthAverager(QThread, StateMachine):
 
         self.disp_ctrl.widgets['cmap_max'].valueChanged.connect(lambda v:
                                                                 self.disp_ctrl.widgets['cmap_max_lbl_val'].setText(
-                                                                    '{} m'.format(round(v / self.slider_scale, 1))))
+                                                                    '{} m'.format(round(v / self.slider_scale, 3))))
 
         self.disp_ctrl.widgets['cmap_max'].sliderReleased.connect(lambda: self.update_slider(
             self.disp_ctrl.widgets['cmap_max'].value(), 'up'))
@@ -91,7 +90,7 @@ class DepthAverager(QThread, StateMachine):
 
         self.disp_ctrl.widgets['cmap_mid'].valueChanged.connect(lambda v:
                                                                 self.disp_ctrl.widgets['cmap_mid_lbl_val'].setText(
-                                                                    '{} m'.format(round(v / self.slider_scale, 1))))
+                                                                    '{} m'.format(round(v / self.slider_scale, 3))))
 
         self.disp_ctrl.widgets['cmap_mid'].sliderReleased.connect(lambda: self.update_slider(
             self.disp_ctrl.widgets['cmap_mid'].value(), 'mid'))
@@ -101,7 +100,7 @@ class DepthAverager(QThread, StateMachine):
 
         self.disp_ctrl.widgets['cmap_min'].valueChanged.connect(lambda v:
                                                                 self.disp_ctrl.widgets['cmap_min_lbl_val'].setText(
-                                                                    '{} m'.format(round(v / self.slider_scale, 1))))
+                                                                    '{} m'.format(round(v / self.slider_scale, 3))))
 
         self.disp_ctrl.widgets['cmap_min'].sliderReleased.connect(lambda: self.update_slider(
             self.disp_ctrl.widgets['cmap_min'].value(), 'low'))
@@ -118,8 +117,8 @@ class DepthAverager(QThread, StateMachine):
 
         # region Handles the Depth Scale bar
 
-        self.disp_ctrl.widgets['dmp_scale'].setRange(1, 500)
-        self.disp_ctrl.widgets['dmp_scale'].setValue(1)
+        self.disp_ctrl.widgets['dmp_scale'].setRange(1, self.depth_scale_max)
+        self.disp_ctrl.widgets['dmp_scale'].setValue(self.depth_scale_max >> 1)
 
         self.disp_ctrl.widgets['dmp_scale'].valueChanged.connect(lambda v:
                                                                  self.disp_ctrl.widgets['dmp_scale_lbl'].setText(
@@ -127,7 +126,9 @@ class DepthAverager(QThread, StateMachine):
                                                                          round(v, 1))))
 
         self.disp_ctrl.widgets['dmp_scale'].sliderReleased.connect(lambda: self.update_slider(
-            self.disp_ctrl.widgets['dmp_scale'].value(), 'scale'))
+            10**self.disp_ctrl.widgets['dmp_scale'].value(), 'scale'))
+
+        self.update_slider(self.disp_ctrl.widgets['dmp_scale'].value(), 'scale')
 
         # endregion
 
@@ -138,7 +139,7 @@ class DepthAverager(QThread, StateMachine):
 
         # region Hooks up the ROI button
 
-        # self.disp_ctrl.widgets['roi_btn'].clicked.connect()
+        self.disp_ctrl.widgets['roi_btn'].clicked.connect(self.toggle_roi)
 
         self.update_roi(True)
 
@@ -157,7 +158,7 @@ class DepthAverager(QThread, StateMachine):
     def plot_data(self, msg: JMsg):
         """Plots the frame data onto the window."""
 
-        if msg is None:
+        if msg.data is None:
             print_warning('Trying to display empty frame!')
             return
 
@@ -199,6 +200,10 @@ class DepthAverager(QThread, StateMachine):
         """Plots the pointcloud onto the window."""
         # dimg = ct.create_color_depth_image(data, colors, self.cam_ctrl.height, self.cam_ctrl.width)
         # self.disp_ctrl.widgets['dimg'].setImage(dimg)
+        dmp_avg, dmp_min, dmp_max = ct.average_depth(data)
+        self.disp_ctrl.widgets['dmp_avg_lbl'].setText('Average depth: {} m'.format(round(dmp_avg, 2)))
+        self.disp_ctrl.widgets['dmp_min_lbl'].setText('Minimum depth: {} m'.format(round(dmp_min, 2)))
+        self.disp_ctrl.widgets['dmp_max_lbl'].setText('Maximum depth: {} m'.format(round(dmp_max, 2)))
 
         data = ct.apply_depth_scale(data, self.data_proc.scale)
         self.scatter.setData(pos=data, color=colors)
@@ -218,10 +223,10 @@ class DepthAverager(QThread, StateMachine):
 
         # region Sets up the roi and exit buttons
 
-        # self.disp_ctrl_update.emit(JMsg('create_button',
-        #                            get_text_widg_dict('roi', 'roi_btn', 1, 1, col_span=3,
-        #                                               tip='Create a new <b>ROI</b> (region of interest)' +
-        #                                               ' or edit the current one.')))
+        self.disp_ctrl_update.emit(JMsg('create_button',
+                                   get_text_widg_dict('roi', 'roi_btn', 0, 1, col_span=3,
+                                                      tip='Create a new <b>ROI</b> (region of interest)' +
+                                                      ' or edit the current one.')))
         #
         # self.disp_ctrl_update.emit(JMsg('create_button',
         #                            get_text_widg_dict('Exit', 'exit_btn', 2, 1, 'Exit the program')))
@@ -232,34 +237,46 @@ class DepthAverager(QThread, StateMachine):
         # region Sets up the colormap sliders
 
         self.disp_ctrl_update.emit(JMsg('create_label',
-                                   get_text_widg_dict('Max', 'cmap_max_lbl', 2, 1)))
+                                   get_text_widg_dict('Max', 'cmap_max_lbl', 4, 1)))
         self.disp_ctrl_update.emit(JMsg('create_slider',
-                                   get_slider_widg_dict(Qt.Vertical, 'cmap_max', 3, 1,
+                                   get_slider_widg_dict(Qt.Vertical, 'cmap_max', 5, 1,
                                                         tip='Adjusts the upper saturation limit of the colormap')))
         self.disp_ctrl_update.emit(JMsg('create_label',
-                                        get_text_widg_dict('3.0 m', 'cmap_max_lbl_val', 4, 1)))
+                                        get_text_widg_dict('3.0 m', 'cmap_max_lbl_val', 6, 1)))
 
         self.disp_ctrl_update.emit(JMsg('create_label',
-                                   get_text_widg_dict('Mid', 'cmap_mid_lbl', 2, 2)))
+                                   get_text_widg_dict('Mid', 'cmap_mid_lbl', 4, 2)))
         self.disp_ctrl_update.emit(JMsg('create_slider',
-                                   get_slider_widg_dict(Qt.Vertical, 'cmap_mid', 3, 2,
+                                   get_slider_widg_dict(Qt.Vertical, 'cmap_mid', 5, 2,
                                                         tip='Adjusts the mid-point of the colormap')))
         self.disp_ctrl_update.emit(JMsg('create_label',
-                                        get_text_widg_dict('1.5 m', 'cmap_mid_lbl_val', 4, 2)))
+                                        get_text_widg_dict('1.5 m', 'cmap_mid_lbl_val', 6, 2)))
 
         self.disp_ctrl_update.emit(JMsg('create_label',
-                                   get_text_widg_dict('Min', 'cmap_min_lbl', 2, 3)))
+                                   get_text_widg_dict('Min', 'cmap_min_lbl', 4, 3)))
         self.disp_ctrl_update.emit(JMsg('create_slider',
-                                   get_slider_widg_dict(Qt.Vertical, 'cmap_min', 3, 3,
+                                   get_slider_widg_dict(Qt.Vertical, 'cmap_min', 5, 3,
                                                         tip='Adjusts the lower saturation limit of the colormap')))
         self.disp_ctrl_update.emit(JMsg('create_label',
-                                        get_text_widg_dict('0.0 m', 'cmap_min_lbl_val', 4, 3)))
+                                        get_text_widg_dict('0.0 m', 'cmap_min_lbl_val', 6, 3)))
 
         self.disp_ctrl_update.emit(JMsg('create_label',
-                                        get_text_widg_dict('Depth Scale: 1.0 m', 'dmp_scale_lbl', 5, 0)))
+                                        get_text_widg_dict('Depth Scale: {} x'.format(self.depth_scale_max >> 1),
+                                                           'dmp_scale_lbl', 7, 0)))
         self.disp_ctrl.widgets['dmp_scale_lbl'].setAlignment(Qt.AlignLeft)
         self.disp_ctrl_update.emit(JMsg('create_slider',
-                                        get_slider_widg_dict(Qt.Horizontal, 'dmp_scale', 4, 0)))
+                                        get_slider_widg_dict(Qt.Horizontal, 'dmp_scale', 6, 0)))
+
+        # endregion
+
+        # region Sets up the depth data labels
+
+        self.disp_ctrl_update.emit(JMsg('create_label',
+                                        get_text_widg_dict('Average depth: 0.0 m', 'dmp_avg_lbl', 1, 1, 1, 3)))
+        self.disp_ctrl_update.emit(JMsg('create_label',
+                                        get_text_widg_dict('Minimum depth: 0.0 m', 'dmp_min_lbl', 2, 1, 1, 3)))
+        self.disp_ctrl_update.emit(JMsg('create_label',
+                                        get_text_widg_dict('Maximum depth: 0.0 m', 'dmp_max_lbl', 3, 1, 1, 3)))
 
         # endregion
 
@@ -268,7 +285,7 @@ class DepthAverager(QThread, StateMachine):
         self.disp_ctrl_update.emit(JMsg('create_label',
                                    get_text_widg_dict('Grayscale', 'img_lbl', 0, 0)))
         self.disp_ctrl_update.emit(JMsg('create_widget',
-                                   get_custom_widg_dict(pg.ImageView, 'img', 1, 0)))
+                                   get_custom_widg_dict(pg.ImageView, 'img', 1, 0, 3, 1)))
 
         # self.disp_ctrl_update.emit(JMsg('create_label',
         #                                 get_text_widg_dict('Depth Image', 'dimg_lbl', 0, 1)))
@@ -277,11 +294,11 @@ class DepthAverager(QThread, StateMachine):
         #                                 args))
 
         self.disp_ctrl_update.emit(JMsg('create_label',
-                                   get_text_widg_dict('Point Cloud', 'dmp_lbl', 2, 0)))
+                                   get_text_widg_dict('Point Cloud', 'dmp_lbl', 4, 0)))
         self.disp_ctrl_update.emit(JMsg('create_widget',
-                                   get_custom_widg_dict(pgl.GLViewWidget, 'dmp', 3, 0)))
+                                   get_custom_widg_dict(pgl.GLViewWidget, 'dmp', 5, 0)))
 
-        self.scatter = pgl.GLScatterPlotItem(pos=np.zeros(shape=(307200, 3), dtype=float), size=1)
+        self.scatter = pgl.GLScatterPlotItem(pos=np.zeros(shape=(307200, 3), dtype=float), size=3)
         self.disp_ctrl.widgets['dmp'].addItem(self.scatter)
 
         # region view formatting
@@ -296,6 +313,12 @@ class DepthAverager(QThread, StateMachine):
         # endregion
 
         # endregion
+
+        # Sets up the filename bar
+
+        self.disp_ctrl_update.emit(JMsg('create_text_entry',
+                                        get_text_entry_widg_dict('file_entry', 7, 1, 1, 3,
+                                                                 tip='Enter a video filename to load in.')))
 
     # def update_center_display(self):
     #     opts = self.disp_ctrl.widgets['dmp'].opts
@@ -326,15 +349,17 @@ class DepthAverager(QThread, StateMachine):
     def update_roi(self, enable: bool = True):
         """Triggered when the ROI of the image changes"""
 
-        if enable and not self.use_roi:
-            self.set_status("Enabling ROI")
-            self.use_roi = True
-            if self.roi is None:
-                self.roi = pg.PolyLineROI([[10, 10], [20, 200], [100, 300], [300, 100]],
-                                          closed=True, movable=True, removable=True)
-                self.roi.sigRegionChangeFinished.connect(self.update_roi)
-                self.roi.sigRemoveRequested.connect(lambda: self.update_roi(False))
-            self.disp_ctrl.widgets['img'].getView().addItem(self.roi)
+        if enable:
+            if not self.use_roi:
+                self.set_status("Enabling ROI")
+                self.use_roi = True
+                if self.roi is None:
+                    self.roi = pg.PolyLineROI([[10, 10], [20, 200], [100, 300], [300, 100]],
+                                              closed=True, movable=True, removable=True)
+                    self.roi.sigRegionChangeFinished.connect(self.update_roi)
+                    # self.roi.sigRemoveRequested.connect(lambda: self.update_roi(False))
+                self.disp_ctrl.widgets['img'].getView().addItem(self.roi)
+            self.set_status("Flagging ROI update")
             self.roi_coords = None  # Flags for the generation of coords on the next frame.
             self.reset_status()
 
@@ -377,6 +402,9 @@ class DepthAverager(QThread, StateMachine):
 
 if __name__ == "__main__":
     import sys
+    import roypy_sample_utils
+    import argparse
+
     app = QApplication(sys.argv)
 
     mgr = DequeManager()

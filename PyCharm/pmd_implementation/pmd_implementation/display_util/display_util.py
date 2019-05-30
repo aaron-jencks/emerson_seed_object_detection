@@ -20,6 +20,14 @@ def get_text_widg_dict(title: str, identifier: str,
     return res
 
 
+def get_text_entry_widg_dict(identifier: str,
+                             row: int, col: int, row_span: int = 1, col_span: int = 1, tip: str = '') -> dict:
+
+    res = get_widget_dict(identifier, row, col, row_span, col_span, tip)
+
+    return res
+
+
 def get_slider_widg_dict(orient: Qt.Orientation, identifier: str,
                          row: int, col: int, row_span: int = 1, col_span: int = 1, tip: str = '') -> dict:
 

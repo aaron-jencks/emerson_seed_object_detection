@@ -15,7 +15,7 @@ def get_camera(options, filename=None):
 
     manager = roypy.CameraManager()
 
-    cap = manager.createCamera() if filename is None else manager.createCamera(filename)
+    cap = manager.createCamera(options) if filename is None else manager.createCamera(filename)
 
     cap.initialize()
 

@@ -1,9 +1,15 @@
 import time
+import sys
+import traceback
 
 import threading
-from PyQt5.QtCore import pyqtSignal, QObject, QThread
+from PyQt5.QtCore import pyqtSignal, QObject
 
 from collections import deque
+
+from pmd_implementation.dependencies.display_util.string_display_util import print_warning
+
+from colorama import Fore
 
 
 class JMsg:
@@ -42,7 +48,16 @@ class StateMachine(QObject):
             meth = self.get_next_state()
 
             # Runs the selected state
-            meth()
+            try:
+                meth()
+            except Exception as e:
+                et, ev, tb = sys.exc_info()
+                exc = "Exception was thrown: {}\n".format(e)
+                for l in traceback.format_exception(et, ev, tb):
+                    exc += l
+                exc += '\nExitting...'
+                print_warning(exc)
+                self.stop()
 
     def stop(self) -> None:
         """Flags the thread to stop running."""
@@ -53,7 +68,7 @@ class StateMachine(QObject):
         if len(self.state_queue) == 0:
             return self.states['idle']
         else:
-            msg = self.state_queue.pop()
+            msg = self.state_queue.popleft()
 
             # If the incoming state is a JMsg, append the message data, and set self.data as the JMsg to be handled
             # by the state specified by the JMsg.
