@@ -43,19 +43,26 @@ class StateMachine(QObject):
     def run(self):
         self.isStopping = False
         while not self.isStopping:
-            meth, data = self.get_next_state()
+            state = self.get_next_state()
 
-            # Runs the selected state
-            try:
-                meth(data)
-            except Exception as e:
-                et, ev, tb = sys.exc_info()
-                exc = "Exception was thrown: {}\n".format(e)
-                for l in traceback.format_exception(et, ev, tb):
-                    exc += l
-                exc += '\nExitting...'
-                print_warning(exc)
-                self.stop()
+            # Skips unknown states
+            if state is not None:
+                meth, data = state
+
+                # Runs the selected state
+                try:
+                    if data is not None:
+                        meth(data)
+                    else:
+                        meth()
+                except Exception as e:
+                    et, ev, tb = sys.exc_info()
+                    exc = "Exception was thrown: {}\n".format(e)
+                    for l in traceback.format_exception(et, ev, tb):
+                        exc += l
+                    exc += '\nExitting...'
+                    print_warning(exc)
+                    self.stop()
 
     def stop(self) -> None:
         """Flags the thread to stop running."""
@@ -67,8 +74,8 @@ class StateMachine(QObject):
             return self.states['idle']
         else:
             msg, data = self.state_queue.popleft()
-
-            return self.states[msg], data
+            if msg in self.states:
+                return self.states[msg], data
 
     def append_states(self, states: list):
         for state in states:
