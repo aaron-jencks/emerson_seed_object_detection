@@ -1,6 +1,6 @@
 import numpy as np
 import pyximport; pyximport.install(setup_args={"include_dirs":np.get_include()})
-import pmd_implementation.cam_util.cy_collection_util as cu
+import mvc_implementation.cam_util.cy_collection_util as cu
 
 import pyrealsense2 as rs
 
@@ -15,11 +15,11 @@ from queue import Queue
 
 import sys
 import traceback
-from pmd_implementation.dependencies.display_util.string_display_util import print_warning, print_notification
+from mvc_implementation.dependencies.display_util.string_display_util import print_warning, print_notification
 
 import time
 
-from pmd_implementation.dependencies.display_util.dialogue import get_yes_no, get_filename
+from mvc_implementation.dependencies.display_util.dialogue import get_yes_no, get_filename
 
 
 class Cam:

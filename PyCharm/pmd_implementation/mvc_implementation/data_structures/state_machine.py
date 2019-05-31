@@ -7,7 +7,7 @@ from PyQt5.QtCore import pyqtSignal, QObject, QThread
 
 from collections import deque
 
-from pmd_implementation.dependencies.display_util.string_display_util import print_warning
+from mvc_implementation.dependencies.display_util.string_display_util import print_warning
 
 from colorama import Fore
 

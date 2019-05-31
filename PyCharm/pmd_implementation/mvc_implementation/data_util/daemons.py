@@ -1,7 +1,7 @@
 import numpy as np
 import pyximport; pyximport.install(setup_args={"include_dirs":np.get_include()})
-from pmd_implementation.data_structures.state_machine import ThreadedSocketedStateMachine, JMsg
-import pmd_implementation.data_util.cy_scatter as ct
+from mvc_implementation.data_structures.state_machine import ThreadedSocketedStateMachine, JMsg
+import mvc_implementation.data_util.cy_scatter as ct
 import pyqtgraph as pg
 import time
 

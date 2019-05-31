@@ -17,19 +17,24 @@ import pyximport
 pyximport.install(setup_args={"include_dirs": np.get_include()})
 import pmd_implementation.data_util.cy_scatter as ct
 
+import queue
+
 
 class DepthAverager(QThread, StateMachine):
     """Manages the depth averaging for this application"""
 
     slider_scale = 1000
-    slider_max = 3
+    slider_max = 1
     slider_min = 0
-    depth_scale_max = 10
+    depth_slider_scale = 100
+    depth_scale_max = 4
+    # filename = "/media/aaron/JET TFER/GPM Seed Placement/May Testing Trip to GPM/5.6.2019 AM/" \
+    #            "royale_20190506_111114.rrf"
 
     def __init__(self, disp_daemon: DisplayMachine):
         super().__init__()
 
-        if self.slider_max - self.slider_min < 3:
+        if self.slider_max * self.slider_scale - self.slider_min * self.slider_scale < 3:
             raise AssertionError('Slider extremes must be at least 3 apart.')
 
         # region Display Daemon
@@ -52,6 +57,7 @@ class DepthAverager(QThread, StateMachine):
         self.cam_ctrl_tx = self.cam_ctrl.rx
         self.cam_ctrl.tx.connect(self.plot_data)
         self.cam_ctrl.start()
+        # self.cam_ctrl_tx.emit(JMsg('filename', self.filename))
         self.init_camera()
 
         # endregion
@@ -117,16 +123,17 @@ class DepthAverager(QThread, StateMachine):
 
         # region Handles the Depth Scale bar
 
-        self.disp_ctrl.widgets['dmp_scale'].setRange(1, self.depth_scale_max)
+        self.disp_ctrl.widgets['dmp_scale'].setRange(1 * self.depth_slider_scale,
+                                                     self.depth_scale_max * self.depth_slider_scale)
         self.disp_ctrl.widgets['dmp_scale'].setValue(self.depth_scale_max >> 1)
 
         self.disp_ctrl.widgets['dmp_scale'].valueChanged.connect(lambda v:
                                                                  self.disp_ctrl.widgets['dmp_scale_lbl'].setText(
                                                                      'Depth Scale: {} x'.format(
-                                                                         round(v, 1))))
+                                                                         round(v / self.depth_slider_scale, 1))))
 
         self.disp_ctrl.widgets['dmp_scale'].sliderReleased.connect(lambda: self.update_slider(
-            10**self.disp_ctrl.widgets['dmp_scale'].value(), 'scale'))
+            10**(self.disp_ctrl.widgets['dmp_scale'].value() / self.depth_slider_scale), 'scale'))
 
         self.update_slider(self.disp_ctrl.widgets['dmp_scale'].value(), 'scale')
 
@@ -340,9 +347,17 @@ class DepthAverager(QThread, StateMachine):
         self.data_proc.cmap_up_to_date = False
         self.data_proc.rx.emit(JMsg(slider, value))
 
-        # Waits for the cmap value to be updated
-        while not self.data_proc.cmap_up_to_date:
-            pass
+        q = queue.Queue()
+
+        def linker():
+            global q
+            q.put(True)
+
+        sl = self.data_proc.slider_tx.connect(linker)
+
+        q.get()
+
+        self.data_proc.slider_tx.disconnect(sl)
 
         self.set_slider_limits()
         self.reset_status()
@@ -408,8 +423,8 @@ if __name__ == "__main__":
 
     app = QApplication(sys.argv)
 
-    mgr = DequeManager()
-    mgr.start()
+    # mgr = DequeManager()
+    # mgr.start()
 
     dsp = DisplayMachine(app)
 
