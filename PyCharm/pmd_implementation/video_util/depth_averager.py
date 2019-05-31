@@ -129,7 +129,7 @@ if __name__ == "__main__":
     # region Opens rrf file and sets up camera
 
     if pmd:
-        cap = get_camera(args, filename)
+        cap = get_camera(args)
         # cases = cap.getCameraInfo()
         # for case in range(cases.size()):
         #     print(str(cases[case]))

@@ -13,6 +13,12 @@ import argparse
 from collections import deque
 from queue import Queue
 
+import sys
+import traceback
+from pmd_implementation.dependencies.display_util.string_display_util import print_warning
+
+import time
+
 
 class Cam:
     def __init__(self):
@@ -147,9 +153,26 @@ class DepthListener(roypy.IDepthDataListener):
         self.gqueue = q
 
     def onNewData(self, data):
-        zarray, garray = cu.convert_raw(data)
-        self.queue.put(zarray)
-        self.gqueue.put(garray)
+        try:
+            # print("Processing data")
+            # zarray = []
+            # garray = []
+            # for point in tqdm(np.asanyarray(data.points())):
+            #     zarray.append(point.z)
+            #     garray.append(point.grayValue)
+            # garray = np.rot90(np.asarray(cv2.convertScaleAbs(np.asarray(garray).reshape(-1, data.width))))
+            # zarray = np.asarray(zarray, dtype=float).reshape(-1, data.width)
+            zarray, garray = cu.convert_raw(np.asanyarray(data.points()), data.width)
+            # print("Appending data")
+            self.queue.append(zarray)
+            self.gqueue.append(garray)
+        except Exception as e:
+            et, ev, tb = sys.exc_info()
+            exc = "Exception was thrown: {}\n".format(e)
+            for l in traceback.format_exception(et, ev, tb):
+                exc += l
+            exc += '\nExitting...'
+            print_warning(exc)
 
 # endregion
 
@@ -164,11 +187,11 @@ class PMDCam(Cam):
 
         parser = argparse.ArgumentParser()
         roypy_sample_utils.add_camera_opener_options(parser)
-        self.options = parser.parse_args()
+        self.options = parser.parse_args("")
 
         self.manager = roypy_sample_utils.CameraOpener(self.options)
-        self.frame_q = Queue(maxsize=10)
-        self.depth_q = Queue(maxsize=10)
+        self.frame_q = deque()
+        self.depth_q = deque()
         self.listener = DepthListener(self.frame_q, self.depth_q)
         self.exposure = 80
         self.mode = 'MODE_5_45FPS_500'
@@ -182,6 +205,8 @@ class PMDCam(Cam):
             self.cap.setUseCase(self.mode)
             self.cap.setExposureTime(self.exposure)
             sample_camera_info.print_camera_info(self.cap)
+            print("isConnected", self.cap.isConnected())
+            print("getFrameRate", self.cap.getFrameRate())
         else:
             self.cap = self.manager.open_recording(self.file)
 
@@ -194,7 +219,7 @@ class PMDCam(Cam):
         self.isConnected = False
 
     def start_capture(self):
-        if self.isConnected:
+        if self.isConnected and not self.isCapturing:
             self.cap.startCapture()
             self.isCapturing = True
 
@@ -204,14 +229,16 @@ class PMDCam(Cam):
             self.isCapturing = False
 
     def get_frame(self) -> list:
-        if not self.depth_q.empty() and not self.frame_q.empty():
-            frame = self.frame_q.get()
-            depth = self.depth_q.get()
+        if len(self.depth_q) > 0 and len(self.frame_q) > 0:
+            frame = self.frame_q.popleft()
+            depth = self.depth_q.popleft()
 
-            if self.frame_q.full() or self.depth_q.full():
+            if len(self.depth_q) > 10 or len(self.frame_q) > 10:
                 self.flush_queues()
 
             return [frame, depth]
+        else:
+            time.sleep(0.1)
 
     def get_configure_states(self):
         return {'mode': self.set_mode, 'exposure': self.set_exposure}

@@ -164,6 +164,7 @@ class DepthAverager(QThread, StateMachine):
 
         img = msg.data[0]
         depth = msg.data[1]
+        # print(depth.shape[0], ", ", depth.shape[1])
 
         img_disp = self.disp_ctrl.widgets['img']
         img_disp.setImage(img)

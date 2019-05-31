@@ -95,8 +95,10 @@ class DataDaemon(ThreadedSocketedStateMachine):
             # result = ct.concatenate_bits(points, counts)
 
             if self.roi_coords is None:
+                # print(self.data.data.shape)
                 result = ct.scatter_data(self.data.data)
             else:
+                # print(self.data.data.shape)
                 result = ct.apply_roi(self.data.data, self.roi_coords)
 
             colors = ct.create_color_data(result, self.cmap_low, self.cmap_mid, self.cmap_up)

@@ -70,10 +70,10 @@ class CamCtrl(ThreadedSocketedStateMachine):
                 self.tx.emit(JMsg('frame_update', frames))
 
     def configure_cam(self):
+        if not self.pmd:
+            self.configuration = self.data.data if self.data.data is not None else self.configuration
 
-        self.configuration = self.data.data if self.data.data is not None else self.configuration
-
-        self.__configure_cam()
+            self.__configure_cam()
 
     def __configure_cam(self):
 
