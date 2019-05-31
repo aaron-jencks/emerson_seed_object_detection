@@ -70,6 +70,23 @@ class StateMachine(QObject):
 
             return self.states[msg], data
 
+    def append_states(self, states: list):
+        for state in states:
+            if isinstance(state, str):
+                self.state_queue.append((state, None))
+                continue
+
+            try:
+                iter(state)
+                self.state_queue.append(state)
+                continue
+            except TypeError:
+                if isinstance(state, JMsg):
+                    self.state_queue.append((state.message, state.data))
+                    continue
+                else:
+                    raise TypeError('Type {} cannot be enqueued'.format(type(state)))
+
     # region States
 
     def initial_state(self):
