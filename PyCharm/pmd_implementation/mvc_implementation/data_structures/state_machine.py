@@ -26,8 +26,6 @@ class JMsg:
 class StateMachine(QObject):
     """Represents a state machine that can be ran on another thread."""
 
-    state_queue = pyqtSignal([str, JMsg])
-
     def __init__(self, auto_start: bool = False, **kwargs):
         super().__init__(**kwargs)
 
@@ -45,11 +43,11 @@ class StateMachine(QObject):
     def run(self):
         self.isStopping = False
         while not self.isStopping:
-            meth = self.get_next_state()
+            meth, data = self.get_next_state()
 
             # Runs the selected state
             try:
-                meth()
+                meth(data)
             except Exception as e:
                 et, ev, tb = sys.exc_info()
                 exc = "Exception was thrown: {}\n".format(e)
@@ -68,15 +66,9 @@ class StateMachine(QObject):
         if len(self.state_queue) == 0:
             return self.states['idle']
         else:
-            msg = self.state_queue.popleft()
+            msg, data = self.state_queue.popleft()
 
-            # If the incoming state is a JMsg, append the message data, and set self.data as the JMsg to be handled
-            # by the state specified by the JMsg.
-            if isinstance(msg, JMsg):
-                self.data = msg
-                msg = msg.message
-
-            return self.states[msg]
+            return self.states[msg], data
 
     # region States
 
@@ -108,7 +100,7 @@ class SocketedStateMachine(StateMachine):
         self.rx.connect(self.__recieve_msg)
 
     def __recieve_msg(self, msg: JMsg):
-        self.state_queue.append(msg)
+        self.state_queue.append((msg.message, msg.data))
 
 
 class ThreadedStateMachine(QThread, StateMachine):
@@ -148,4 +140,4 @@ class ThreadedSocketedStateMachine(ThreadedStateMachine):
         self.rx.connect(self.__recieve_msg)
 
     def __recieve_msg(self, msg: JMsg):
-        self.state_queue.append(msg)
+        self.state_queue.append((msg.message, msg.data))
