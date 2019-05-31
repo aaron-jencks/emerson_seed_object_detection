@@ -3,7 +3,7 @@ import sys
 import traceback
 
 import threading
-from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5.QtCore import pyqtSignal, QObject, QThread
 
 from collections import deque
 
@@ -111,16 +111,17 @@ class SocketedStateMachine(StateMachine):
         self.state_queue.append(msg)
 
 
-class ThreadedStateMachine(StateMachine, threading.Thread):
+class ThreadedStateMachine(StateMachine, QThread):
     """Represents a state machine that can be ran on another thread."""
 
-    def __init__(self, auto_start: bool = False, **kwargs):
+    def __init__(self, parent = None, auto_start: bool = False, **kwargs):
         super().__init__(auto_start)
 
         self.isStopping = False
         self.state_queue = deque()
         self.states = {'init': self.initial_state, 'STOP': self.final_state, 'idle': self.idle_state}
         self.state_queue.append('init')
+        self.parent = parent
 
         # Used to transfer JMsg data to individual states
         self.data = None
@@ -140,8 +141,8 @@ class ThreadedSocketedStateMachine(ThreadedStateMachine):
     tx = pyqtSignal([JMsg])
     rx = pyqtSignal([JMsg])
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
 
         self.rx.connect(self.__recieve_msg)
 

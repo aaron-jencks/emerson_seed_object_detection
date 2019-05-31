@@ -48,7 +48,7 @@ class DepthAverager(QThread, StateMachine):
 
         # region Camera Daemon
 
-        self.cam_ctrl = CamCtrl()
+        self.cam_ctrl = CamCtrl(parent=self.disp_ctrl.window)
         self.cam_ctrl_tx = self.cam_ctrl.rx
         self.cam_ctrl.tx.connect(self.plot_data)
         self.cam_ctrl.start()

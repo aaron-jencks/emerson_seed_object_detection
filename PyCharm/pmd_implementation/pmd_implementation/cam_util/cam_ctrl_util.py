@@ -15,17 +15,22 @@ from queue import Queue
 
 import sys
 import traceback
-from pmd_implementation.dependencies.display_util.string_display_util import print_warning
+from pmd_implementation.dependencies.display_util.string_display_util import print_warning, print_notification
 
 import time
 
+from pmd_implementation.dependencies.display_util.dialogue import get_yes_no, get_filename
+
 
 class Cam:
-    def __init__(self):
+    def __init__(self, disp_parent=None, filename: str = ""):
         self.cap = None
         self.isConnected = False
         self.isCapturing = False
+        self.halt = False  # Used for looping while repeatedly trying to connect to the camera
         self.resolution = None
+        self.file = filename
+        self.parent = disp_parent
 
     def connect(self):
         """Connects to the hardware camera"""
@@ -53,8 +58,8 @@ class Cam:
 
 
 class RealsenseCam(Cam):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, disp_parent=None, filename: str = ""):
+        super().__init__(disp_parent, filename)
 
         self.pipeline = rs.pipeline(rs.context())
         self.config = rs.config()
@@ -178,12 +183,10 @@ class DepthListener(roypy.IDepthDataListener):
 
 
 class PMDCam(Cam):
-    def __init__(self, file: str = ""):
-        super().__init__()
+    def __init__(self, disp_parent=None, file: str = ""):
+        super().__init__(disp_parent, file)
 
         self.platform = roypy_platform_utils.PlatformHelper()
-
-        self.file = file
 
         parser = argparse.ArgumentParser()
         roypy_sample_utils.add_camera_opener_options(parser)
@@ -201,12 +204,24 @@ class PMDCam(Cam):
     def connect(self):
 
         if self.file == "":
-            self.cap = self.manager.open_camera()
-            self.cap.setUseCase(self.mode)
-            self.cap.setExposureTime(self.exposure)
-            sample_camera_info.print_camera_info(self.cap)
-            print("isConnected", self.cap.isConnected())
-            print("getFrameRate", self.cap.getFrameRate())
+            while not self.halt:
+                try:
+                    self.cap = self.manager.open_camera()
+                    self.cap.setUseCase(self.mode)
+                    self.cap.setExposureTime(self.exposure)
+                    sample_camera_info.print_camera_info(self.cap)
+                    print("isConnected", self.cap.isConnected())
+                    print("getFrameRate", self.cap.getFrameRate())
+                except RuntimeError as e:
+                    print_warning('Exception was thrown: {}'.format(e))
+                    print_notification('Is the camera connected? Trying for a recording instead.')
+                    if get_yes_no("Would you like to open a recording?",
+                                  "If you select yes, you will be prompted to select a video file",
+                                  parent=self.parent):
+                        self.file = get_filename("Select a .rrf file to open", "Royale Recording File (*.rrf)")
+                        self.connect()
+                    else:
+                        print_notification("Retrying")
         else:
             self.cap = self.manager.open_recording(self.file)
 

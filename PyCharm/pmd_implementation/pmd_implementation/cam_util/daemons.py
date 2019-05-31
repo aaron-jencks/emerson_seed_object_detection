@@ -1,12 +1,12 @@
 from PyQt5.QtCore import pyqtSignal
 
 from pmd_implementation.data_structures.state_machine import ThreadedSocketedStateMachine, JMsg
-from pmd_implementation.cam_util.cam_ctrl_util import Cam, PMDCam, RealsenseCam
+from pmd_implementation.cam_util.cam_ctrl_util import PMDCam, RealsenseCam
 
 
 class CamCtrl(ThreadedSocketedStateMachine):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
 
         self.pmd = True
         self.cam = None
@@ -22,6 +22,7 @@ class CamCtrl(ThreadedSocketedStateMachine):
         self.states['filename'] = self.update_filename
 
     def __del__(self):
+        self.cam.halt = True
         if self.cam is not None and self.cam.isConnected:
             if self.cam.isCapturing:
                 self.cam.stop_capture()
@@ -43,7 +44,7 @@ class CamCtrl(ThreadedSocketedStateMachine):
         """Finds a hardware camera to use, if pmd is True, then finds a pmd camera, otherwise,
         finds a realsense camera"""
 
-        self.cam = PMDCam(self.file) if self.pmd else RealsenseCam()
+        self.cam = PMDCam(file=self.file, disp_parent=self.parent) if self.pmd else RealsenseCam(disp_parent=self.parent)
         self.configure_cam()
         self.cam.connect()
         self.resolution = self.cam.resolution
