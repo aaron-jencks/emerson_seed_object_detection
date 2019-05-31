@@ -12,100 +12,20 @@ class DataDaemon(ThreadedSocketedStateMachine):
 
     buffer_limit = 10
 
-    tx = pyqtSignal(np.ndarray, np.ndarray)
-
-    slider_tx = pyqtSignal()
-
     def __init__(self):
         super().__init__()
-        self.roi = False
-
-        # region Color map stuff
-
-        self.cmap_low = 0
-        self.cmap_mid = 1.5
-        self.cmap_up = 3
-        # self.curve_a = 0
-        # self.curve_b = 0
-        # self.curve_c = 0
-        self.center_x = 0
-        self.center_y = 0
-        self.center_z = 0
-        self.cmap_up_to_date = True
-
-        # endregion
-
-        # region roi stuff
-
-        self.roi_coords = None
-
-        # endregion
-
-        self.scale = 1.0
 
         self.states['frame'] = self.process
-        self.states['up'] = self.set_up
-        self.states['mid'] = self.set_mid
-        self.states['low'] = self.set_low
-        self.states['scale'] = self.set_scale
-        self.states['enable_roi'] = self.set_roi_coords
-        self.states['disable_roi'] = self.unset_roi_coords
 
-    def __recieve_msg(self, msg: JMsg):
-        self.state_queue.append(msg)
+    def process(self, parsing_data: dict):
+        if not parsing_data['roi']:
 
-    def initial_state(self):
-        # self.find_curve()
-        pass
-
-    def set_low(self):
-        self.cmap_low = self.data.data
-        self.cmap_up_to_date = True
-        self.slider_tx.emit()
-        # self.find_curve()
-
-    def set_mid(self):
-        self.cmap_mid = self.data.data
-        self.cmap_up_to_date = True
-        self.slider_tx.emit()
-        # self.find_curve()
-
-    def set_up(self):
-        self.cmap_up = self.data.data
-        self.cmap_up_to_date = True
-        self.slider_tx.emit()
-        # self.find_curve()
-
-    def set_scale(self):
-        self.scale = self.data.data
-        self.cmap_up_to_date = True
-        self.slider_tx.emit()
-
-    def set_roi_coords(self):
-        self.roi_coords = self.data.data
-
-    def unset_roi_coords(self):
-        self.roi_coords = None
-
-    # def find_curve(self):
-    #     self.curve_a, self.curve_b, self.curve_c = ct.find_formula(self.cmap_low, self.cmap_mid, self.cmap_up)
-
-    def process(self):
-        if not self.roi:
-            # start = time.time()
-
-            # bits = ct.split_data(self.data.data, self.data.data.shape[0], self.data.data.shape[1], 4)
-            # points, counts = ct.convert_to_points(bits, self.data.data.shape[0], self.data.data.shape[1], 1)
-            # result = ct.concatenate_bits(points, counts)
-
-            if self.roi_coords is None:
-                # print(self.data.data.shape)
-                result = ct.scatter_data(self.data.data)
+            if parsing_data['roi_coords'] is None:
+                result = ct.scatter_data(parsing_data['frame'])
             else:
-                # print(self.data.data.shape)
-                result = ct.apply_roi(self.data.data, self.roi_coords)
+                result = ct.apply_roi(parsing_data['frame'], parsing_data['roi_coords'])
 
-            colors = ct.create_color_data(result, self.cmap_low, self.cmap_mid, self.cmap_up)
+            colors = ct.create_color_data(result,
+                                          parsing_data['cmap_low'], parsing_data['cmap_mid'], parsing_data['cmap_up'])
 
-            # print("Frame took {} seconds to process".format(round(time.time() - start, 3)))
-            self.tx.emit(result, colors)
+            self.tx.emit(JMsg('process_update', {'vectors': result, 'colors': colors}))
