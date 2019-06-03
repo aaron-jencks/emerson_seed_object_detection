@@ -65,6 +65,9 @@ DequeManager.register('DequeProxy', DequeProxy,
                       exposed=['__str__', '__contains__', '__len__', 'append', 'appendleft',
                                'pop', 'popleft'])
 
+DequeManager.register('DictProxy', DictProxy,
+                      exposed=['__str__', '__contains__', '__getitem__', '__setitem__', '__len__', 'keys', 'values'])
+
 
 class Op:
     """A wrapper class for passing data to the MPProcessor class via a deque
