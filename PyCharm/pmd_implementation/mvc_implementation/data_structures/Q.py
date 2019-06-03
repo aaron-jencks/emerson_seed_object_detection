@@ -34,6 +34,33 @@ class DequeProxy(object):
         return self.deque.popleft()
 
 
+class DictProxy(object):
+    def __init__(self, *args):
+        self.d = dict(*args)
+
+    def __getitem__(self, item):
+        if item in self.d:
+            return self.d[item]
+
+    def __setitem__(self, key, value):
+        self.d[key] = value
+
+    def __str__(self):
+        return str(self.d)
+
+    def __contains__(self, item):
+        return item in self.d
+
+    def __len__(self):
+        return len(self.d)
+
+    def keys(self):
+        return self.d.keys()
+
+    def values(self):
+        return self.d.values()
+
+
 DequeManager.register('DequeProxy', DequeProxy,
                       exposed=['__str__', '__contains__', '__len__', 'append', 'appendleft',
                                'pop', 'popleft'])
