@@ -5,6 +5,9 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="pmd_implementation.data_structures.Q.DequeManager.DequeProxy" />
+          <option value="PyQt5.QtCore.pyqtSignal.*" />
+          <option value="mvc_implementation.data_structures.transitions_state_machine.SocketedStateMachine.rcv" />
+          <option value="mvc_implementation.data_structures.transitions_state_machine.StateMachine.get_graph" />
         </list>
       </option>
     </inspection_tool>

@@ -1,5 +1,6 @@
 from mvc_implementation.data_structures.state_machine import SocketedStateMachine, JMsg
 from mvc_implementation.display_util.display_util import *
+from mvc_implementation.dependencies.display_util.dialogue import get_yes_no, get_filename, get_text
 
 import pyximport; pyximport.install()
 import mvc_implementation.data_util.cy_scatter as ct
@@ -23,8 +24,11 @@ class DisplayWindow(QMainWindow):
 
 class BetterDisplayMachine(SocketedStateMachine):
 
-    def __init__(self, app: QApplication):
-        super().__init__()
+    def __init__(self, app: QApplication, **kwargs):
+        super().__init__(**kwargs)
+
+        # self.state_exec_mgr.use_idle_state = False
+
         self.app = app
         self.window = QMainWindow()
         self.grid = QGridLayout()
@@ -56,6 +60,8 @@ class BetterDisplayMachine(SocketedStateMachine):
         self.states['create_text_entry'] = self.create_line_edit
         self.states['create_slider'] = self.create_slider
         self.states['create_widget'] = self.create_widget
+        self.states['yes/no'] = self.dialog_yes_no
+        self.states['file_dialog'] = self.dialog_filename
 
         # endregion
 
@@ -71,6 +77,8 @@ class BetterDisplayMachine(SocketedStateMachine):
     def set_title(self, data: str):
         """Changes the window title"""
         self.window.setWindowTitle(data)
+
+    # region Window control creation
 
     def __create_widget(self, widg: QWidget, data: dict):
         """Creates a new widget object"""
@@ -119,6 +127,18 @@ class BetterDisplayMachine(SocketedStateMachine):
 
     # endregion
 
+    def dialog_yes_no(self, data: dict):
+        """Shows a dialog box and prompts the user for a yes/no question, puts a signal based on the response"""
+        resp = get_yes_no(data['prompt'], data['description'], data['detailed_text'], parent=self.window)
+
+        self.tx.put(JMsg('yes_no_dialog_response', resp))
+
+    def dialog_filename(self, data: dict):
+        """Shows a file dialog and prompts the user to select an existing file on their computer"""
+        file = get_filename(data['prompt'], data['start_directory'], data['valid_files'], parent=self.window)
+
+        self.tx.put(JMsg('file_dialog_response', file))
+
 
 class PointCloudDisplayMachine(BetterDisplayMachine):
     
@@ -128,10 +148,8 @@ class PointCloudDisplayMachine(BetterDisplayMachine):
     depth_slider_scale = 100
     depth_scale_max = 4
     
-    tx = pyqtSignal([JMsg])
-    
-    def __init__(self, app: QApplication):
-        super().__init__(app)
+    def __init__(self, app: QApplication, **kwargs):
+        super().__init__(app, **kwargs)
 
         self.roi = None
         
@@ -142,7 +160,7 @@ class PointCloudDisplayMachine(BetterDisplayMachine):
         self.states['update_slider_callback_sliderReleased'] = self.update_slider_callback_sliderReleased
         self.states['update_widget_alignment'] = self.update_widget_alignment
         self.states['update_label_text'] = self.update_label_text
-        self.states['point_cloud_iniitalize'] = self.dmp_init
+        self.states['point_cloud_initialize'] = self.dmp_init
         self.states['image_initialize'] = self.img_init
         self.states['roi'] = self.insert_roi
         self.states['process_roi'] = self.process_roi
@@ -150,82 +168,7 @@ class PointCloudDisplayMachine(BetterDisplayMachine):
         self.states['display_cloud'] = self.display_cloud
 
         self.append_states([
-
-            # region Sets up the roi and exit buttons
-
-            ('create_button', get_text_widg_dict('roi', 'roi_btn', 0, 1, col_span=3,
-                                                 tip='Create a new <b>ROI</b> (region of interest)' +
-                                                     ' or edit the current one.')),
-            #
-            # ('create_button',
-            #                            get_text_widg_dict('Exit', 'exit_btn', 2, 1, 'Exit the program')))
-            # self.widgets['exit_btn'].clicked.connect(self.stop)
-
-            # endregion
-
-            # region Sets up the colormap sliders
-
-            ('create_label', get_text_widg_dict('Max', 'cmap_max_lbl', 4, 1)),
-            ('create_slider', get_slider_widg_dict(Qt.Vertical, 'cmap_max', 5, 1,
-                                                   tip='Adjusts the upper saturation limit of the colormap')),
-            ('create_label', get_text_widg_dict('3.0 m', 'cmap_max_lbl_val', 6, 1)),
-
-            ('create_label', get_text_widg_dict('Mid', 'cmap_mid_lbl', 4, 2)),
-            ('create_slider', get_slider_widg_dict(Qt.Vertical, 'cmap_mid', 5, 2,
-                                                   tip='Adjusts the mid-point of the colormap')),
-            ('create_label', get_text_widg_dict('1.5 m', 'cmap_mid_lbl_val', 6, 2)),
-
-            ('create_label', get_text_widg_dict('Min', 'cmap_min_lbl', 4, 3)),
-            ('create_slider', get_slider_widg_dict(Qt.Vertical, 'cmap_min', 5, 3,
-                                                   tip='Adjusts the lower saturation limit of the colormap')),
-            ('create_label', get_text_widg_dict('0.0 m', 'cmap_min_lbl_val', 6, 3)),
-
-            ('create_label', get_text_widg_dict('Depth Scale: {} x'.format(self.depth_scale_max >> 1),
-                                                'dmp_scale_lbl', 7, 0)),
-
-            ('create_slider', get_slider_widg_dict(Qt.Horizontal, 'dmp_scale', 6, 0)),
-
-            ('create_label', get_text_widg_dict('Max', 'cmap_max_lbl', 4, 1)),
-            ('create_slider', get_slider_widg_dict(Qt.Vertical, 'cmap_max', 5, 1,
-                                                   tip='Adjusts the upper saturation limit of the colormap')),
-            ('create_label', get_text_widg_dict('3.0 m', 'cmap_max_lbl_val', 6, 1)),
-
-            ('create_label', get_text_widg_dict('Mid', 'cmap_mid_lbl', 4, 2)),
-            ('create_slider', get_slider_widg_dict(Qt.Vertical, 'cmap_mid', 5, 2,
-                                                   tip='Adjusts the mid-point of the colormap')),
-            ('create_label', get_text_widg_dict('1.5 m', 'cmap_mid_lbl_val', 6, 2)),
-
-            ('create_label', get_text_widg_dict('Min', 'cmap_min_lbl', 4, 3)),
-            ('create_slider', get_slider_widg_dict(Qt.Vertical, 'cmap_min', 5, 3,
-                                                   tip='Adjusts the lower saturation limit of the colormap')),
-            ('create_label', get_text_widg_dict('0.0 m', 'cmap_min_lbl_val', 6, 3)),
-
-            ('create_label', get_text_widg_dict('Depth Scale: {} x'.format(self.depth_scale_max >> 1),
-                                                'dmp_scale_lbl', 7, 0)),
-            ('create_slider', get_slider_widg_dict(Qt.Horizontal, 'dmp_scale', 6, 0)),
-
-            # endregion
-
-            # region Sets up the depth data labels
-
-            ('create_label', get_text_widg_dict('Average depth: 0.0 m', 'dmp_avg_lbl', 1, 1, 1, 3)),
-            ('create_label', get_text_widg_dict('Minimum depth: 0.0 m', 'dmp_min_lbl', 2, 1, 1, 3)),
-            ('create_label', get_text_widg_dict('Maximum depth: 0.0 m', 'dmp_max_lbl', 3, 1, 1, 3)),
-
-            # endregion
-
-            # region Sets up the plots
-
-            ('create_label', get_text_widg_dict('Grayscale', 'img_lbl', 0, 0)),
             ('create_widget', get_custom_widg_dict(pg.ImageView, 'img', 1, 0, 3, 1)),
-
-            # ('create_label',
-            #                                 get_text_widg_dict('Depth Image', 'dimg_lbl', 0, 1)))
-            # args = get_custom_widg_dict(pg.ImageView, 'dimg', 1, 1, 1, 3)
-            # ('create_widget',
-            #                                 args))
-
-            ('create_label', get_text_widg_dict('Point Cloud', 'dmp_lbl', 4, 0)),
             ('create_widget', get_custom_widg_dict(pgl.GLViewWidget, 'dmp', 5, 0)),
 
             # endregion
@@ -238,90 +181,150 @@ class PointCloudDisplayMachine(BetterDisplayMachine):
 
         ])
 
+        # region Sets up the roi and exit buttons
+
+        self.create_button(get_text_widg_dict('roi', 'roi_btn', 0, 1, col_span=3,
+                                              tip='Create a new <b>ROI</b> (region of interest)' +
+                                                  ' or edit the current one.')),
+        #
+        # ('create_button',
+        #                            get_text_widg_dict('Exit', 'exit_btn', 2, 1, 'Exit the program')))
+        # self.widgets['exit_btn'].clicked.connect(self.stop)
+
+        # endregion
+
+        # region Sets up the colormap sliders
+
+        self.create_label(get_text_widg_dict('Max', 'cmap_max_lbl', 4, 1))
+        self.create_slider(get_slider_widg_dict(Qt.Vertical, 'cmap_max', 5, 1,
+                                                tip='Adjusts the upper saturation limit of the colormap'))
+        self.create_label(get_text_widg_dict('3.0 m', 'cmap_max_lbl_val', 6, 1))
+
+        self.create_label(get_text_widg_dict('Mid', 'cmap_mid_lbl', 4, 2))
+        self.create_slider(get_slider_widg_dict(Qt.Vertical, 'cmap_mid', 5, 2,
+                                                tip='Adjusts the mid-point of the colormap'))
+        self.create_label(get_text_widg_dict('1.5 m', 'cmap_mid_lbl_val', 6, 2))
+
+        self.create_label(get_text_widg_dict('Min', 'cmap_min_lbl', 4, 3))
+        self.create_slider(get_slider_widg_dict(Qt.Vertical, 'cmap_min', 5, 3,
+                                                tip='Adjusts the lower saturation limit of the colormap'))
+        self.create_label(get_text_widg_dict('0.0 m', 'cmap_min_lbl_val', 6, 3))
+
+        self.create_label(get_text_widg_dict('Depth Scale: {} x'.format(self.depth_scale_max >> 1),
+                                             'dmp_scale_lbl', 7, 0))
+
+        self.create_slider(get_slider_widg_dict(Qt.Horizontal, 'dmp_scale', 6, 0))
+
+        self.create_label(get_text_widg_dict('Max', 'cmap_max_lbl', 4, 1))
+        self.create_slider(get_slider_widg_dict(Qt.Vertical, 'cmap_max', 5, 1,
+                                                tip='Adjusts the upper saturation limit of the colormap'))
+        self.create_label(get_text_widg_dict('3.0 m', 'cmap_max_lbl_val', 6, 1))
+
+        self.create_label(get_text_widg_dict('Mid', 'cmap_mid_lbl', 4, 2))
+        self.create_slider(get_slider_widg_dict(Qt.Vertical, 'cmap_mid', 5, 2,
+                                                tip='Adjusts the mid-point of the colormap'))
+        self.create_label(get_text_widg_dict('1.5 m', 'cmap_mid_lbl_val', 6, 2))
+
+        self.create_label(get_text_widg_dict('Min', 'cmap_min_lbl', 4, 3))
+        self.create_slider(get_slider_widg_dict(Qt.Vertical, 'cmap_min', 5, 3,
+                                                tip='Adjusts the lower saturation limit of the colormap'))
+        self.create_label(get_text_widg_dict('0.0 m', 'cmap_min_lbl_val', 6, 3))
+
+        self.create_label(get_text_widg_dict('Depth Scale: {} x'.format(self.depth_scale_max >> 1),
+                                             'dmp_scale_lbl', 7, 0))
+        self.create_slider(get_slider_widg_dict(Qt.Horizontal, 'dmp_scale', 6, 0))
+
+        # endregion
+
+        # region Sets up the depth data labels
+
+        self.create_label(get_text_widg_dict('Average depth: 0.0 m', 'dmp_avg_lbl', 1, 1, 1, 3))
+        self.create_label(get_text_widg_dict('Minimum depth: 0.0 m', 'dmp_min_lbl', 2, 1, 1, 3))
+        self.create_label(get_text_widg_dict('Maximum depth: 0.0 m', 'dmp_max_lbl', 3, 1, 1, 3))
+
+        # endregion
+
+        # region Sets up the plots
+
+        self.create_label(get_text_widg_dict('Grayscale', 'img_lbl', 0, 0))
+
+        self.create_label(get_text_widg_dict('Point Cloud', 'dmp_lbl', 4, 0))
+
         self.scatter = pgl.GLScatterPlotItem(pos=np.zeros(shape=(307200, 3), dtype=float), size=3)
         self.img_item = pg.ImageItem()
 
         self.append_states(['point_cloud_initialize', 'image_initialize'])
 
-        # region Hooks up the slider bars
+        # region Colormap sliders
 
-        # Max bar
+        self.update_slider_callback_valueChanged({
+            'name': 'cmap_max',
+            'method': lambda v:
+            self.append_states([('update_label_text', {'name': 'cmap_max_lbl_val',
+                                                       'value': '{} m'.format(round(v / self.slider_scale, 3))})])
+        })
+        self.update_slider_callback_sliderReleased({
+            'name': 'cmap_max',
+            'method': lambda: self.tx.put('slider cmap_max value', self.widgets['cmap_max'].value())
+        })
+
+        self.update_slider_callback_valueChanged({
+            'name': 'cmap_mid',
+            'method': lambda v:
+            self.append_states([('update_label_text', {'name': 'cmap_mid_lbl_val',
+                                                       'value': '{} m'.format(round(v / self.slider_scale, 3))})])
+        })
+        self.update_slider_callback_sliderReleased({
+            'name': 'cmap_mid',
+            'method': lambda: self.tx.put('slider cmap_mid value', self.widgets['cmap_mid'].value())
+        })
+
+        self.update_slider_callback_valueChanged({
+            'name': 'cmap_min',
+            'method': lambda v:
+            self.append_states([('update_label_text', {'name': 'cmap_min_lbl_val',
+                                                       'value': '{} m'.format(round(v / self.slider_scale, 3))})])
+        })
+        self.update_slider_callback_sliderReleased({
+            'name': 'cmap_min',
+            'method': lambda: self.tx.put('slider cmap_min value', self.widgets['cmap_min'].value())
+        })
+
+        # endregion
+
+        self.update_slider_callback_valueChanged({
+            'name': 'dmp_scale',
+            'method': lambda v:
+            self.widgets['dmp_scale_lbl'].setText('Depths Scale: {} x'.format(round(v / self.depth_slider_scale,
+                                                                                    3)))
+        })
+        self.update_slider_callback_sliderReleased({
+            'name': 'dmp_scale',
+            'method': lambda: self.tx.put('slider dmp_scale value', self.widgets['dmp_scale'].value())
+        })
+
         self.append_states([
-            
-            # region Sets up the callback functions for the sliders
-            
-            ('update_slider_callback_valueChanged', 
-             {
-                 'name': 'cmap_max', 
-                 'method': lambda v: 
-                 self.append_states([('update_label_text', {'name': 'cmap_max_lbl_val',
-                                                            'value': '{} m'.format(round(v / self.slider_scale, 3))})])
-             }),
-            ('update_slider_callback_sliderReleased',
-             {
-                 'name': 'cmap_max',
-                 'method': lambda: self.tx.emit('slider cmap_max value', self.widgets['cmap_max'].value())
-             }),
-            
-            ('update_slider_callback_valueChanged',
-             {
-                 'name': 'cmap_mid',
-                 'method': lambda v:
-                 self.append_states([('update_label_text', {'name': 'cmap_mid_lbl_val',
-                                                            'value': '{} m'.format(round(v / self.slider_scale, 3))})])
-             }),
-            ('update_slider_callback_sliderReleased',
-             {
-                 'name': 'cmap_mid',
-                 'method': lambda: self.tx.emit('slider cmap_mid value', self.widgets['cmap_mid'].value())
-             }),
-            
-            ('update_slider_callback_valueChanged',
-             {
-                 'name': 'cmap_min',
-                 'method': lambda v:
-                 self.append_states([('update_label_text', {'name': 'cmap_min_lbl_val',
-                                                            'value': '{} m'.format(round(v / self.slider_scale, 3))})])
-             }),
-            ('update_slider_callback_sliderReleased',
-             {
-                 'name': 'cmap_min',
-                 'method': lambda: self.tx.emit('slider cmap_min value', self.widgets['cmap_min'].value())
-             }),
 
-            ('update_slider_callback_valueChanged',
-             {
-                 'name': 'dmp_scale',
-                 'method': lambda v:
-                 self.widgets['dmp_scale_lbl'].setText('Depths Scale: {} x'.format(round(v / self.depth_slider_scale, 
-                                                                                         3)))
-             }),
-            ('update_slider_callback_sliderReleased',
-             {
-                 'name': 'dmp_scale',
-                 'method': lambda: self.tx.emit('slider dmp_scale value', self.widgets['dmp_scale'].value())
-             }),
-            
-            # endregion
-            
             # region Sets the depth scale slider range and value
-            
+
             ('update_slider_range',
              {
                  'name': 'dmp_scale',
-                 'value': (1 * self.depth_slider_scale, self.depth_slider_scale_max * self.depth_slider_scale)
+                 'value': (1 * self.depth_slider_scale, self.depth_scale_max * self.depth_slider_scale)
              }),
-            
+
             ('update_slider_value',
              {
                  'name': 'dmp_scale',
                  'value': self.depth_scale_max >> 1
              })
-            
+
             # endregion
         ])
 
-        # endregion
+        self.window.show()
+
+        print('Finished setting up the window')
 
     def reset_status(self):
         self.window.statusBar().showMessage('Ready')
@@ -340,9 +343,9 @@ class PointCloudDisplayMachine(BetterDisplayMachine):
         if self.roi is not None:
             roi_coords = self.roi.getArrayRegion(ct.get_roi_coords_matrix(img.shape[0], img.shape[1]),
                                                  self.img_item)
-            self.tx.emit(JMsg('enable_roi', roi_coords))
+            self.tx.put(JMsg('enable_roi', roi_coords))
         else:
-            self.tx.emit(JMsg('disable_roi'))
+            self.tx.put(JMsg('disable_roi'))
 
     def img_init(self):
         self.widgets['img'].addItem(self.img_item)
@@ -354,6 +357,8 @@ class PointCloudDisplayMachine(BetterDisplayMachine):
         self.scatter.setGLOptions('opaque')
         widg.pan(-320, -240, 0)
         widg.setCameraPosition(distance=1746, elevation=43, azimuth=-479)
+
+    # region Control update
 
     def update_label_text(self, data: dict):
         name = data['name']
@@ -369,24 +374,25 @@ class PointCloudDisplayMachine(BetterDisplayMachine):
         name = data['name']
         cb = data['method']
         self.widgets[name].sliderReleased.connect(cb)
-        self.tx.emit(JMsg('slider ' + name + ' sliderReleased', cb))
+        self.tx.put(JMsg('slider ' + name + ' sliderReleased'))
         
     def update_slider_callback_valueChanged(self, data: dict):
         name = data['name']
         cb = data['method']
         self.widgets[name].valueChanged.connect(cb)
-        self.tx.emit(JMsg('slider ' + name + ' valueChanged', cb))
+        self.tx.put(JMsg('slider ' + name + ' valueChanged'))
         
     def update_slider_range(self, data: dict):
         name = data['name']
-        mn = data['min']
-        mx = data['max']
+        mn = data['value'][0]
+        mx = data['value'][1]
         self.widgets[name].setRange(mn, mx)
-        self.tx.emit(JMsg('slider ' + name + ' range', (mn, mx)))
+        self.tx.put(JMsg('slider ' + name + ' range', (mn, mx)))
 
     def update_slider_val(self, data: dict):
         name = data['name']
         value = data['value']
         self.widgets[name].setValue(value)
-        self.tx.emit(JMsg('slider ' + name + ' value', value))
+        self.tx.put(JMsg('slider ' + name + ' value', value))
 
+    # endregion

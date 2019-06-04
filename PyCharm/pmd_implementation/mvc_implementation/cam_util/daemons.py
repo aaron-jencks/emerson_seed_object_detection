@@ -3,10 +3,13 @@ from PyQt5.QtCore import pyqtSignal
 from mvc_implementation.data_structures.state_machine import ThreadedSocketedStateMachine, JMsg
 from mvc_implementation.cam_util.cam_ctrl_util import PMDCam, RealsenseCam
 
+import multiprocessing as mp
+import time
+
 
 class CamCtrl(ThreadedSocketedStateMachine):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self, tx_q: mp.Queue, rx_q: mp.Queue, parent=None):
+        super().__init__(tx_q, rx_q, parent)
 
         self.pmd = True
         self.cam = None
@@ -37,8 +40,8 @@ class CamCtrl(ThreadedSocketedStateMachine):
     def height(self):
         return self.resolution[1] if self.resolution is not None else -1
 
-    def update_filename(self):
-        self.file = self.data.data
+    def update_filename(self, data: str):
+        self.file = data
 
     def find_cam(self):
         """Finds a hardware camera to use, if pmd is True, then finds a pmd camera, otherwise,
@@ -68,11 +71,13 @@ class CamCtrl(ThreadedSocketedStateMachine):
         if self.cam is not None and self.cam.isCapturing:
             frames = self.cam.get_frame()
             if frames is not None:
-                self.tx.emit(JMsg('frame_update', frames))
+                self.tx.put(JMsg('frame_update', frames))
+        else:
+            time.sleep(0.5)
 
-    def configure_cam(self):
+    def configure_cam(self, data):
         if not self.pmd:
-            self.configuration = self.data.data if self.data.data is not None else self.configuration
+            self.configuration = data if data is not None else self.configuration
 
             self.__configure_cam()
 

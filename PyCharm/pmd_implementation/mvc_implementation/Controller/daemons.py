@@ -1,17 +1,23 @@
-from mvc_implementation.data_structures.state_machine import ThreadedSocketedStateMachine, JMsg
+from mvc_implementation.data_structures.transitions_state_machine import SocketedStateMachine, JMsg
 from mvc_implementation.display_util.daemons import PointCloudDisplayMachine
 from mvc_implementation.cam_util.daemons import CamCtrl
 from mvc_implementation.data_util.daemons import DataDaemon
 
 from mvc_implementation.dependencies.display_util.string_display_util import *
+from mvc_implementation.display_util.display_util import get_yn_dialog_dict, get_file_dialog_dict
 
 import pyqtgraph as pg
 
 import pyximport; pyximport.install()
 import mvc_implementation.data_util.cy_scatter as ct
 
+import sys
+import traceback
 
-class Controller(ThreadedSocketedStateMachine):
+import multiprocessing as mp
+
+
+class Controller(SocketedStateMachine):
     """Used to separate all of the different modules from the main GUI Thread."""
 
     slider_scale = 1000
@@ -20,8 +26,10 @@ class Controller(ThreadedSocketedStateMachine):
     depth_slider_scale = 100
     depth_scale_max = 4
 
-    def __init__(self, disp_mgr: PointCloudDisplayMachine):
-        super().__init__()
+    def __init__(self, disp_mgr: PointCloudDisplayMachine, **kwargs):
+        super().__init__(**kwargs)
+
+        # self.state_exec_mgr.use_idle_state = False
 
         self.pmd = False
         self.full = False
@@ -53,26 +61,69 @@ class Controller(ThreadedSocketedStateMachine):
         self.states['enable_roi'] = self.set_roi_coords
         self.states['disable_roi'] = self.unset_roi_coords
         self.states['init_sliders'] = self.init_sliders
+        self.states['yes_no_dialog_response'] = self.recording_prompt_response
+        self.states['file_dialog_response'] = self.recording_file_response
 
         # region Sets up the socket  connections
 
         self.disp_mgr = disp_mgr
-        self.disp_ctrl = self.disp_mgr.update.emit
-        self.disp_mgr.tx.connect(self.rx)
+        self.disp_ctrl = self.disp_mgr.rx.put
+        self.rx = self.disp_mgr.tx
+        # self.disp_mgr.tx.connect(self.rx)
 
-        self.cam_mgr = CamCtrl()
-        self.cam_ctrl = self.cam_mgr.rx.emit
-        self.cam_mgr.tx.connect(self.rx)
+        self.cam_tx_q = mp.Queue()
+        self.cam_rx_q = mp.Queue()
+        self.cam_mgr = CamCtrl(self.rx, self.cam_rx_q)
+        self.cam_ctrl = self.cam_mgr.rx.put
+        # self.cam_mgr.tx.connect(self.rx)
         self.cam_mgr.start()
 
-        self.data_mgr = DataDaemon()
-        self.data_ctrl = self.data_mgr.rx.emit
-        self.data_mgr.tx.connect(self.rx)
+        self.data_rx_q = mp.Queue()
+        self.data_mgr = DataDaemon(tx_q=self.rx, rx_q=self.data_rx_q)
+        self.data_ctrl = self.data_rx_q.put
+        # self.data_mgr.tx.connect(self.rx)
         self.data_mgr.start()
 
         # endregion
 
         self.append_states(['init_cam', 'init_sliders', 'update_roi'])
+
+    def init_states(self):
+        self.states.extend([
+            'frame update',
+            'process frame',
+            'process update',
+            'buffer status update',
+            'slider value update',
+            'roi status update',
+            'roi value update',
+            'yes/no dialog response',
+            'file dialog response'
+        ])
+
+        self.transitions.extend([
+            {'trigger': 'frame_update', 'source': 'receive message', 'dest': 'frame update', 'after': 'process_frame'},
+
+            {'trigger': 'process_depth', 'source': 'frame update', 'dest': 'process frame',
+             'after': 'send_coords_to_proc'},
+
+            {'trigger': 'processor_update', 'source': 'receive message', 'dest': 'process update',
+             'after': 'cloud_update'},
+
+            {'trigger': 'buffer_status', 'source': 'receive message', 'dest': 'buffer status update',
+             'after': 'buffer_status_update'},
+
+            {'trigger': 'slider_value_update', 'source': 'receive message', 'dest': 'slider value update',
+             'after': 'slider_update'},
+
+            {'trigger': 'roi_status_update', 'source': 'receive message', 'dest': 'roi status update',
+             'after': 'roi_status'},
+        ])
+
+    def buffer_status_update(self, status: bool):
+        self.full = status
+
+    # TODO Remove
 
     def flag_buffer(self):
         self.full = True
@@ -80,7 +131,7 @@ class Controller(ThreadedSocketedStateMachine):
     def unflag_buffer(self):
         self.full = False
 
-    def frame_update(self, frames):
+    def process_frame(self, frames):
         if frames is None:
             print_warning("Trying to display empty frame")
 
@@ -95,7 +146,7 @@ class Controller(ThreadedSocketedStateMachine):
             else:
                 self.append_states(['disable_roi'])
 
-            self.send_coords_to_proc(depth)
+            self.process_depth(depth)
             if self.prev_skipped:
                 print()
                 self.prev_skipped = False
@@ -136,6 +187,18 @@ class Controller(ThreadedSocketedStateMachine):
     # TODO set_slider_limits after cmap is updated for any of them
 
     # region Colormap states
+
+    def slider_update(self, data: dict):
+        name = data['name']
+        value = data['value']
+        if name == 'cmap_min':
+            self.set_low(value)
+        elif name == 'cmap_mid':
+            self.set_mid(value)
+        elif name == 'cmap_max':
+            self.set_up(value)
+        else:
+            self.set_scale(value)
         
     def set_low(self, value: float):
         self.cmap_low = value
@@ -170,7 +233,6 @@ class Controller(ThreadedSocketedStateMachine):
             self.disp_ctrl(JMsg('status', "Enabling ROI"))
             self.use_roi = True
             if self.roi is None:
-                # TODO Maybe move this to the display_util daemon, just pass it an array of numbers
                 points = [[10, 10], [20, 200], [100, 300], [300, 100]]
 
                 self.disp_ctrl(JMsg('roi', points))
@@ -214,7 +276,33 @@ class Controller(ThreadedSocketedStateMachine):
 
         if not self.pmd:
             self.cam_ctrl(JMsg('configure_cam', {'ir_stream': {}, 'depth_stream': {}}))
-        self.cam_ctrl(JMsg('start_cam'))
+
+        try:
+            self.cam_ctrl(JMsg('start_cam'))
+        except Exception as e:
+            et, ev, tb = sys.exc_info()
+            exc = "Exception was thrown: {}\n".format(e)
+            for l in traceback.format_exception(et, ev, tb):
+                exc += l
+            print_warning(exc)
+            self.disp_ctrl(JMsg('yes/no', get_yn_dialog_dict(
+                'No Cameras found! Would you like to open a recording instead?')))
+
+    def recording_prompt_response(self, response: bool):
+        if response:
+            self.disp_ctrl(JMsg('file_dialog', get_file_dialog_dict('Select a recording',
+                                                                    valid_files='Royale Recording Files (*.rrf)'
+                                                                    if self.pmd else
+                                                                    'Realsense Recording Files (*.bak)')))
+        else:
+            print_notification('Trying to open camera, again.')
+            self.append_states(['init_cam'])
+
+    def recording_file_response(self, filename: str):
+        self.cam_ctrl('filename', filename)
+        print_notification('Opening recording file')
+        self.disp_ctrl('status', 'Opening recording file')
+        self.append_states(['init_cam'])
 
     def change_cam_type(self):
         self.cam_ctrl(JMsg('pmd_update', self.pmd))

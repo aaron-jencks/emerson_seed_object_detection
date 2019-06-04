@@ -186,7 +186,7 @@ class DepthAverager(QThread, StateMachine):
                                                               img_disp.getImageItem())
                     self.data_proc.rx.emit(JMsg('enable_roi', self.roi_coords))
 
-            else:
+            elif self.roi_coords is not None:
                 self.data_proc.rx.emit(JMsg('disable_roi'))
 
             self.data_proc.rx.emit(JMsg('frame', depth))

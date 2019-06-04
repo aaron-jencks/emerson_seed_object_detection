@@ -8,8 +8,10 @@ class DataDaemon(ThreadedSocketedStateMachine):
 
     buffer_limit = 10
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        # self.state_exec_mgr.use_idle_state = False
 
         self.full = False
 
@@ -36,4 +38,4 @@ class DataDaemon(ThreadedSocketedStateMachine):
         colors = ct.create_color_data(result,
                                       parsing_data['cmap_low'], parsing_data['cmap_mid'], parsing_data['cmap_up'])
 
-        self.tx.emit(JMsg('process_update', {'vectors': result, 'colors': colors}))
+        self.tx.put(JMsg('process_update', {'vectors': result, 'colors': colors}))
