@@ -48,7 +48,6 @@ dependencies:
   - jupyter_console=5.2.0
   - jupyter_core=4.4.0
   - kiwisolver=1.0.1
-  - libglu=9.0.0
   - libopencv=3.4.2
   - libpng=1.6.37
   - libprotobuf=3.6.0
