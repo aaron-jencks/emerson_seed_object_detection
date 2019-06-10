@@ -160,5 +160,4 @@ dependencies:
     - pytesseract==0.2.6
     - roipoly==0.5.0
     - transitions==0.6.9
-prefix: /home/aaron/anaconda3/envs/royale
 
