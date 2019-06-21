@@ -96,7 +96,7 @@ if __name__ == "__main__":
 
                 frames = pipeline.wait_for_frames()
                 depth_frame = np.asanyarray(frames.get_depth_frame().get_data(), dtype=np.uint16)
-                color_frame = np.asanyarray(frames.get_color_frame().get_data())
+                color_frame = np.asanyarray(frames.get_color_frame().get_data(), dtype=np.uint8)
                 # depth_array = np.multiply(np.asanyarray(depth_frame.get_data()), 1)  # scale)
 
                 # depth_frame = np.dstack((depth_frame, depth_frame, depth_frame))
@@ -144,14 +144,14 @@ if __name__ == "__main__":
             print_notification("Saving file")
             color_writer = cv2.VideoWriter(os.path.join(out_dir, '{}_color.avi'.format(
                 os.path.splitext(file)[0].split('\\')[-1])), cv2.VideoWriter_fourcc(*'XVID'), 30, (1280, 720))
-            for f in tqdm(color_dq):
-                color_writer.write(color_frame)
+            for f in tqdm(range(len(color_dq))):
+                color_writer.write(color_dq.popleft())
             color_writer.release()
 
             depth_writer = cv2.VideoWriter(os.path.join(out_dir, '{}_depth.avi'.format(
                 os.path.splitext(file)[0].split('\\')[-1])), cv2.VideoWriter_fourcc(*'XVID'), 30, (848, 480))
-            for f in tqdm(color_dq):
-                depth_writer.write(depth_frame)
+            for f in tqdm(range(len(depth_dq))):
+                depth_writer.write(depth_dq.popleft())
             depth_writer.release()
 
         finally:
