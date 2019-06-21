@@ -113,15 +113,17 @@ cpdef convert_realsense(object frames, float[:, :] roi, int u, int b, int l, int
                     for c_j in prange(j, j + clumping, 1):
                         # temp = average(history, c_i, c_j)
 
-                        history_count = 0
-                        history_sum = 0
-                        for i_temp in range(1, history.shape[0]):
-                            history_sum = history_sum + history[i_temp, i, j]
-                            history_count = history_count + 1
-
-                        temp = history_sum / history_count
-
-                        rms_sum += temp * temp
+                        # history_count = 0
+                        # history_sum = 0
+                        # for i_temp in range(1, history.shape[0]):
+                        #     history_sum = history_sum + history[i_temp, i, j]
+                        #     history_count = history_count + 1
+                        #
+                        # temp = history_sum / history_count
+                        #
+                        # rms_sum += temp * temp
+                        # count += 1
+                        rms_sum += depth_image[i, j] * depth_image[i, j]
                         count += 1
 
                 # print("Actual clump: {}".format(sqrt(rms_sum / count)))
@@ -136,4 +138,4 @@ cpdef convert_realsense(object frames, float[:, :] roi, int u, int b, int l, int
 
     cdef double[:, :] norm = normal_distribution(std_dev[:std_index])
 
-    return np.asarray(history, dtype=float), np.asarray(roi), np.asarray(std_dev[:std_index])
+    return np.asarray(history, dtype=float), np.asarray(roi), np.asarray(std_dev[:std_index])  # std_dev[:std_index])

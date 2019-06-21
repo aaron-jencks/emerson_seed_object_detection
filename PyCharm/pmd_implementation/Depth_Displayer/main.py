@@ -163,7 +163,8 @@ if __name__ == "__main__":
             plot.axis('off')
 
             dist.clear()
-            dist.hist(np.multiply(norm, scale), range=(-1, 1), histtype='step')
+            dist.hist(np.multiply(norm, scale), histtype='step')
+            # dist.hist(norm[:, 1], histtype='step')
             # dist.hist(norm[:, 1])  # , range=(-5, 5))  # [:, 1])
 
             plt.draw()
