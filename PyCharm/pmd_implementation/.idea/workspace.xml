@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="00bfeffd-59c1-41cd-a576-5b86c13c510a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/labview_recorder/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/labview_recorder/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/Status.ctl" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/Status.ctl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/Untitled Project 1.lvlps" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/Untitled Project 1.lvlps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/Untitled Project 1.lvproj" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/Untitled Project 1.lvproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/timeout determiner.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/timeout determiner.vi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/viewer.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/viewer.vi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,10 +20,34 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/labview_recorder/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1700">
-              <caret line="121" column="40" lean-forward="true" selection-start-line="121" selection-start-column="40" selection-end-line="121" selection-end-column="40" />
+            <state relative-caret-position="688">
+              <caret line="151" column="102" selection-start-line="151" selection-start-column="102" selection-end-line="151" selection-end-column="102" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/labview_recorder/distribution.pyx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="20" column="39" selection-start-line="20" selection-start-column="39" selection-end-line="20" selection-end-column="39" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Depth_Displayer/cam_conversion.pyx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2125">
+              <caret line="126" column="34" selection-start-line="126" selection-start-column="34" selection-end-line="126" selection-end-column="34" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -50,7 +79,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
+            <state relative-caret-position="357">
               <caret line="24" selection-start-line="24" selection-end-line="24" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
@@ -74,7 +103,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Depth_Displayer/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1828">
+            <state relative-caret-position="153">
               <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
               <folding>
                 <element signature="e#0#59#0" expanded="true" />
@@ -236,8 +265,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Course" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -253,12 +280,6 @@
             <path>
               <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
               <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="cam_viewer" type="462c0819:PsiDirectoryNode" />
-              <item name="cam_util" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
               <item name="Depth_Displayer" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -270,19 +291,6 @@
             <path>
               <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
               <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="Depth_Displayer" type="462c0819:PsiDirectoryNode" />
-              <item name="dependencies" type="462c0819:PsiDirectoryNode" />
-              <item name="display_util" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="Depth_Displayer" type="462c0819:PsiDirectoryNode" />
-              <item name="Depth_Displayer" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
               <item name="labview_recorder" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -290,19 +298,6 @@
               <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
               <item name="labview_recorder" type="462c0819:PsiDirectoryNode" />
               <item name="dependencies" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="labview_recorder" type="462c0819:PsiDirectoryNode" />
-              <item name="dependencies" type="462c0819:PsiDirectoryNode" />
-              <item name="display_util" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="labview_recorder" type="462c0819:PsiDirectoryNode" />
-              <item name="labview_recorder" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
@@ -311,23 +306,14 @@
             </path>
             <path>
               <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="mvc_implementation" type="462c0819:PsiDirectoryNode" />
-              <item name="data_util" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
               <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
-            </path>
-            <path>
-              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
-              <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Course" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -503,7 +489,7 @@
     <frame x="-3528" y="-10" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18496802" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1913646" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -875,11 +861,31 @@
     <entry file="file://$PROJECT_DIR$/labview_recorder/dependencies/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/Depth_Displayer/cam_conversion.pyx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2125">
+          <caret line="126" column="34" selection-start-line="126" selection-start-column="34" selection-end-line="126" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/labview_recorder/dependencies/display_util/string_display_util.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <folding>
             <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -894,6 +900,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/labview_recorder/distribution.pyx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="20" column="39" selection-start-line="20" selection-start-column="39" selection-end-line="20" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Depth_Displayer/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#59#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/labview_recorder/test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -904,50 +930,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/labview_recorder/distribution.pyx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="13" column="23" selection-start-line="13" selection-start-column="23" selection-end-line="13" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Depth_Displayer/cam_conversion.pyx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="518">
-          <caret line="126" column="34" selection-start-line="126" selection-start-column="34" selection-end-line="126" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Depth_Displayer/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1828">
-          <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#59#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/labview_recorder/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1700">
-          <caret line="121" column="40" lean-forward="true" selection-start-line="121" selection-start-column="40" selection-end-line="121" selection-end-column="40" />
+        <state relative-caret-position="688">
+          <caret line="151" column="102" selection-start-line="151" selection-start-column="102" selection-end-line="151" selection-end-column="102" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
