@@ -10,17 +10,21 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
-		<Item Name="Averagers" Type="Folder">
-			<Item Name="Averager.lvclass" Type="LVClass" URL="../../Classes/Averager/Averager.lvclass"/>
-			<Item Name="Standard Averager.lvclass" Type="LVClass" URL="../../Classes/Standard Averager/Standard Averager.lvclass"/>
-			<Item Name="Standard RMS.lvclass" Type="LVClass" URL="../../Classes/Standard RMS/Standard RMS.lvclass"/>
-		</Item>
 		<Item Name="Data Manipulation" Type="Folder">
-			<Item Name="Filter 1D Array.vim" Type="VI" URL="../../Filter 1D Array.vim"/>
-			<Item Name="Filter 2D Array.vim" Type="VI" URL="../../Filter 2D Array.vim"/>
-			<Item Name="Filter Zeros.vim" Type="VI" URL="../../Filter Zeros.vim"/>
-			<Item Name="Flatten Multidimensional Array.vim" Type="VI" URL="../../Flatten Multidimensional Array.vim"/>
-			<Item Name="Resize Queue.vim" Type="VI" URL="../../Resize Queue.vim"/>
+			<Item Name="Arrays" Type="Folder">
+				<Item Name="Averagers" Type="Folder">
+					<Item Name="Averager.lvclass" Type="LVClass" URL="../../Classes/Averager/Averager.lvclass"/>
+					<Item Name="Standard Averager.lvclass" Type="LVClass" URL="../../Classes/Standard Averager/Standard Averager.lvclass"/>
+					<Item Name="Standard RMS.lvclass" Type="LVClass" URL="../../Classes/Standard RMS/Standard RMS.lvclass"/>
+				</Item>
+				<Item Name="Filter 1D Array.vim" Type="VI" URL="../../Filter 1D Array.vim"/>
+				<Item Name="Filter 2D Array.vim" Type="VI" URL="../../Filter 2D Array.vim"/>
+				<Item Name="Filter Zeros.vim" Type="VI" URL="../../Filter Zeros.vim"/>
+				<Item Name="Flatten Multidimensional Array.vim" Type="VI" URL="../../Flatten Multidimensional Array.vim"/>
+			</Item>
+			<Item Name="Queues" Type="Folder">
+				<Item Name="Resize Queue.vim" Type="VI" URL="../../Resize Queue.vim"/>
+			</Item>
 		</Item>
 		<Item Name="Frames" Type="Folder">
 			<Item Name="ROIed Video Frame.lvclass" Type="LVClass" URL="../../Classes/ROIed Video Frame/ROIed Video Frame.lvclass"/>
