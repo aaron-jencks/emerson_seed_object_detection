@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="00bfeffd-59c1-41cd-a576-5b86c13c510a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/Status.ctl" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/Status.ctl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/Untitled Project 1.lvlps" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/Untitled Project 1.lvlps" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/Untitled Project 1.lvproj" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/Untitled Project 1.lvproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/timeout determiner.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/timeout determiner.vi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/viewer.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Recording Viewer/viewer.vi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/labview_recorder/output.avi" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,7 +12,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/labview_recorder/main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="688">
@@ -29,10 +24,22 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/labview_recorder/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="561">
+                <caret line="33" column="25" lean-forward="true" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/labview_recorder/distribution.pyx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
+            <state relative-caret-position="323">
               <caret line="20" column="39" selection-start-line="20" selection-start-column="39" selection-end-line="20" selection-end-column="39" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
@@ -67,7 +74,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/labview_recorder/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
+            <state relative-caret-position="34">
               <caret line="3" column="24" selection-start-line="3" selection-start-column="24" selection-end-line="3" selection-end-column="24" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
@@ -197,7 +204,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/new/scratch.py" />
         <option value="$PROJECT_DIR$/display/qt.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/new/scratch_1.py" />
         <option value="$PROJECT_DIR$/pmd_implementation/dependencies/display_util/string_display_util.py" />
@@ -248,6 +254,7 @@
         <option value="$PROJECT_DIR$/Depth_Displayer/main.py" />
         <option value="$PROJECT_DIR$/Depth_Displayer/cam_conversion.pyx" />
         <option value="$PROJECT_DIR$/labview_recorder/main.py" />
+        <option value="$PROJECT_DIR$/labview_recorder/README.md" />
       </list>
     </option>
   </component>
@@ -312,8 +319,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Course" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -489,7 +496,7 @@
     <frame x="-3528" y="-10" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1913646" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19349681" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -604,7 +611,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/anaconda3/envs/royale_backup/lib/python3.5/site-packages/pyqtgraph/__init__.py" />
     <entry file="file://$PROJECT_DIR$/pmd_implementation/data_structures/sorting.pyx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
@@ -861,6 +867,26 @@
     <entry file="file://$PROJECT_DIR$/labview_recorder/dependencies/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/labview_recorder/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="688">
+          <caret line="151" column="102" selection-start-line="151" selection-start-column="102" selection-end-line="151" selection-end-column="102" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/labview_recorder/distribution.pyx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="20" column="39" selection-start-line="20" selection-start-column="39" selection-end-line="20" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Depth_Displayer/cam_conversion.pyx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2125">
@@ -876,6 +902,16 @@
         <state>
           <folding>
             <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/labview_recorder/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="3" column="24" selection-start-line="3" selection-start-column="24" selection-end-line="3" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -900,16 +936,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/labview_recorder/distribution.pyx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="20" column="39" selection-start-line="20" selection-start-column="39" selection-end-line="20" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Depth_Displayer/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -920,23 +946,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/labview_recorder/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="24" selection-start-line="3" selection-start-column="24" selection-end-line="3" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/labview_recorder/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="688">
-          <caret line="151" column="102" selection-start-line="151" selection-start-column="102" selection-end-line="151" selection-end-column="102" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
+    <entry file="file://$PROJECT_DIR$/labview_recorder/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="561">
+            <caret line="33" column="25" lean-forward="true" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
