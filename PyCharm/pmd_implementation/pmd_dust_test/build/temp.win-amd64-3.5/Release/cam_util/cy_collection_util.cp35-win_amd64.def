@@ -1,0 +1,3 @@
+LIBRARY cy_collection_util.cp35-win_amd64.pyd
+EXPORTS
+PyInit_cy_collection_util

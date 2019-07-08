@@ -2,6 +2,11 @@
 If you don't already have a `.bag` file convertor, then you need to go into `./python_code` and follow the installation
 instructions
 
+#####Codec
+
+You need to install the XVID codec, if you don't have it already, LabVIEW doesn't have access to it by default, you can 
+find it [here](https://www.xvid.com/download/)
+
 ##Execution
 Run the `depth_comparator.exe` file
 

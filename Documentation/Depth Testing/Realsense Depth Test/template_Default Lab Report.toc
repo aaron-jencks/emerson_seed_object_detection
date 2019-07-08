@@ -1,0 +1,20 @@
+\contentsline {section}{\numberline {1}Summary}{3}{section.1}% 
+\contentsline {section}{\numberline {2}Part 1}{3}{section.2}% 
+\contentsline {subsection}{\numberline {2.1}Setup}{3}{subsection.2.1}% 
+\contentsline {subsubsection}{\numberline {2.1.1}Materials}{3}{subsubsection.2.1.1}% 
+\contentsline {subsubsection}{\numberline {2.1.2}Our Setup}{4}{subsubsection.2.1.2}% 
+\contentsline {subsection}{\numberline {2.2}Process}{5}{subsection.2.2}% 
+\contentsline {subsection}{\numberline {2.3}Results}{6}{subsection.2.3}% 
+\contentsline {subsubsection}{\numberline {2.3.1}Discussion}{7}{subsubsection.2.3.1}% 
+\contentsline {paragraph}{Edge Smoothing}{7}{section*.2}% 
+\contentsline {paragraph}{The Average Depth is Proportional to the Terrain}{7}{section*.3}% 
+\contentsline {section}{\numberline {3}Part 2}{8}{section.3}% 
+\contentsline {subsection}{\numberline {3.1}Setup}{8}{subsection.3.1}% 
+\contentsline {subsubsection}{\numberline {3.1.1}Materials}{8}{subsubsection.3.1.1}% 
+\contentsline {subsubsection}{\numberline {3.1.2}Our Setup}{9}{subsubsection.3.1.2}% 
+\contentsline {subsection}{\numberline {3.2}Process}{10}{subsection.3.2}% 
+\contentsline {subsection}{\numberline {3.3}Results}{11}{subsection.3.3}% 
+\contentsline {subsubsection}{\numberline {3.3.1}Discussion}{13}{subsubsection.3.3.1}% 
+\contentsline {paragraph}{Error and Sensitivity Decrease as Depth Increases}{13}{section*.4}% 
+\contentsline {paragraph}{The Camera is Less Sensitive Near the Edges of the Field of View}{13}{section*.5}% 
+\contentsline {paragraph}{Depth Values Skew Linearly as Depth Increases}{13}{section*.6}% 

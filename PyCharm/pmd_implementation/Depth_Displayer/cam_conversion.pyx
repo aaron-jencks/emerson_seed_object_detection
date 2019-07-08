@@ -24,20 +24,16 @@ cdef int get_clump_j_coord(int j, int clumping):
     return j // clumping
 
 
-cdef double average(double[:, :, :] history, int i, int j) except -1:
-    # print("{} {}".format(i, j))
-    cdef double[:] s = history[:, i, j]
-
+cdef double average(double[:] s) except -1:
     return sum(s) / float(s.shape[0])
 
 
 @cython.boundscheck(False)
-cdef double[:, :] normal_distribution(double[:] pop):
+cdef double[:, :] normal_distribution(double[:] pop, double avg):
     """Calculates the standard deviation for this population"""
 
     cdef int p
     cdef double std_dev, dev_sum = 0, dev_temp
-    cdef double avg = sum(pop) / float(pop.shape[0])
 
     # Calculates the standard deviation
     for p in prange(pop.shape[0], nogil=True):
@@ -68,7 +64,7 @@ cpdef convert_realsense(object frames, float[:, :] roi, int u, int b, int l, int
     # depth_image = depth_image / depth_image.max()
 
     cdef int i, j, clump_index_i, clump_index_j, c_i, c_j, ret, i_temp
-    cdef double rms_sum, count, history_sum, history_count, temp
+    cdef double rms_sum, count, history_sum, history_count, temp, frame_avg
     cdef int width, height
 
     width = ceiling(depth_image.shape[0]  / clumping)
@@ -97,7 +93,6 @@ cpdef convert_realsense(object frames, float[:, :] roi, int u, int b, int l, int
 
 
     # print(np.asarray(history))
-
     for i in range(u, b, 1):  # , nogil=True):
         for j in range(l, r, 1):
 
@@ -111,31 +106,23 @@ cpdef convert_realsense(object frames, float[:, :] roi, int u, int b, int l, int
 
                 for c_i in prange(i, i + clumping, 1, nogil=True):
                     for c_j in prange(j, j + clumping, 1):
-                        # temp = average(history, c_i, c_j)
-
-                        # history_count = 0
-                        # history_sum = 0
-                        # for i_temp in range(1, history.shape[0]):
-                        #     history_sum = history_sum + history[i_temp, i, j]
-                        #     history_count = history_count + 1
-                        #
-                        # temp = history_sum / history_count
-                        #
-                        # rms_sum += temp * temp
-                        # count += 1
-                        rms_sum += depth_image[i, j] * depth_image[i, j]
-                        count += 1
+                        if depth_image[i, j] > 0:
+                            rms_sum += depth_image[i, j]  * depth_image[i, j]
+                            count += 1
 
                 # print("Actual clump: {}".format(sqrt(rms_sum / count)))
-                clump_array[clump_index_i, clump_index_j] = sqrt(rms_sum / count)
+                if count > 0:
+                    clump_array[clump_index_i, clump_index_j] = sqrt(rms_sum / count)
 
             std_dev[std_index] = clump_array[clump_index_i, clump_index_j]
             std_index += 1
 
-            temp = float(int(clump_array[clump_index_i, clump_index_j] // depth_clumping) % 2) * 255
+            temp = clump_array[clump_index_i, clump_index_j]  # // depth_clumping) % 2) * 255
             # print("Result {}".format(temp))
             roi[i - u, j - l] = temp
 
-    cdef double[:, :] norm = normal_distribution(std_dev[:std_index])
+    cdef double[:] adj_pop = std_dev[:std_index]
+    frame_avg = average(adj_pop)
+    # cdef double[:, :] norm = normal_distribution(adj_pop, frame_avg)
 
-    return np.asarray(history, dtype=float), np.asarray(roi), np.asarray(std_dev[:std_index])  # std_dev[:std_index])
+    return np.asarray(history, dtype=float), np.asarray(roi), np.asarray(adj_pop), frame_avg  # std_dev[:std_index])
