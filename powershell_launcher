@@ -1,0 +1,5 @@
+conda activate test
+cd C:\Users\aaron.jencks\Documents\GitHub\emerson_seed_object_detection\PyCharm\pmd_implementation\Depth_Displayer
+$CondaEnvPath = 'C:\Users\aaron.jencks\AppData\Local\Continuum\anaconda3\envs'
+$conda = $CondaEnvPath + '\test\python.exe'
+& $conda main.py
