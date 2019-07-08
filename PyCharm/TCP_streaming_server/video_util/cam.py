@@ -4,14 +4,13 @@ import video_util.cy_collection_util as cu
 
 
 class Cam:
-    def __init__(self, disp_parent=None, filename: str = ""):
+    def __init__(self, filename: str = ""):
         self.cap = None
         self.isConnected = False
         self.isCapturing = False
         self.halt = False  # Used for looping while repeatedly trying to connect to the camera
         self.resolution = None
         self.file = filename
-        self.parent = disp_parent
 
     def connect(self):
         """Connects to the hardware camera"""
@@ -39,8 +38,8 @@ class Cam:
 
 
 class RealsenseCam(Cam):
-    def __init__(self, disp_parent=None, filename: str = ""):
-        super().__init__(disp_parent, filename)
+    def __init__(self, filename: str = ""):
+        super().__init__(filename)
 
         self.pipeline = rs.pipeline(rs.context())
         self.config = rs.config()
