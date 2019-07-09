@@ -18,3 +18,8 @@ class VideoStream:
     def get_dict(self) -> dict:
         """Returns this object as a dictionary"""
         return {'name': self.name, 'resolution': self.resolution, 'fps': self.fps, 'dtype': self.dtype.value}
+
+    @staticmethod
+    def from_dict(d: dict):
+        """Creates an instance of this class from a dictionary"""
+        return VideoStream(d['name'], d['resolution'], d['fps'], d['dtype'])

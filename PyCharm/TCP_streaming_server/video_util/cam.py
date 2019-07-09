@@ -44,7 +44,7 @@ class RealsenseCam(Cam):
         self.pipeline = rs.pipeline(rs.context())
         self.config = rs.config()
         self.resolution = (640, 480)
-        self.framerate = 30
+        self.framerate = 90
 
     def connect(self):
         if not self.isConnected:
@@ -79,6 +79,7 @@ class RealsenseCam(Cam):
 
                 return [frame, depth_frame]
             except RuntimeError as e:
+                print(e)
                 print("Something went wrong while trying to collect frame for the camera")
 
     def get_configure_states(self):
@@ -113,7 +114,10 @@ class RealsenseCam(Cam):
             self.connect()
 
     def start_ir_stream(self):
-        self.__start_stream(rs.stream.infrared, self.resolution, rs.format.y8, self.framerate)
+        self.__start_stream(rs.stream.color, self.resolution, rs.format.y8, self.framerate)
 
     def start_depth_stream(self):
         self.__start_stream(rs.stream.depth, self.resolution, rs.format.z16, self.framerate)
+
+    def start_streams(self):
+        self.config.enable_all_streams()
