@@ -8,9 +8,12 @@ from .datapacket_util import VideoInitDatagram, VideoStreamDatagram
 
 class VideoStreamingServer(socketserver.TCPServer):
     def __init__(self, device_identifier: str, cam_q: Queue, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(RequestHandlerClass=VideoStreamingHandler, **kwargs)
         self.dev = device_identifier
         self.cam_q = cam_q
+
+        print('Starting server {} @ {} on port {}'.format(device_identifier,
+                                                          self.socket.getsockname()[0], self.socket.getsockname()[1]))
 
 
 class VideoStreamingHandler(socketserver.StreamRequestHandler):

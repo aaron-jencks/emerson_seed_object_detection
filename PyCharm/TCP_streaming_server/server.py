@@ -18,7 +18,11 @@ def main():
 
     cam_server = SplitCamServer(cam, c_q, i_q, d_q)
 
-    rgb_server
+    rgb_server = VideoStreamingServer("{}_rgb".format(server_name), c_q)
+    ir_server = VideoStreamingServer("{}_ir".format(server_name), i_q)
+    depth_server = VideoStreamingServer("{}_depth".format(server_name), d_q)
+
+    rgb_server.serve_forever()
 
 
 if __name__ == "__main__":
@@ -26,6 +30,6 @@ if __name__ == "__main__":
     cam.start_streams()
 
     with VideoStreamingServer(cam=cam, device_identifier=server_name,
-                              server_address=('localhost', 0), RequestHandlerClass=VideoStreamingHandler) as server:
+                              server_address=('localhost', 0)) as server:
         print('Starting server on port {}'.format(server.socket.getsockname()[1]))
         server.serve_forever()
