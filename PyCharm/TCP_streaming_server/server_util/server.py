@@ -1,4 +1,6 @@
 import socketserver
+import time
+
 from video_util.cam import Cam
 from video_util.data import VideoStreamType, VideoStream
 from .datapacket_util import VideoInitDatagram, VideoStreamDatagram
@@ -33,13 +35,17 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
         # endregion
 
         while True:
+            start = time.time()
             try:
                 rgb, depth = self.server.cam.get_frame()
-                self.wfile.write((VideoStreamDatagram(self.server.dev, 'rgb', rgb).to_json() + '\n').encode('utf-8'))
+                # self.wfile.write((VideoStreamDatagram(self.server.dev, 'rgb', rgb).to_json() + '\n').encode('utf-8'))
                 self.wfile.write((VideoStreamDatagram(self.server.dev, 'depth', depth).to_json() + '\n').encode('utf-8'))
             except Exception as e:
                 print(e)
                 break
+
+            print('\rRunning at {} fps'.format(1 / (time.time() - start)), end='')
+        print('')
 
     def finish(self):
         super().finish()
