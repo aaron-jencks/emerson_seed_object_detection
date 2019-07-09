@@ -22,36 +22,6 @@ import labview_recorder.distribution as db
 matplotlib.use('Qt5agg')
 np.set_printoptions(threshold=np.inf)
 
-
-class ConcurrentVideoWriter(threading.Thread):
-    def __init__(self, dest: str, q: Queue, fps: int = 30, resolution: tuple = (640, 480), auto_start: bool = True):
-        super().__init__()
-        try:
-            self.dest = dest
-            self.writer = cv2.VideoWriter(dest, cv2.VideoWriter_fourcc(*'XVID'), fps, resolution)
-            self.q = q
-
-            if auto_start:
-                self.start()
-        except Exception as e:
-            print(e)
-
-    def run(self):
-        while True:
-            try:
-                frame = self.q.get(True, None)
-                if frame is not None and not isinstance(frame, int):
-                    try:
-                        self.writer.write(frame)
-                    except Exception as e:
-                        print(e)
-                else:
-                    break
-            except Exception as e:
-                print(e)
-        self.writer.release()
-
-
 is_stopping = False
 cnf_file = "C:\\Users\\aaron.jencks\\Documents\\GitHub\\emerson_seed_object_detection\\realsense_cam_settings.json"
 depth_dq = deque()

@@ -849,6 +849,18 @@ static const char *__pyx_f[] = {
   "stringsource",
   "type.pxd",
 };
+/* NoFastGil.proto */
+#define __Pyx_PyGILState_Ensure PyGILState_Ensure
+#define __Pyx_PyGILState_Release PyGILState_Release
+#define __Pyx_FastGIL_Remember()
+#define __Pyx_FastGIL_Forget()
+#define __Pyx_FastGilFuncInit()
+
+/* ForceInitThreads.proto */
+#ifndef __PYX_FORCE_INIT_THREADS
+  #define __PYX_FORCE_INIT_THREADS 0
+#endif
+
 /* MemviewSliceStruct.proto */
 struct __pyx_memoryview_obj;
 typedef struct {
@@ -907,18 +919,6 @@ typedef volatile __pyx_atomic_int_type __pyx_atomic_int;
             __pyx_add_acquisition_count_locked(__pyx_get_slice_count_pointer(memview), memview->lock)
     #define __pyx_sub_acquisition_count(memview)\
             __pyx_sub_acquisition_count_locked(__pyx_get_slice_count_pointer(memview), memview->lock)
-#endif
-
-/* NoFastGil.proto */
-#define __Pyx_PyGILState_Ensure PyGILState_Ensure
-#define __Pyx_PyGILState_Release PyGILState_Release
-#define __Pyx_FastGIL_Remember()
-#define __Pyx_FastGIL_Forget()
-#define __Pyx_FastGilFuncInit()
-
-/* ForceInitThreads.proto */
-#ifndef __PYX_FORCE_INIT_THREADS
-  #define __PYX_FORCE_INIT_THREADS 0
 #endif
 
 /* BufferFormatStructs.proto */
@@ -1475,32 +1475,6 @@ static CYTHON_INLINE int __Pyx_div_int(int, int);
 #define UNARY_NEG_WOULD_OVERFLOW(x)\
         (((x) < 0) & ((unsigned long)(x) == 0-(unsigned long)(x)))
 
-/* MemviewSliceInit.proto */
-#define __Pyx_BUF_MAX_NDIMS %(BUF_MAX_NDIMS)d
-#define __Pyx_MEMVIEW_DIRECT   1
-#define __Pyx_MEMVIEW_PTR      2
-#define __Pyx_MEMVIEW_FULL     4
-#define __Pyx_MEMVIEW_CONTIG   8
-#define __Pyx_MEMVIEW_STRIDED  16
-#define __Pyx_MEMVIEW_FOLLOW   32
-#define __Pyx_IS_C_CONTIG 1
-#define __Pyx_IS_F_CONTIG 2
-static int __Pyx_init_memviewslice(
-                struct __pyx_memoryview_obj *memview,
-                int ndim,
-                __Pyx_memviewslice *memviewslice,
-                int memview_is_new_reference);
-static CYTHON_INLINE int __pyx_add_acquisition_count_locked(
-    __pyx_atomic_int *acquisition_count, PyThread_type_lock lock);
-static CYTHON_INLINE int __pyx_sub_acquisition_count_locked(
-    __pyx_atomic_int *acquisition_count, PyThread_type_lock lock);
-#define __pyx_get_slice_count_pointer(memview) (memview->acquisition_count_aligned_p)
-#define __pyx_get_slice_count(memview) (*__pyx_get_slice_count_pointer(memview))
-#define __PYX_INC_MEMVIEW(slice, have_gil) __Pyx_INC_MEMVIEW(slice, have_gil, __LINE__)
-#define __PYX_XDEC_MEMVIEW(slice, have_gil) __Pyx_XDEC_MEMVIEW(slice, have_gil, __LINE__)
-static CYTHON_INLINE void __Pyx_INC_MEMVIEW(__Pyx_memviewslice *, int, int);
-static CYTHON_INLINE void __Pyx_XDEC_MEMVIEW(__Pyx_memviewslice *, int, int);
-
 /* PyCFunctionFastCall.proto */
 #if CYTHON_FAST_PYCCALL
 static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
@@ -1599,6 +1573,32 @@ static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_ve
 static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
 #endif
 
+/* MemviewSliceInit.proto */
+#define __Pyx_BUF_MAX_NDIMS %(BUF_MAX_NDIMS)d
+#define __Pyx_MEMVIEW_DIRECT   1
+#define __Pyx_MEMVIEW_PTR      2
+#define __Pyx_MEMVIEW_FULL     4
+#define __Pyx_MEMVIEW_CONTIG   8
+#define __Pyx_MEMVIEW_STRIDED  16
+#define __Pyx_MEMVIEW_FOLLOW   32
+#define __Pyx_IS_C_CONTIG 1
+#define __Pyx_IS_F_CONTIG 2
+static int __Pyx_init_memviewslice(
+                struct __pyx_memoryview_obj *memview,
+                int ndim,
+                __Pyx_memviewslice *memviewslice,
+                int memview_is_new_reference);
+static CYTHON_INLINE int __pyx_add_acquisition_count_locked(
+    __pyx_atomic_int *acquisition_count, PyThread_type_lock lock);
+static CYTHON_INLINE int __pyx_sub_acquisition_count_locked(
+    __pyx_atomic_int *acquisition_count, PyThread_type_lock lock);
+#define __pyx_get_slice_count_pointer(memview) (memview->acquisition_count_aligned_p)
+#define __pyx_get_slice_count(memview) (*__pyx_get_slice_count_pointer(memview))
+#define __PYX_INC_MEMVIEW(slice, have_gil) __Pyx_INC_MEMVIEW(slice, have_gil, __LINE__)
+#define __PYX_XDEC_MEMVIEW(slice, have_gil) __Pyx_XDEC_MEMVIEW(slice, have_gil, __LINE__)
+static CYTHON_INLINE void __Pyx_INC_MEMVIEW(__Pyx_memviewslice *, int, int);
+static CYTHON_INLINE void __Pyx_XDEC_MEMVIEW(__Pyx_memviewslice *, int, int);
+
 /* PyObjectCallNoArg.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
@@ -1611,27 +1611,6 @@ static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyOb
 
 /* None.proto */
 static CYTHON_INLINE Py_ssize_t __Pyx_div_Py_ssize_t(Py_ssize_t, Py_ssize_t);
-
-/* pyobject_as_double.proto */
-static double __Pyx__PyObject_AsDouble(PyObject* obj);
-#if CYTHON_COMPILING_IN_PYPY
-#define __Pyx_PyObject_AsDouble(obj)\
-(likely(PyFloat_CheckExact(obj)) ? PyFloat_AS_DOUBLE(obj) :\
- likely(PyInt_CheckExact(obj)) ?\
- PyFloat_AsDouble(obj) : __Pyx__PyObject_AsDouble(obj))
-#else
-#define __Pyx_PyObject_AsDouble(obj)\
-((likely(PyFloat_CheckExact(obj))) ?\
- PyFloat_AS_DOUBLE(obj) : __Pyx__PyObject_AsDouble(obj))
-#endif
-
-/* PyIntBinop.proto */
-#if !CYTHON_COMPILING_IN_PYPY
-static PyObject* __Pyx_PyInt_RemainderObjC(PyObject *op1, PyObject *op2, long intval, int inplace, int zerodivision_check);
-#else
-#define __Pyx_PyInt_RemainderObjC(op1, op2, intval, inplace, zerodivision_check)\
-    (inplace ? PyNumber_InPlaceRemainder(op1, op2) : PyNumber_Remainder(op1, op2))
-#endif
 
 /* RaiseArgTupleInvalid.proto */
 static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
@@ -2183,7 +2162,7 @@ static PyObject *indirect_contiguous = 0;
 static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
 static int __pyx_f_15Depth_Displayer_14cam_conversion_ceiling(double); /*proto*/
-static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_distribution(__Pyx_memviewslice); /*proto*/
+static double __pyx_f_15Depth_Displayer_14cam_conversion_average(__Pyx_memviewslice); /*proto*/
 static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(PyObject *, __Pyx_memviewslice, int, int, int, int, int, int, int, __Pyx_memviewslice, int, int __pyx_skip_dispatch); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
 static void *__pyx_align_pointer(void *, size_t); /*proto*/
@@ -2751,183 +2730,110 @@ static int __pyx_f_15Depth_Displayer_14cam_conversion_get_clump_j_coord(int __py
 /* "Depth_Displayer/cam_conversion.pyx":27
  * 
  * 
- * cdef double average(double[:, :, :] history, int i, int j) except -1:             # <<<<<<<<<<<<<<
- *     # print("{} {}".format(i, j))
- *     cdef double[:] s = history[:, i, j]
- */
-
-static double __pyx_f_15Depth_Displayer_14cam_conversion_average(__Pyx_memviewslice __pyx_v_history, int __pyx_v_i, int __pyx_v_j) {
-  __Pyx_memviewslice __pyx_v_s = { 0, 0, { 0 }, { 0 }, { 0 } };
-  double __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_memviewslice __pyx_t_1 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  double __pyx_t_5;
-  __Pyx_RefNannySetupContext("average", 0);
-
-  /* "Depth_Displayer/cam_conversion.pyx":29
- * cdef double average(double[:, :, :] history, int i, int j) except -1:
- *     # print("{} {}".format(i, j))
- *     cdef double[:] s = history[:, i, j]             # <<<<<<<<<<<<<<
- * 
+ * cdef double average(double[:] s) except -1:             # <<<<<<<<<<<<<<
  *     return sum(s) / float(s.shape[0])
- */
-  __pyx_t_1.data = __pyx_v_history.data;
-  __pyx_t_1.memview = __pyx_v_history.memview;
-  __PYX_INC_MEMVIEW(&__pyx_t_1, 0);
-  __pyx_t_1.shape[0] = __pyx_v_history.shape[0];
-__pyx_t_1.strides[0] = __pyx_v_history.strides[0];
-    __pyx_t_1.suboffsets[0] = -1;
-
-{
-    Py_ssize_t __pyx_tmp_idx = __pyx_v_i;
-        Py_ssize_t __pyx_tmp_shape = __pyx_v_history.shape[1];
-    Py_ssize_t __pyx_tmp_stride = __pyx_v_history.strides[1];
-        if (__pyx_tmp_idx < 0)
-            __pyx_tmp_idx += __pyx_tmp_shape;
-        if (!__Pyx_is_valid_index(__pyx_tmp_idx, __pyx_tmp_shape)) {
-            PyErr_SetString(PyExc_IndexError,
-                            "Index out of bounds (axis 1)");
-            __PYX_ERR(0, 29, __pyx_L1_error)
-        }
-        __pyx_t_1.data += __pyx_tmp_idx * __pyx_tmp_stride;
-}
-
-{
-    Py_ssize_t __pyx_tmp_idx = __pyx_v_j;
-        Py_ssize_t __pyx_tmp_shape = __pyx_v_history.shape[2];
-    Py_ssize_t __pyx_tmp_stride = __pyx_v_history.strides[2];
-        if (__pyx_tmp_idx < 0)
-            __pyx_tmp_idx += __pyx_tmp_shape;
-        if (!__Pyx_is_valid_index(__pyx_tmp_idx, __pyx_tmp_shape)) {
-            PyErr_SetString(PyExc_IndexError,
-                            "Index out of bounds (axis 2)");
-            __PYX_ERR(0, 29, __pyx_L1_error)
-        }
-        __pyx_t_1.data += __pyx_tmp_idx * __pyx_tmp_stride;
-}
-
-__pyx_v_s = __pyx_t_1;
-  __pyx_t_1.memview = NULL;
-  __pyx_t_1.data = NULL;
-
-  /* "Depth_Displayer/cam_conversion.pyx":31
- *     cdef double[:] s = history[:, i, j]
- * 
- *     return sum(s) / float(s.shape[0])             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_s, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_sum, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 31, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyFloat_FromDouble(((double)(__pyx_v_s.shape[0]))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 31, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_5 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_5 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 31, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_r = __pyx_t_5;
-  goto __pyx_L0;
-
-  /* "Depth_Displayer/cam_conversion.pyx":27
- * 
- * 
- * cdef double average(double[:, :, :] history, int i, int j) except -1:             # <<<<<<<<<<<<<<
- *     # print("{} {}".format(i, j))
- *     cdef double[:] s = history[:, i, j]
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("Depth_Displayer.cam_conversion.average", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = -1.0;
-  __pyx_L0:;
-  __PYX_XDEC_MEMVIEW(&__pyx_v_s, 1);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "Depth_Displayer/cam_conversion.pyx":35
- * 
- * @cython.boundscheck(False)
- * cdef double[:, :] normal_distribution(double[:] pop):             # <<<<<<<<<<<<<<
- *     """Calculates the standard deviation for this population"""
  * 
  */
 
-static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_distribution(__Pyx_memviewslice __pyx_v_pop) {
-  int __pyx_v_p;
-  double __pyx_v_std_dev;
-  double __pyx_v_dev_sum;
-  double __pyx_v_dev_temp;
-  double __pyx_v_avg;
-  __Pyx_memviewslice __pyx_v_result = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_r = { 0, 0, { 0 }, { 0 }, { 0 } };
+static double __pyx_f_15Depth_Displayer_14cam_conversion_average(__Pyx_memviewslice __pyx_v_s) {
+  double __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   double __pyx_t_4;
-  Py_ssize_t __pyx_t_5;
-  Py_ssize_t __pyx_t_6;
-  Py_ssize_t __pyx_t_7;
-  Py_ssize_t __pyx_t_8;
-  PyObject *__pyx_t_9 = NULL;
-  __Pyx_memviewslice __pyx_t_10 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_RefNannySetupContext("average", 0);
+
+  /* "Depth_Displayer/cam_conversion.pyx":28
+ * 
+ * cdef double average(double[:] s) except -1:
+ *     return sum(s) / float(s.shape[0])             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_s, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_sum, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyFloat_FromDouble(((double)(__pyx_v_s.shape[0]))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 28, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_r = __pyx_t_4;
+  goto __pyx_L0;
+
+  /* "Depth_Displayer/cam_conversion.pyx":27
+ * 
+ * 
+ * cdef double average(double[:] s) except -1:             # <<<<<<<<<<<<<<
+ *     return sum(s) / float(s.shape[0])
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_AddTraceback("Depth_Displayer.cam_conversion.average", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1.0;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "Depth_Displayer/cam_conversion.pyx":32
+ * 
+ * @cython.boundscheck(False)
+ * cdef double[:, :] normal_distribution(double[:] pop, double avg):             # <<<<<<<<<<<<<<
+ *     """Calculates the standard deviation for this population"""
+ * 
+ */
+
+static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_distribution(__Pyx_memviewslice __pyx_v_pop, double __pyx_v_avg) {
+  int __pyx_v_p;
+  double __pyx_v_std_dev;
+  double __pyx_v_dev_sum;
+  double __pyx_v_dev_temp;
+  __Pyx_memviewslice __pyx_v_result = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_r = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_RefNannyDeclarations
+  Py_ssize_t __pyx_t_1;
+  Py_ssize_t __pyx_t_2;
+  Py_ssize_t __pyx_t_3;
+  Py_ssize_t __pyx_t_4;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_8 = NULL;
+  __Pyx_memviewslice __pyx_t_9 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  Py_ssize_t __pyx_t_10;
   Py_ssize_t __pyx_t_11;
   Py_ssize_t __pyx_t_12;
-  Py_ssize_t __pyx_t_13;
-  int __pyx_t_14;
-  Py_ssize_t __pyx_t_15;
+  int __pyx_t_13;
+  Py_ssize_t __pyx_t_14;
+  double __pyx_t_15;
   Py_ssize_t __pyx_t_16;
   Py_ssize_t __pyx_t_17;
   Py_ssize_t __pyx_t_18;
   Py_ssize_t __pyx_t_19;
   __Pyx_RefNannySetupContext("normal_distribution", 0);
 
-  /* "Depth_Displayer/cam_conversion.pyx":39
+  /* "Depth_Displayer/cam_conversion.pyx":36
  * 
  *     cdef int p
  *     cdef double std_dev, dev_sum = 0, dev_temp             # <<<<<<<<<<<<<<
- *     cdef double avg = sum(pop) / float(pop.shape[0])
- * 
- */
-  __pyx_v_dev_sum = 0.0;
-
-  /* "Depth_Displayer/cam_conversion.pyx":40
- *     cdef int p
- *     cdef double std_dev, dev_sum = 0, dev_temp
- *     cdef double avg = sum(pop) / float(pop.shape[0])             # <<<<<<<<<<<<<<
  * 
  *     # Calculates the standard deviation
  */
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_pop, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_sum, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyFloat_FromDouble(((double)(__pyx_v_pop.shape[0]))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 40, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_v_avg = __pyx_t_4;
+  __pyx_v_dev_sum = 0.0;
 
-  /* "Depth_Displayer/cam_conversion.pyx":43
+  /* "Depth_Displayer/cam_conversion.pyx":39
  * 
  *     # Calculates the standard deviation
  *     for p in prange(pop.shape[0], nogil=True):             # <<<<<<<<<<<<<<
@@ -2941,8 +2847,8 @@ static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_dist
       __Pyx_FastGIL_Remember();
       #endif
       /*try:*/ {
-        if (unlikely(!__pyx_v_pop.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("pop"); __PYX_ERR(0, 43, __pyx_L4_error) }
-        __pyx_t_5 = (__pyx_v_pop.shape[0]);
+        if (unlikely(!__pyx_v_pop.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("pop"); __PYX_ERR(0, 39, __pyx_L4_error) }
+        __pyx_t_1 = (__pyx_v_pop.shape[0]);
         if (1 == 0) abort();
         {
             #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
@@ -2951,34 +2857,34 @@ static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_dist
                 #define likely(x)   (x)
                 #define unlikely(x) (x)
             #endif
-            __pyx_t_7 = (__pyx_t_5 - 0 + 1 - 1/abs(1)) / 1;
-            if (__pyx_t_7 > 0)
+            __pyx_t_3 = (__pyx_t_1 - 0 + 1 - 1/abs(1)) / 1;
+            if (__pyx_t_3 > 0)
             {
                 #ifdef _OPENMP
-                #pragma omp parallel reduction(+:__pyx_v_dev_sum) private(__pyx_t_8)
+                #pragma omp parallel reduction(+:__pyx_v_dev_sum) private(__pyx_t_4)
                 #endif /* _OPENMP */
                 {
                     #ifdef _OPENMP
                     #pragma omp for lastprivate(__pyx_v_dev_temp) firstprivate(__pyx_v_p) lastprivate(__pyx_v_p)
                     #endif /* _OPENMP */
-                    for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_7; __pyx_t_6++){
+                    for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_3; __pyx_t_2++){
                         {
-                            __pyx_v_p = (int)(0 + 1 * __pyx_t_6);
+                            __pyx_v_p = (int)(0 + 1 * __pyx_t_2);
                             /* Initialize private variables to invalid values */
                             __pyx_v_dev_temp = ((double)__PYX_NAN());
 
-                            /* "Depth_Displayer/cam_conversion.pyx":44
+                            /* "Depth_Displayer/cam_conversion.pyx":40
  *     # Calculates the standard deviation
  *     for p in prange(pop.shape[0], nogil=True):
  *         dev_temp = pop[p] - avg             # <<<<<<<<<<<<<<
  *         dev_sum += dev_temp * dev_temp
  * 
  */
-                            __pyx_t_8 = __pyx_v_p;
-                            if (__pyx_t_8 < 0) __pyx_t_8 += __pyx_v_pop.shape[0];
-                            __pyx_v_dev_temp = ((*((double *) ( /* dim=0 */ (__pyx_v_pop.data + __pyx_t_8 * __pyx_v_pop.strides[0]) ))) - __pyx_v_avg);
+                            __pyx_t_4 = __pyx_v_p;
+                            if (__pyx_t_4 < 0) __pyx_t_4 += __pyx_v_pop.shape[0];
+                            __pyx_v_dev_temp = ((*((double *) ( /* dim=0 */ (__pyx_v_pop.data + __pyx_t_4 * __pyx_v_pop.strides[0]) ))) - __pyx_v_avg);
 
-                            /* "Depth_Displayer/cam_conversion.pyx":45
+                            /* "Depth_Displayer/cam_conversion.pyx":41
  *     for p in prange(pop.shape[0], nogil=True):
  *         dev_temp = pop[p] - avg
  *         dev_sum += dev_temp * dev_temp             # <<<<<<<<<<<<<<
@@ -2999,7 +2905,7 @@ static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_dist
         #endif
       }
 
-      /* "Depth_Displayer/cam_conversion.pyx":43
+      /* "Depth_Displayer/cam_conversion.pyx":39
  * 
  *     # Calculates the standard deviation
  *     for p in prange(pop.shape[0], nogil=True):             # <<<<<<<<<<<<<<
@@ -3025,7 +2931,7 @@ static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_dist
       }
   }
 
-  /* "Depth_Displayer/cam_conversion.pyx":47
+  /* "Depth_Displayer/cam_conversion.pyx":43
  *         dev_sum += dev_temp * dev_temp
  * 
  *     std_dev = sqrt(dev_sum / float(pop.shape[0]))             # <<<<<<<<<<<<<<
@@ -3034,48 +2940,48 @@ static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_dist
  */
   if (unlikely(((double)(__pyx_v_pop.shape[0])) == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 47, __pyx_L1_error)
+    __PYX_ERR(0, 43, __pyx_L1_error)
   }
   __pyx_v_std_dev = sqrt((__pyx_v_dev_sum / ((double)(__pyx_v_pop.shape[0]))));
 
-  /* "Depth_Displayer/cam_conversion.pyx":50
+  /* "Depth_Displayer/cam_conversion.pyx":46
  * 
  *     # Calculates the z-values
  *     cdef double[:, :] result = np.zeros(shape=(pop.shape[0], 2), dtype=float)             # <<<<<<<<<<<<<<
  * 
  *     for p in prange(pop.shape[0], nogil=True):
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 50, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 50, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = PyInt_FromSsize_t((__pyx_v_pop.shape[0])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 50, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_2);
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_zeros); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_7 = PyInt_FromSsize_t((__pyx_v_pop.shape[0])); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __Pyx_GIVEREF(__pyx_t_7);
+  PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_7);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
-  PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_int_2);
-  __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_shape, __pyx_t_9) < 0) __PYX_ERR(0, 50, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 50, __pyx_L1_error)
-  __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 50, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_10 = __Pyx_PyObject_to_MemoryviewSlice_dsds_double(__pyx_t_9, PyBUF_WRITABLE); if (unlikely(!__pyx_t_10.memview)) __PYX_ERR(0, 50, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_v_result = __pyx_t_10;
-  __pyx_t_10.memview = NULL;
-  __pyx_t_10.data = NULL;
+  PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_int_2);
+  __pyx_t_7 = 0;
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_shape, __pyx_t_8) < 0) __PYX_ERR(0, 46, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_empty_tuple, __pyx_t_5); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_9 = __Pyx_PyObject_to_MemoryviewSlice_dsds_double(__pyx_t_8, PyBUF_WRITABLE); if (unlikely(!__pyx_t_9.memview)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  __pyx_v_result = __pyx_t_9;
+  __pyx_t_9.memview = NULL;
+  __pyx_t_9.data = NULL;
 
-  /* "Depth_Displayer/cam_conversion.pyx":52
+  /* "Depth_Displayer/cam_conversion.pyx":48
  *     cdef double[:, :] result = np.zeros(shape=(pop.shape[0], 2), dtype=float)
  * 
  *     for p in prange(pop.shape[0], nogil=True):             # <<<<<<<<<<<<<<
@@ -3089,8 +2995,8 @@ static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_dist
       __Pyx_FastGIL_Remember();
       #endif
       /*try:*/ {
-        if (unlikely(!__pyx_v_pop.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("pop"); __PYX_ERR(0, 52, __pyx_L13_error) }
-        __pyx_t_7 = (__pyx_v_pop.shape[0]);
+        if (unlikely(!__pyx_v_pop.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("pop"); __PYX_ERR(0, 48, __pyx_L13_error) }
+        __pyx_t_3 = (__pyx_v_pop.shape[0]);
         if (1 == 0) abort();
         {
             int __pyx_parallel_temp0 = ((int)0xbad0bad0);
@@ -3104,11 +3010,11 @@ static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_dist
                 #define likely(x)   (x)
                 #define unlikely(x) (x)
             #endif
-            __pyx_t_5 = (__pyx_t_7 - 0 + 1 - 1/abs(1)) / 1;
-            if (__pyx_t_5 > 0)
+            __pyx_t_1 = (__pyx_t_3 - 0 + 1 - 1/abs(1)) / 1;
+            if (__pyx_t_1 > 0)
             {
                 #ifdef _OPENMP
-                #pragma omp parallel private(__pyx_t_11, __pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_4) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb)
+                #pragma omp parallel private(__pyx_t_10, __pyx_t_11, __pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb)
                 #endif /* _OPENMP */
                 {
                     #ifdef _OPENMP
@@ -3120,46 +3026,46 @@ static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_dist
                     #ifdef _OPENMP
                     #pragma omp for firstprivate(__pyx_v_p) lastprivate(__pyx_v_p)
                     #endif /* _OPENMP */
-                    for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6++){
+                    for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2++){
                         if (__pyx_parallel_why < 2)
                         {
-                            __pyx_v_p = (int)(0 + 1 * __pyx_t_6);
+                            __pyx_v_p = (int)(0 + 1 * __pyx_t_2);
 
-                            /* "Depth_Displayer/cam_conversion.pyx":53
+                            /* "Depth_Displayer/cam_conversion.pyx":49
  * 
  *     for p in prange(pop.shape[0], nogil=True):
  *         result[p, 0] = pop[p]             # <<<<<<<<<<<<<<
  *         if std_dev != 0:
  *             result[p, 1] = ((pop[p] - avg) / std_dev)
  */
+                            __pyx_t_10 = __pyx_v_p;
+                            if (__pyx_t_10 < 0) __pyx_t_10 += __pyx_v_pop.shape[0];
                             __pyx_t_11 = __pyx_v_p;
-                            if (__pyx_t_11 < 0) __pyx_t_11 += __pyx_v_pop.shape[0];
-                            __pyx_t_12 = __pyx_v_p;
-                            __pyx_t_13 = 0;
-                            if (__pyx_t_12 < 0) __pyx_t_12 += __pyx_v_result.shape[0];
-                            if (__pyx_t_13 < 0) __pyx_t_13 += __pyx_v_result.shape[1];
-                            *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_result.data + __pyx_t_12 * __pyx_v_result.strides[0]) ) + __pyx_t_13 * __pyx_v_result.strides[1]) )) = (*((double *) ( /* dim=0 */ (__pyx_v_pop.data + __pyx_t_11 * __pyx_v_pop.strides[0]) )));
+                            __pyx_t_12 = 0;
+                            if (__pyx_t_11 < 0) __pyx_t_11 += __pyx_v_result.shape[0];
+                            if (__pyx_t_12 < 0) __pyx_t_12 += __pyx_v_result.shape[1];
+                            *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_result.data + __pyx_t_11 * __pyx_v_result.strides[0]) ) + __pyx_t_12 * __pyx_v_result.strides[1]) )) = (*((double *) ( /* dim=0 */ (__pyx_v_pop.data + __pyx_t_10 * __pyx_v_pop.strides[0]) )));
 
-                            /* "Depth_Displayer/cam_conversion.pyx":54
+                            /* "Depth_Displayer/cam_conversion.pyx":50
  *     for p in prange(pop.shape[0], nogil=True):
  *         result[p, 0] = pop[p]
  *         if std_dev != 0:             # <<<<<<<<<<<<<<
  *             result[p, 1] = ((pop[p] - avg) / std_dev)
  *         else:
  */
-                            __pyx_t_14 = ((__pyx_v_std_dev != 0.0) != 0);
-                            if (__pyx_t_14) {
+                            __pyx_t_13 = ((__pyx_v_std_dev != 0.0) != 0);
+                            if (__pyx_t_13) {
 
-                              /* "Depth_Displayer/cam_conversion.pyx":55
+                              /* "Depth_Displayer/cam_conversion.pyx":51
  *         result[p, 0] = pop[p]
  *         if std_dev != 0:
  *             result[p, 1] = ((pop[p] - avg) / std_dev)             # <<<<<<<<<<<<<<
  *         else:
  *             result[p, 1] = 0
  */
-                              __pyx_t_15 = __pyx_v_p;
-                              if (__pyx_t_15 < 0) __pyx_t_15 += __pyx_v_pop.shape[0];
-                              __pyx_t_4 = ((*((double *) ( /* dim=0 */ (__pyx_v_pop.data + __pyx_t_15 * __pyx_v_pop.strides[0]) ))) - __pyx_v_avg);
+                              __pyx_t_14 = __pyx_v_p;
+                              if (__pyx_t_14 < 0) __pyx_t_14 += __pyx_v_pop.shape[0];
+                              __pyx_t_15 = ((*((double *) ( /* dim=0 */ (__pyx_v_pop.data + __pyx_t_14 * __pyx_v_pop.strides[0]) ))) - __pyx_v_avg);
                               if (unlikely(__pyx_v_std_dev == 0)) {
                                 #ifdef WITH_THREAD
                                 PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -3168,15 +3074,15 @@ static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_dist
                                 #ifdef WITH_THREAD
                                 __Pyx_PyGILState_Release(__pyx_gilstate_save);
                                 #endif
-                                __PYX_ERR(0, 55, __pyx_L17_error)
+                                __PYX_ERR(0, 51, __pyx_L17_error)
                               }
                               __pyx_t_16 = __pyx_v_p;
                               __pyx_t_17 = 1;
                               if (__pyx_t_16 < 0) __pyx_t_16 += __pyx_v_result.shape[0];
                               if (__pyx_t_17 < 0) __pyx_t_17 += __pyx_v_result.shape[1];
-                              *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_result.data + __pyx_t_16 * __pyx_v_result.strides[0]) ) + __pyx_t_17 * __pyx_v_result.strides[1]) )) = (__pyx_t_4 / __pyx_v_std_dev);
+                              *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_result.data + __pyx_t_16 * __pyx_v_result.strides[0]) ) + __pyx_t_17 * __pyx_v_result.strides[1]) )) = (__pyx_t_15 / __pyx_v_std_dev);
 
-                              /* "Depth_Displayer/cam_conversion.pyx":54
+                              /* "Depth_Displayer/cam_conversion.pyx":50
  *     for p in prange(pop.shape[0], nogil=True):
  *         result[p, 0] = pop[p]
  *         if std_dev != 0:             # <<<<<<<<<<<<<<
@@ -3186,7 +3092,7 @@ static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_dist
                               goto __pyx_L19;
                             }
 
-                            /* "Depth_Displayer/cam_conversion.pyx":57
+                            /* "Depth_Displayer/cam_conversion.pyx":53
  *             result[p, 1] = ((pop[p] - avg) / std_dev)
  *         else:
  *             result[p, 1] = 0             # <<<<<<<<<<<<<<
@@ -3282,7 +3188,7 @@ static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_dist
         #endif
       }
 
-      /* "Depth_Displayer/cam_conversion.pyx":52
+      /* "Depth_Displayer/cam_conversion.pyx":48
  *     cdef double[:, :] result = np.zeros(shape=(pop.shape[0], 2), dtype=float)
  * 
  *     for p in prange(pop.shape[0], nogil=True):             # <<<<<<<<<<<<<<
@@ -3308,7 +3214,7 @@ static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_dist
       }
   }
 
-  /* "Depth_Displayer/cam_conversion.pyx":59
+  /* "Depth_Displayer/cam_conversion.pyx":55
  *             result[p, 1] = 0
  * 
  *     return result             # <<<<<<<<<<<<<<
@@ -3319,21 +3225,21 @@ static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_dist
   __pyx_r = __pyx_v_result;
   goto __pyx_L0;
 
-  /* "Depth_Displayer/cam_conversion.pyx":35
+  /* "Depth_Displayer/cam_conversion.pyx":32
  * 
  * @cython.boundscheck(False)
- * cdef double[:, :] normal_distribution(double[:] pop):             # <<<<<<<<<<<<<<
+ * cdef double[:, :] normal_distribution(double[:] pop, double avg):             # <<<<<<<<<<<<<<
  *     """Calculates the standard deviation for this population"""
  * 
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_9);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_10, 1);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
   __pyx_r.data = NULL;
   __pyx_r.memview = NULL;
   __Pyx_AddTraceback("Depth_Displayer.cam_conversion.normal_distribution", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -3348,7 +3254,7 @@ static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_dist
   return __pyx_r;
 }
 
-/* "Depth_Displayer/cam_conversion.pyx":63
+/* "Depth_Displayer/cam_conversion.pyx":59
  * 
  * @cython.boundscheck(False)
  * cpdef convert_realsense(object frames, float[:, :] roi, int u, int b, int l, int r,             # <<<<<<<<<<<<<<
@@ -3357,7 +3263,7 @@ static __Pyx_memviewslice __pyx_f_15Depth_Displayer_14cam_conversion_normal_dist
  */
 
 static PyObject *__pyx_pw_15Depth_Displayer_14cam_conversion_1convert_realsense(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(PyObject *__pyx_v_frames, __Pyx_memviewslice __pyx_v_roi, int __pyx_v_u, int __pyx_v_b, int __pyx_v_l, int __pyx_v_r, int __pyx_v_clumping, int __pyx_v_depth_clumping, int __pyx_v_create_history, __Pyx_memviewslice __pyx_v_history, int __pyx_v_history_depth, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(PyObject *__pyx_v_frames, __Pyx_memviewslice __pyx_v_roi, int __pyx_v_u, int __pyx_v_b, int __pyx_v_l, int __pyx_v_r, int __pyx_v_clumping, CYTHON_UNUSED int __pyx_v_depth_clumping, int __pyx_v_create_history, __Pyx_memviewslice __pyx_v_history, int __pyx_v_history_depth, CYTHON_UNUSED int __pyx_skip_dispatch) {
   __Pyx_memviewslice __pyx_v_depth_image = { 0, 0, { 0 }, { 0 }, { 0 } };
   int __pyx_v_i;
   int __pyx_v_j;
@@ -3369,12 +3275,13 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
   double __pyx_v_rms_sum;
   double __pyx_v_count;
   double __pyx_v_temp;
+  double __pyx_v_frame_avg;
   int __pyx_v_width;
   int __pyx_v_height;
   __Pyx_memviewslice __pyx_v_clump_array = { 0, 0, { 0 }, { 0 }, { 0 } };
   int __pyx_v_std_index;
   __Pyx_memviewslice __pyx_v_std_dev = { 0, 0, { 0 }, { 0 }, { 0 } };
-  CYTHON_UNUSED __Pyx_memviewslice __pyx_v_norm = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_adj_pop = { 0, 0, { 0 }, { 0 }, { 0 } };
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3430,30 +3337,32 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
   Py_ssize_t __pyx_t_51;
   Py_ssize_t __pyx_t_52;
   Py_ssize_t __pyx_t_53;
-  double __pyx_t_54;
+  Py_ssize_t __pyx_t_54;
   Py_ssize_t __pyx_t_55;
   Py_ssize_t __pyx_t_56;
+  Py_ssize_t __pyx_t_57;
+  double __pyx_t_58;
   __Pyx_RefNannySetupContext("convert_realsense", 0);
   __PYX_INC_MEMVIEW(&__pyx_v_history, 1);
 
-  /* "Depth_Displayer/cam_conversion.pyx":67
+  /* "Depth_Displayer/cam_conversion.pyx":63
  *                         int create_history, double[:, :, :] history, int history_depth):
  * 
  *     cdef double[:, :] depth_image = np.multiply(np.asanyarray(frames.get_depth_frame().get_data()), 1).astype(float)  # scale)             # <<<<<<<<<<<<<<
  *     # depth_image = depth_image / depth_image.max()
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_multiply); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_multiply); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_asanyarray); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_asanyarray); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_frames, __pyx_n_s_get_depth_frame); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_frames, __pyx_n_s_get_depth_frame); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __pyx_t_9 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
@@ -3467,10 +3376,10 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
   }
   __pyx_t_7 = (__pyx_t_9) ? __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_9) : __Pyx_PyObject_CallNoArg(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-  if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 67, __pyx_L1_error)
+  if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_get_data); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_get_data); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_t_7 = NULL;
@@ -3485,7 +3394,7 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
   }
   __pyx_t_5 = (__pyx_t_7) ? __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_7) : __Pyx_PyObject_CallNoArg(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 67, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_t_8 = NULL;
@@ -3501,7 +3410,7 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
   __pyx_t_3 = (__pyx_t_8) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_8, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5);
   __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 67, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
@@ -3519,7 +3428,7 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_4)) {
     PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_3, __pyx_int_1};
-    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 67, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3528,14 +3437,14 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
     PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_3, __pyx_int_1};
-    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 67, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else
   #endif
   {
-    __pyx_t_5 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 67, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 63, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     if (__pyx_t_6) {
       __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_6); __pyx_t_6 = NULL;
@@ -3546,12 +3455,12 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
     __Pyx_GIVEREF(__pyx_int_1);
     PyTuple_SET_ITEM(__pyx_t_5, 1+__pyx_t_10, __pyx_int_1);
     __pyx_t_3 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 67, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_astype); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_astype); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -3566,16 +3475,16 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
   }
   __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_2, ((PyObject *)(&PyFloat_Type))) : __Pyx_PyObject_CallOneArg(__pyx_t_4, ((PyObject *)(&PyFloat_Type)));
   __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_11 = __Pyx_PyObject_to_MemoryviewSlice_dsds_double(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_11.memview)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_to_MemoryviewSlice_dsds_double(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_11.memview)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_depth_image = __pyx_t_11;
   __pyx_t_11.memview = NULL;
   __pyx_t_11.data = NULL;
 
-  /* "Depth_Displayer/cam_conversion.pyx":74
+  /* "Depth_Displayer/cam_conversion.pyx":70
  *     cdef int width, height
  * 
  *     width = ceiling(depth_image.shape[0]  / clumping)             # <<<<<<<<<<<<<<
@@ -3584,15 +3493,15 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
  */
   if (unlikely(__pyx_v_clumping == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-    __PYX_ERR(0, 74, __pyx_L1_error)
+    __PYX_ERR(0, 70, __pyx_L1_error)
   }
   else if (sizeof(Py_ssize_t) == sizeof(long) && (!(((int)-1) > 0)) && unlikely(__pyx_v_clumping == (int)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW((__pyx_v_depth_image.shape[0])))) {
     PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
-    __PYX_ERR(0, 74, __pyx_L1_error)
+    __PYX_ERR(0, 70, __pyx_L1_error)
   }
   __pyx_v_width = __pyx_f_15Depth_Displayer_14cam_conversion_ceiling(__Pyx_div_Py_ssize_t((__pyx_v_depth_image.shape[0]), __pyx_v_clumping));
 
-  /* "Depth_Displayer/cam_conversion.pyx":75
+  /* "Depth_Displayer/cam_conversion.pyx":71
  * 
  *     width = ceiling(depth_image.shape[0]  / clumping)
  *     height = ceiling(depth_image.shape[1] / clumping)             # <<<<<<<<<<<<<<
@@ -3601,33 +3510,33 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
  */
   if (unlikely(__pyx_v_clumping == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-    __PYX_ERR(0, 75, __pyx_L1_error)
+    __PYX_ERR(0, 71, __pyx_L1_error)
   }
   else if (sizeof(Py_ssize_t) == sizeof(long) && (!(((int)-1) > 0)) && unlikely(__pyx_v_clumping == (int)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW((__pyx_v_depth_image.shape[1])))) {
     PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
-    __PYX_ERR(0, 75, __pyx_L1_error)
+    __PYX_ERR(0, 71, __pyx_L1_error)
   }
   __pyx_v_height = __pyx_f_15Depth_Displayer_14cam_conversion_ceiling(__Pyx_div_Py_ssize_t((__pyx_v_depth_image.shape[1]), __pyx_v_clumping));
 
-  /* "Depth_Displayer/cam_conversion.pyx":77
+  /* "Depth_Displayer/cam_conversion.pyx":73
  *     height = ceiling(depth_image.shape[1] / clumping)
  * 
  *     cdef double[:, :] clump_array = np.zeros(shape=(width, height), dtype=float)             # <<<<<<<<<<<<<<
  * 
  *     cdef int std_index = 0
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_width); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_width); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_height); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_height); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
@@ -3635,20 +3544,20 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_5);
   __pyx_t_2 = 0;
   __pyx_t_5 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_shape, __pyx_t_3) < 0) __PYX_ERR(0, 77, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_shape, __pyx_t_3) < 0) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 77, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_11 = __Pyx_PyObject_to_MemoryviewSlice_dsds_double(__pyx_t_3, PyBUF_WRITABLE); if (unlikely(!__pyx_t_11.memview)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_to_MemoryviewSlice_dsds_double(__pyx_t_3, PyBUF_WRITABLE); if (unlikely(!__pyx_t_11.memview)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_clump_array = __pyx_t_11;
   __pyx_t_11.memview = NULL;
   __pyx_t_11.data = NULL;
 
-  /* "Depth_Displayer/cam_conversion.pyx":79
+  /* "Depth_Displayer/cam_conversion.pyx":75
  *     cdef double[:, :] clump_array = np.zeros(shape=(width, height), dtype=float)
  * 
  *     cdef int std_index = 0             # <<<<<<<<<<<<<<
@@ -3657,36 +3566,36 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
  */
   __pyx_v_std_index = 0;
 
-  /* "Depth_Displayer/cam_conversion.pyx":80
+  /* "Depth_Displayer/cam_conversion.pyx":76
  * 
  *     cdef int std_index = 0
  *     cdef double[:] std_dev = np.zeros(shape=width * height, dtype=float)             # <<<<<<<<<<<<<<
  * 
  *     # Creates history array
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyInt_From_int((__pyx_v_width * __pyx_v_height)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_int((__pyx_v_width * __pyx_v_height)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_shape, __pyx_t_4) < 0) __PYX_ERR(0, 80, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_shape, __pyx_t_4) < 0) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 80, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 80, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(__pyx_t_4, PyBUF_WRITABLE); if (unlikely(!__pyx_t_12.memview)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(__pyx_t_4, PyBUF_WRITABLE); if (unlikely(!__pyx_t_12.memview)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_std_dev = __pyx_t_12;
   __pyx_t_12.memview = NULL;
   __pyx_t_12.data = NULL;
 
-  /* "Depth_Displayer/cam_conversion.pyx":83
+  /* "Depth_Displayer/cam_conversion.pyx":79
  * 
  *     # Creates history array
  *     if create_history == 1:             # <<<<<<<<<<<<<<
@@ -3696,27 +3605,27 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
   __pyx_t_13 = ((__pyx_v_create_history == 1) != 0);
   if (__pyx_t_13) {
 
-    /* "Depth_Displayer/cam_conversion.pyx":84
+    /* "Depth_Displayer/cam_conversion.pyx":80
  *     # Creates history array
  *     if create_history == 1:
  *         history = np.zeros(shape=(history_depth, depth_image.shape[0], depth_image.shape[1]), dtype=float)             # <<<<<<<<<<<<<<
  * 
  *     # Updates the history array
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_history_depth); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_history_depth); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = PyInt_FromSsize_t((__pyx_v_depth_image.shape[0])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __pyx_t_5 = PyInt_FromSsize_t((__pyx_v_depth_image.shape[0])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_2 = PyInt_FromSsize_t((__pyx_v_depth_image.shape[1])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __pyx_t_2 = PyInt_FromSsize_t((__pyx_v_depth_image.shape[1])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_6 = PyTuple_New(3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
@@ -3727,21 +3636,21 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
     __pyx_t_1 = 0;
     __pyx_t_5 = 0;
     __pyx_t_2 = 0;
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_shape, __pyx_t_6) < 0) __PYX_ERR(0, 84, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_shape, __pyx_t_6) < 0) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 84, __pyx_L1_error)
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 84, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 80, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_14 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(__pyx_t_6, PyBUF_WRITABLE); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(__pyx_t_6, PyBUF_WRITABLE); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __PYX_XDEC_MEMVIEW(&__pyx_v_history, 1);
     __pyx_v_history = __pyx_t_14;
     __pyx_t_14.memview = NULL;
     __pyx_t_14.data = NULL;
 
-    /* "Depth_Displayer/cam_conversion.pyx":83
+    /* "Depth_Displayer/cam_conversion.pyx":79
  * 
  *     # Creates history array
  *     if create_history == 1:             # <<<<<<<<<<<<<<
@@ -3750,7 +3659,7 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
  */
   }
 
-  /* "Depth_Displayer/cam_conversion.pyx":87
+  /* "Depth_Displayer/cam_conversion.pyx":83
  * 
  *     # Updates the history array
  *     for i in prange(u, b, 1, nogil=True):             # <<<<<<<<<<<<<<
@@ -3791,7 +3700,7 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
                             __pyx_v_i_temp = ((int)0xbad0bad0);
                             __pyx_v_j = ((int)0xbad0bad0);
 
-                            /* "Depth_Displayer/cam_conversion.pyx":88
+                            /* "Depth_Displayer/cam_conversion.pyx":84
  *     # Updates the history array
  *     for i in prange(u, b, 1, nogil=True):
  *         for j in prange(l, r, 1):             # <<<<<<<<<<<<<<
@@ -3818,7 +3727,7 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
                                                 /* Initialize private variables to invalid values */
                                                 __pyx_v_i_temp = ((int)0xbad0bad0);
 
-                                                /* "Depth_Displayer/cam_conversion.pyx":91
+                                                /* "Depth_Displayer/cam_conversion.pyx":87
  * 
  *             # Calculates historical average
  *             i_temp = 0             # <<<<<<<<<<<<<<
@@ -3827,7 +3736,7 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
  */
                                                 __pyx_v_i_temp = 0;
 
-                                                /* "Depth_Displayer/cam_conversion.pyx":92
+                                                /* "Depth_Displayer/cam_conversion.pyx":88
  *             # Calculates historical average
  *             i_temp = 0
  *             for i_temp in range(1, history.shape[0]):             # <<<<<<<<<<<<<<
@@ -3839,7 +3748,7 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
                                                 for (__pyx_t_24 = 1; __pyx_t_24 < __pyx_t_23; __pyx_t_24+=1) {
                                                   __pyx_v_i_temp = __pyx_t_24;
 
-                                                  /* "Depth_Displayer/cam_conversion.pyx":94
+                                                  /* "Depth_Displayer/cam_conversion.pyx":90
  *             for i_temp in range(1, history.shape[0]):
  *                 # print(temp)
  *                 history[i_temp - 1, i, j] = history[i_temp, i, j]             # <<<<<<<<<<<<<<
@@ -3861,7 +3770,7 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
                                                   *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_history.data + __pyx_t_28 * __pyx_v_history.strides[0]) ) + __pyx_t_29 * __pyx_v_history.strides[1]) ) + __pyx_t_30 * __pyx_v_history.strides[2]) )) = (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_history.data + __pyx_t_25 * __pyx_v_history.strides[0]) ) + __pyx_t_26 * __pyx_v_history.strides[1]) ) + __pyx_t_27 * __pyx_v_history.strides[2]) )));
                                                 }
 
-                                                /* "Depth_Displayer/cam_conversion.pyx":96
+                                                /* "Depth_Displayer/cam_conversion.pyx":92
  *                 history[i_temp - 1, i, j] = history[i_temp, i, j]
  * 
  *             history[history.shape[0] - 1, i, j] = depth_image[i, j]             # <<<<<<<<<<<<<<
@@ -3897,7 +3806,7 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
         #endif
       }
 
-      /* "Depth_Displayer/cam_conversion.pyx":87
+      /* "Depth_Displayer/cam_conversion.pyx":83
  * 
  *     # Updates the history array
  *     for i in prange(u, b, 1, nogil=True):             # <<<<<<<<<<<<<<
@@ -3916,9 +3825,9 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
       }
   }
 
-  /* "Depth_Displayer/cam_conversion.pyx":101
- *     # print(np.asarray(history))
+  /* "Depth_Displayer/cam_conversion.pyx":96
  * 
+ *     # print(np.asarray(history))
  *     for i in range(u, b, 1):  # , nogil=True):             # <<<<<<<<<<<<<<
  *         for j in range(l, r, 1):
  * 
@@ -3928,8 +3837,8 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
   for (__pyx_t_19 = __pyx_v_u; __pyx_t_19 < __pyx_t_10; __pyx_t_19+=1) {
     __pyx_v_i = __pyx_t_19;
 
-    /* "Depth_Displayer/cam_conversion.pyx":102
- * 
+    /* "Depth_Displayer/cam_conversion.pyx":97
+ *     # print(np.asarray(history))
  *     for i in range(u, b, 1):  # , nogil=True):
  *         for j in range(l, r, 1):             # <<<<<<<<<<<<<<
  * 
@@ -3940,7 +3849,7 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
     for (__pyx_t_36 = __pyx_v_l; __pyx_t_36 < __pyx_t_24; __pyx_t_36+=1) {
       __pyx_v_j = __pyx_t_36;
 
-      /* "Depth_Displayer/cam_conversion.pyx":105
+      /* "Depth_Displayer/cam_conversion.pyx":100
  * 
  *             # Calculates the clumping
  *             clump_index_i = (i - u) // clumping             # <<<<<<<<<<<<<<
@@ -3950,15 +3859,15 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
       __pyx_t_37 = (__pyx_v_i - __pyx_v_u);
       if (unlikely(__pyx_v_clumping == 0)) {
         PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-        __PYX_ERR(0, 105, __pyx_L1_error)
+        __PYX_ERR(0, 100, __pyx_L1_error)
       }
       else if (sizeof(int) == sizeof(long) && (!(((int)-1) > 0)) && unlikely(__pyx_v_clumping == (int)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_t_37))) {
         PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
-        __PYX_ERR(0, 105, __pyx_L1_error)
+        __PYX_ERR(0, 100, __pyx_L1_error)
       }
       __pyx_v_clump_index_i = __Pyx_div_int(__pyx_t_37, __pyx_v_clumping);
 
-      /* "Depth_Displayer/cam_conversion.pyx":106
+      /* "Depth_Displayer/cam_conversion.pyx":101
  *             # Calculates the clumping
  *             clump_index_i = (i - u) // clumping
  *             clump_index_j = (j - l) // clumping             # <<<<<<<<<<<<<<
@@ -3968,15 +3877,15 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
       __pyx_t_37 = (__pyx_v_j - __pyx_v_l);
       if (unlikely(__pyx_v_clumping == 0)) {
         PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-        __PYX_ERR(0, 106, __pyx_L1_error)
+        __PYX_ERR(0, 101, __pyx_L1_error)
       }
       else if (sizeof(int) == sizeof(long) && (!(((int)-1) > 0)) && unlikely(__pyx_v_clumping == (int)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_t_37))) {
         PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
-        __PYX_ERR(0, 106, __pyx_L1_error)
+        __PYX_ERR(0, 101, __pyx_L1_error)
       }
       __pyx_v_clump_index_j = __Pyx_div_int(__pyx_t_37, __pyx_v_clumping);
 
-      /* "Depth_Displayer/cam_conversion.pyx":108
+      /* "Depth_Displayer/cam_conversion.pyx":103
  *             clump_index_j = (j - l) // clumping
  * 
  *             if clump_array[clump_index_i, clump_index_j] == 0:             # <<<<<<<<<<<<<<
@@ -3990,7 +3899,7 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
       __pyx_t_13 = (((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_clump_array.data + __pyx_t_38 * __pyx_v_clump_array.strides[0]) ) + __pyx_t_39 * __pyx_v_clump_array.strides[1]) ))) == 0.0) != 0);
       if (__pyx_t_13) {
 
-        /* "Depth_Displayer/cam_conversion.pyx":109
+        /* "Depth_Displayer/cam_conversion.pyx":104
  * 
  *             if clump_array[clump_index_i, clump_index_j] == 0:
  *                 rms_sum = 0             # <<<<<<<<<<<<<<
@@ -3999,7 +3908,7 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
  */
         __pyx_v_rms_sum = 0.0;
 
-        /* "Depth_Displayer/cam_conversion.pyx":110
+        /* "Depth_Displayer/cam_conversion.pyx":105
  *             if clump_array[clump_index_i, clump_index_j] == 0:
  *                 rms_sum = 0
  *                 count = 0             # <<<<<<<<<<<<<<
@@ -4008,12 +3917,12 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
  */
         __pyx_v_count = 0.0;
 
-        /* "Depth_Displayer/cam_conversion.pyx":112
+        /* "Depth_Displayer/cam_conversion.pyx":107
  *                 count = 0
  * 
  *                 for c_i in prange(i, i + clumping, 1, nogil=True):             # <<<<<<<<<<<<<<
  *                     for c_j in prange(j, j + clumping, 1):
- *                         # temp = average(history, c_i, c_j)
+ *                         if depth_image[i, j] > 0:
  */
         {
             #ifdef WITH_THREAD
@@ -4048,12 +3957,12 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
                                   /* Initialize private variables to invalid values */
                                   __pyx_v_c_j = ((int)0xbad0bad0);
 
-                                  /* "Depth_Displayer/cam_conversion.pyx":113
+                                  /* "Depth_Displayer/cam_conversion.pyx":108
  * 
  *                 for c_i in prange(i, i + clumping, 1, nogil=True):
  *                     for c_j in prange(j, j + clumping, 1):             # <<<<<<<<<<<<<<
- *                         # temp = average(history, c_i, c_j)
- * 
+ *                         if depth_image[i, j] > 0:
+ *                             rms_sum += depth_image[i, j]  * depth_image[i, j]
  */
                                   __pyx_t_41 = __pyx_v_j;
                                   __pyx_t_42 = (__pyx_v_j + __pyx_v_clumping);
@@ -4063,7 +3972,7 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
                                       if (__pyx_t_20 > 0)
                                       {
                                           #if 0
-                                          #pragma omp parallel reduction(+:__pyx_v_count) reduction(+:__pyx_v_rms_sum) private(__pyx_t_43, __pyx_t_44, __pyx_t_45, __pyx_t_46)
+                                          #pragma omp parallel reduction(+:__pyx_v_count) reduction(+:__pyx_v_rms_sum) private(__pyx_t_13, __pyx_t_43, __pyx_t_44, __pyx_t_45, __pyx_t_46, __pyx_t_47, __pyx_t_48)
                                           #endif /* _OPENMP */
                                           {
                                               #if 0
@@ -4073,31 +3982,54 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
                                                   {
                                                       __pyx_v_c_j = (int)(__pyx_t_41 + 1 * __pyx_t_21);
 
-                                                      /* "Depth_Displayer/cam_conversion.pyx":126
- *                         # rms_sum += temp * temp
- *                         # count += 1
- *                         rms_sum += depth_image[i, j] * depth_image[i, j]             # <<<<<<<<<<<<<<
- *                         count += 1
- * 
+                                                      /* "Depth_Displayer/cam_conversion.pyx":109
+ *                 for c_i in prange(i, i + clumping, 1, nogil=True):
+ *                     for c_j in prange(j, j + clumping, 1):
+ *                         if depth_image[i, j] > 0:             # <<<<<<<<<<<<<<
+ *                             rms_sum += depth_image[i, j]  * depth_image[i, j]
+ *                             count += 1
  */
                                                       __pyx_t_43 = __pyx_v_i;
                                                       __pyx_t_44 = __pyx_v_j;
                                                       if (__pyx_t_43 < 0) __pyx_t_43 += __pyx_v_depth_image.shape[0];
                                                       if (__pyx_t_44 < 0) __pyx_t_44 += __pyx_v_depth_image.shape[1];
-                                                      __pyx_t_45 = __pyx_v_i;
-                                                      __pyx_t_46 = __pyx_v_j;
-                                                      if (__pyx_t_45 < 0) __pyx_t_45 += __pyx_v_depth_image.shape[0];
-                                                      if (__pyx_t_46 < 0) __pyx_t_46 += __pyx_v_depth_image.shape[1];
-                                                      __pyx_v_rms_sum = (__pyx_v_rms_sum + ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_depth_image.data + __pyx_t_43 * __pyx_v_depth_image.strides[0]) ) + __pyx_t_44 * __pyx_v_depth_image.strides[1]) ))) * (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_depth_image.data + __pyx_t_45 * __pyx_v_depth_image.strides[0]) ) + __pyx_t_46 * __pyx_v_depth_image.strides[1]) )))));
+                                                      __pyx_t_13 = (((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_depth_image.data + __pyx_t_43 * __pyx_v_depth_image.strides[0]) ) + __pyx_t_44 * __pyx_v_depth_image.strides[1]) ))) > 0.0) != 0);
+                                                      if (__pyx_t_13) {
 
-                                                      /* "Depth_Displayer/cam_conversion.pyx":127
- *                         # count += 1
- *                         rms_sum += depth_image[i, j] * depth_image[i, j]
- *                         count += 1             # <<<<<<<<<<<<<<
+                                                        /* "Depth_Displayer/cam_conversion.pyx":110
+ *                     for c_j in prange(j, j + clumping, 1):
+ *                         if depth_image[i, j] > 0:
+ *                             rms_sum += depth_image[i, j]  * depth_image[i, j]             # <<<<<<<<<<<<<<
+ *                             count += 1
+ * 
+ */
+                                                        __pyx_t_45 = __pyx_v_i;
+                                                        __pyx_t_46 = __pyx_v_j;
+                                                        if (__pyx_t_45 < 0) __pyx_t_45 += __pyx_v_depth_image.shape[0];
+                                                        if (__pyx_t_46 < 0) __pyx_t_46 += __pyx_v_depth_image.shape[1];
+                                                        __pyx_t_47 = __pyx_v_i;
+                                                        __pyx_t_48 = __pyx_v_j;
+                                                        if (__pyx_t_47 < 0) __pyx_t_47 += __pyx_v_depth_image.shape[0];
+                                                        if (__pyx_t_48 < 0) __pyx_t_48 += __pyx_v_depth_image.shape[1];
+                                                        __pyx_v_rms_sum = (__pyx_v_rms_sum + ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_depth_image.data + __pyx_t_45 * __pyx_v_depth_image.strides[0]) ) + __pyx_t_46 * __pyx_v_depth_image.strides[1]) ))) * (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_depth_image.data + __pyx_t_47 * __pyx_v_depth_image.strides[0]) ) + __pyx_t_48 * __pyx_v_depth_image.strides[1]) )))));
+
+                                                        /* "Depth_Displayer/cam_conversion.pyx":111
+ *                         if depth_image[i, j] > 0:
+ *                             rms_sum += depth_image[i, j]  * depth_image[i, j]
+ *                             count += 1             # <<<<<<<<<<<<<<
  * 
  *                 # print("Actual clump: {}".format(sqrt(rms_sum / count)))
  */
-                                                      __pyx_v_count = (__pyx_v_count + 1.0);
+                                                        __pyx_v_count = (__pyx_v_count + 1.0);
+
+                                                        /* "Depth_Displayer/cam_conversion.pyx":109
+ *                 for c_i in prange(i, i + clumping, 1, nogil=True):
+ *                     for c_j in prange(j, j + clumping, 1):
+ *                         if depth_image[i, j] > 0:             # <<<<<<<<<<<<<<
+ *                             rms_sum += depth_image[i, j]  * depth_image[i, j]
+ *                             count += 1
+ */
+                                                      }
                                                   }
                                               }
                                           }
@@ -4116,12 +4048,12 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
               #endif
             }
 
-            /* "Depth_Displayer/cam_conversion.pyx":112
+            /* "Depth_Displayer/cam_conversion.pyx":107
  *                 count = 0
  * 
  *                 for c_i in prange(i, i + clumping, 1, nogil=True):             # <<<<<<<<<<<<<<
  *                     for c_j in prange(j, j + clumping, 1):
- *                         # temp = average(history, c_i, c_j)
+ *                         if depth_image[i, j] > 0:
  */
             /*finally:*/ {
               /*normal exit:*/{
@@ -4135,24 +4067,43 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
             }
         }
 
-        /* "Depth_Displayer/cam_conversion.pyx":130
+        /* "Depth_Displayer/cam_conversion.pyx":114
  * 
  *                 # print("Actual clump: {}".format(sqrt(rms_sum / count)))
- *                 clump_array[clump_index_i, clump_index_j] = sqrt(rms_sum / count)             # <<<<<<<<<<<<<<
+ *                 if count > 0:             # <<<<<<<<<<<<<<
+ *                     clump_array[clump_index_i, clump_index_j] = sqrt(rms_sum / count)
+ * 
+ */
+        __pyx_t_13 = ((__pyx_v_count > 0.0) != 0);
+        if (__pyx_t_13) {
+
+          /* "Depth_Displayer/cam_conversion.pyx":115
+ *                 # print("Actual clump: {}".format(sqrt(rms_sum / count)))
+ *                 if count > 0:
+ *                     clump_array[clump_index_i, clump_index_j] = sqrt(rms_sum / count)             # <<<<<<<<<<<<<<
  * 
  *             std_dev[std_index] = clump_array[clump_index_i, clump_index_j]
  */
-        if (unlikely(__pyx_v_count == 0)) {
-          PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-          __PYX_ERR(0, 130, __pyx_L1_error)
-        }
-        __pyx_t_47 = __pyx_v_clump_index_i;
-        __pyx_t_48 = __pyx_v_clump_index_j;
-        if (__pyx_t_47 < 0) __pyx_t_47 += __pyx_v_clump_array.shape[0];
-        if (__pyx_t_48 < 0) __pyx_t_48 += __pyx_v_clump_array.shape[1];
-        *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_clump_array.data + __pyx_t_47 * __pyx_v_clump_array.strides[0]) ) + __pyx_t_48 * __pyx_v_clump_array.strides[1]) )) = sqrt((__pyx_v_rms_sum / __pyx_v_count));
+          if (unlikely(__pyx_v_count == 0)) {
+            PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+            __PYX_ERR(0, 115, __pyx_L1_error)
+          }
+          __pyx_t_49 = __pyx_v_clump_index_i;
+          __pyx_t_50 = __pyx_v_clump_index_j;
+          if (__pyx_t_49 < 0) __pyx_t_49 += __pyx_v_clump_array.shape[0];
+          if (__pyx_t_50 < 0) __pyx_t_50 += __pyx_v_clump_array.shape[1];
+          *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_clump_array.data + __pyx_t_49 * __pyx_v_clump_array.strides[0]) ) + __pyx_t_50 * __pyx_v_clump_array.strides[1]) )) = sqrt((__pyx_v_rms_sum / __pyx_v_count));
 
-        /* "Depth_Displayer/cam_conversion.pyx":108
+          /* "Depth_Displayer/cam_conversion.pyx":114
+ * 
+ *                 # print("Actual clump: {}".format(sqrt(rms_sum / count)))
+ *                 if count > 0:             # <<<<<<<<<<<<<<
+ *                     clump_array[clump_index_i, clump_index_j] = sqrt(rms_sum / count)
+ * 
+ */
+        }
+
+        /* "Depth_Displayer/cam_conversion.pyx":103
  *             clump_index_j = (j - l) // clumping
  * 
  *             if clump_array[clump_index_i, clump_index_j] == 0:             # <<<<<<<<<<<<<<
@@ -4161,76 +4112,64 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
  */
       }
 
-      /* "Depth_Displayer/cam_conversion.pyx":132
- *                 clump_array[clump_index_i, clump_index_j] = sqrt(rms_sum / count)
+      /* "Depth_Displayer/cam_conversion.pyx":117
+ *                     clump_array[clump_index_i, clump_index_j] = sqrt(rms_sum / count)
  * 
  *             std_dev[std_index] = clump_array[clump_index_i, clump_index_j]             # <<<<<<<<<<<<<<
  *             std_index += 1
  * 
  */
-      __pyx_t_49 = __pyx_v_clump_index_i;
-      __pyx_t_50 = __pyx_v_clump_index_j;
-      if (__pyx_t_49 < 0) __pyx_t_49 += __pyx_v_clump_array.shape[0];
-      if (__pyx_t_50 < 0) __pyx_t_50 += __pyx_v_clump_array.shape[1];
-      __pyx_t_51 = __pyx_v_std_index;
-      if (__pyx_t_51 < 0) __pyx_t_51 += __pyx_v_std_dev.shape[0];
-      *((double *) ( /* dim=0 */ (__pyx_v_std_dev.data + __pyx_t_51 * __pyx_v_std_dev.strides[0]) )) = (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_clump_array.data + __pyx_t_49 * __pyx_v_clump_array.strides[0]) ) + __pyx_t_50 * __pyx_v_clump_array.strides[1]) )));
+      __pyx_t_51 = __pyx_v_clump_index_i;
+      __pyx_t_52 = __pyx_v_clump_index_j;
+      if (__pyx_t_51 < 0) __pyx_t_51 += __pyx_v_clump_array.shape[0];
+      if (__pyx_t_52 < 0) __pyx_t_52 += __pyx_v_clump_array.shape[1];
+      __pyx_t_53 = __pyx_v_std_index;
+      if (__pyx_t_53 < 0) __pyx_t_53 += __pyx_v_std_dev.shape[0];
+      *((double *) ( /* dim=0 */ (__pyx_v_std_dev.data + __pyx_t_53 * __pyx_v_std_dev.strides[0]) )) = (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_clump_array.data + __pyx_t_51 * __pyx_v_clump_array.strides[0]) ) + __pyx_t_52 * __pyx_v_clump_array.strides[1]) )));
 
-      /* "Depth_Displayer/cam_conversion.pyx":133
+      /* "Depth_Displayer/cam_conversion.pyx":118
  * 
  *             std_dev[std_index] = clump_array[clump_index_i, clump_index_j]
  *             std_index += 1             # <<<<<<<<<<<<<<
  * 
- *             temp = float(int(clump_array[clump_index_i, clump_index_j] // depth_clumping) % 2) * 255
+ *             temp = clump_array[clump_index_i, clump_index_j]  # // depth_clumping) % 2) * 255
  */
       __pyx_v_std_index = (__pyx_v_std_index + 1);
 
-      /* "Depth_Displayer/cam_conversion.pyx":135
+      /* "Depth_Displayer/cam_conversion.pyx":120
  *             std_index += 1
  * 
- *             temp = float(int(clump_array[clump_index_i, clump_index_j] // depth_clumping) % 2) * 255             # <<<<<<<<<<<<<<
+ *             temp = clump_array[clump_index_i, clump_index_j]  # // depth_clumping) % 2) * 255             # <<<<<<<<<<<<<<
  *             # print("Result {}".format(temp))
  *             roi[i - u, j - l] = temp
  */
-      __pyx_t_52 = __pyx_v_clump_index_i;
-      __pyx_t_53 = __pyx_v_clump_index_j;
-      if (__pyx_t_52 < 0) __pyx_t_52 += __pyx_v_clump_array.shape[0];
-      if (__pyx_t_53 < 0) __pyx_t_53 += __pyx_v_clump_array.shape[1];
-      __pyx_t_54 = (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_clump_array.data + __pyx_t_52 * __pyx_v_clump_array.strides[0]) ) + __pyx_t_53 * __pyx_v_clump_array.strides[1]) )));
-      if (unlikely(__pyx_v_depth_clumping == 0)) {
-        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-        __PYX_ERR(0, 135, __pyx_L1_error)
-      }
-      __pyx_t_6 = __Pyx_PyInt_FromDouble(floor(__pyx_t_54 / __pyx_v_depth_clumping)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 135, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_4 = __Pyx_PyInt_RemainderObjC(__pyx_t_6, __pyx_int_2, 2, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 135, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_54 = __Pyx_PyObject_AsDouble(__pyx_t_4); if (unlikely(__pyx_t_54 == ((double)((double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 135, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_v_temp = (__pyx_t_54 * 255.0);
+      __pyx_t_54 = __pyx_v_clump_index_i;
+      __pyx_t_55 = __pyx_v_clump_index_j;
+      if (__pyx_t_54 < 0) __pyx_t_54 += __pyx_v_clump_array.shape[0];
+      if (__pyx_t_55 < 0) __pyx_t_55 += __pyx_v_clump_array.shape[1];
+      __pyx_v_temp = (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_clump_array.data + __pyx_t_54 * __pyx_v_clump_array.strides[0]) ) + __pyx_t_55 * __pyx_v_clump_array.strides[1]) )));
 
-      /* "Depth_Displayer/cam_conversion.pyx":137
- *             temp = float(int(clump_array[clump_index_i, clump_index_j] // depth_clumping) % 2) * 255
+      /* "Depth_Displayer/cam_conversion.pyx":122
+ *             temp = clump_array[clump_index_i, clump_index_j]  # // depth_clumping) % 2) * 255
  *             # print("Result {}".format(temp))
  *             roi[i - u, j - l] = temp             # <<<<<<<<<<<<<<
  * 
- *     cdef double[:, :] norm = normal_distribution(std_dev[:std_index])
+ *     cdef double[:] adj_pop = std_dev[:std_index]
  */
-      __pyx_t_55 = (__pyx_v_i - __pyx_v_u);
-      __pyx_t_56 = (__pyx_v_j - __pyx_v_l);
-      if (__pyx_t_55 < 0) __pyx_t_55 += __pyx_v_roi.shape[0];
-      if (__pyx_t_56 < 0) __pyx_t_56 += __pyx_v_roi.shape[1];
-      *((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_roi.data + __pyx_t_55 * __pyx_v_roi.strides[0]) ) + __pyx_t_56 * __pyx_v_roi.strides[1]) )) = __pyx_v_temp;
+      __pyx_t_56 = (__pyx_v_i - __pyx_v_u);
+      __pyx_t_57 = (__pyx_v_j - __pyx_v_l);
+      if (__pyx_t_56 < 0) __pyx_t_56 += __pyx_v_roi.shape[0];
+      if (__pyx_t_57 < 0) __pyx_t_57 += __pyx_v_roi.shape[1];
+      *((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_roi.data + __pyx_t_56 * __pyx_v_roi.strides[0]) ) + __pyx_t_57 * __pyx_v_roi.strides[1]) )) = __pyx_v_temp;
     }
   }
 
-  /* "Depth_Displayer/cam_conversion.pyx":139
+  /* "Depth_Displayer/cam_conversion.pyx":124
  *             roi[i - u, j - l] = temp
  * 
- *     cdef double[:, :] norm = normal_distribution(std_dev[:std_index])             # <<<<<<<<<<<<<<
- * 
- *     return np.asarray(history, dtype=float), np.asarray(roi), np.asarray(std_dev[:std_index])  # std_dev[:std_index])
+ *     cdef double[:] adj_pop = std_dev[:std_index]             # <<<<<<<<<<<<<<
+ *     frame_avg = average(adj_pop)
+ *     # cdef double[:, :] norm = normal_distribution(adj_pop, frame_avg)
  */
   __pyx_t_12.data = __pyx_v_std_dev.data;
   __pyx_t_12.memview = __pyx_v_std_dev.memview;
@@ -4250,97 +4189,79 @@ static PyObject *__pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(Py
     0,
     1) < 0))
 {
-    __PYX_ERR(0, 139, __pyx_L1_error)
+    __PYX_ERR(0, 124, __pyx_L1_error)
 }
 
-__pyx_t_11 = __pyx_f_15Depth_Displayer_14cam_conversion_normal_distribution(__pyx_t_12); if (unlikely(!__pyx_t_11.memview)) __PYX_ERR(0, 139, __pyx_L1_error)
-  __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
+__pyx_v_adj_pop = __pyx_t_12;
   __pyx_t_12.memview = NULL;
   __pyx_t_12.data = NULL;
-  __pyx_v_norm = __pyx_t_11;
-  __pyx_t_11.memview = NULL;
-  __pyx_t_11.data = NULL;
 
-  /* "Depth_Displayer/cam_conversion.pyx":141
- *     cdef double[:, :] norm = normal_distribution(std_dev[:std_index])
+  /* "Depth_Displayer/cam_conversion.pyx":125
  * 
- *     return np.asarray(history, dtype=float), np.asarray(roi), np.asarray(std_dev[:std_index])  # std_dev[:std_index])             # <<<<<<<<<<<<<<
+ *     cdef double[:] adj_pop = std_dev[:std_index]
+ *     frame_avg = average(adj_pop)             # <<<<<<<<<<<<<<
+ *     # cdef double[:, :] norm = normal_distribution(adj_pop, frame_avg)
+ * 
+ */
+  __pyx_t_58 = __pyx_f_15Depth_Displayer_14cam_conversion_average(__pyx_v_adj_pop); if (unlikely(__pyx_t_58 == ((double)-1.0))) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_v_frame_avg = __pyx_t_58;
+
+  /* "Depth_Displayer/cam_conversion.pyx":128
+ *     # cdef double[:, :] norm = normal_distribution(adj_pop, frame_avg)
+ * 
+ *     return np.asarray(history, dtype=float), np.asarray(roi), np.asarray(adj_pop), frame_avg  # std_dev[:std_index])             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 141, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_asarray); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_v_history, 3, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_asarray); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 141, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_4);
-  __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 141, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 141, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 141, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 141, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_asarray); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __pyx_t_6 = __pyx_memoryview_fromslice(__pyx_v_history, 3, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_6);
+  __pyx_t_6 = 0;
+  __pyx_t_6 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  if (PyDict_SetItem(__pyx_t_6, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_roi, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_asarray); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_roi, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_5 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
-    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_6);
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
     if (likely(__pyx_t_5)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
       __Pyx_INCREF(__pyx_t_5);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_6, function);
+      __Pyx_DECREF_SET(__pyx_t_4, function);
     }
   }
-  __pyx_t_4 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_3);
+  __pyx_t_6 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
   __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 141, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 141, __pyx_L1_error)
+  if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_asarray); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_asarray); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_12.data = __pyx_v_std_dev.data;
-  __pyx_t_12.memview = __pyx_v_std_dev.memview;
-  __PYX_INC_MEMVIEW(&__pyx_t_12, 0);
-  __pyx_t_15 = -1;
-  if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_12,
-    __pyx_v_std_dev.shape[0], __pyx_v_std_dev.strides[0], __pyx_v_std_dev.suboffsets[0],
-    0,
-    0,
-    &__pyx_t_15,
-    0,
-    __pyx_v_std_index,
-    0,
-    0,
-    1,
-    0,
-    1) < 0))
-{
-    __PYX_ERR(0, 141, __pyx_L1_error)
-}
-
-__pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_12, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_adj_pop, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
-  __pyx_t_12.memview = NULL;
-  __pyx_t_12.data = NULL;
   __pyx_t_1 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
     __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_5);
@@ -4351,28 +4272,33 @@ __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_12, 1, (PyObject *(*)(char *)) __
       __Pyx_DECREF_SET(__pyx_t_5, function);
     }
   }
-  __pyx_t_6 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_1, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_3);
+  __pyx_t_4 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_1, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_3);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 141, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_frame_avg); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_3 = PyTuple_New(4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_4);
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_6);
-  PyTuple_SET_ITEM(__pyx_t_5, 2, __pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_6);
+  __Pyx_GIVEREF(__pyx_t_4);
+  PyTuple_SET_ITEM(__pyx_t_3, 2, __pyx_t_4);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_3, 3, __pyx_t_5);
   __pyx_t_2 = 0;
-  __pyx_t_4 = 0;
   __pyx_t_6 = 0;
-  __pyx_r = __pyx_t_5;
+  __pyx_t_4 = 0;
   __pyx_t_5 = 0;
+  __pyx_r = __pyx_t_3;
+  __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "Depth_Displayer/cam_conversion.pyx":63
+  /* "Depth_Displayer/cam_conversion.pyx":59
  * 
  * @cython.boundscheck(False)
  * cpdef convert_realsense(object frames, float[:, :] roi, int u, int b, int l, int r,             # <<<<<<<<<<<<<<
@@ -4400,7 +4326,7 @@ __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_12, 1, (PyObject *(*)(char *)) __
   __PYX_XDEC_MEMVIEW(&__pyx_v_depth_image, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_clump_array, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_std_dev, 1);
-  __PYX_XDEC_MEMVIEW(&__pyx_v_norm, 1);
+  __PYX_XDEC_MEMVIEW(&__pyx_v_adj_pop, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_history, 1);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -4465,65 +4391,65 @@ static PyObject *__pyx_pw_15Depth_Displayer_14cam_conversion_1convert_realsense(
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_roi)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 1); __PYX_ERR(0, 63, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 1); __PYX_ERR(0, 59, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_u)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 2); __PYX_ERR(0, 63, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 2); __PYX_ERR(0, 59, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 3); __PYX_ERR(0, 63, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 3); __PYX_ERR(0, 59, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_l)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 4); __PYX_ERR(0, 63, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 4); __PYX_ERR(0, 59, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_r)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 5); __PYX_ERR(0, 63, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 5); __PYX_ERR(0, 59, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
         if (likely((values[6] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_clumping)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 6); __PYX_ERR(0, 63, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 6); __PYX_ERR(0, 59, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  7:
         if (likely((values[7] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_depth_clumping)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 7); __PYX_ERR(0, 63, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 7); __PYX_ERR(0, 59, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  8:
         if (likely((values[8] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_create_history)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 8); __PYX_ERR(0, 63, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 8); __PYX_ERR(0, 59, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  9:
         if (likely((values[9] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_history)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 9); __PYX_ERR(0, 63, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 9); __PYX_ERR(0, 59, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case 10:
         if (likely((values[10] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_history_depth)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 10); __PYX_ERR(0, 63, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, 10); __PYX_ERR(0, 59, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "convert_realsense") < 0)) __PYX_ERR(0, 63, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "convert_realsense") < 0)) __PYX_ERR(0, 59, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 11) {
       goto __pyx_L5_argtuple_error;
@@ -4541,20 +4467,20 @@ static PyObject *__pyx_pw_15Depth_Displayer_14cam_conversion_1convert_realsense(
       values[10] = PyTuple_GET_ITEM(__pyx_args, 10);
     }
     __pyx_v_frames = values[0];
-    __pyx_v_roi = __Pyx_PyObject_to_MemoryviewSlice_dsds_float(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_roi.memview)) __PYX_ERR(0, 63, __pyx_L3_error)
-    __pyx_v_u = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_u == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L3_error)
-    __pyx_v_b = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_b == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L3_error)
-    __pyx_v_l = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_l == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L3_error)
-    __pyx_v_r = __Pyx_PyInt_As_int(values[5]); if (unlikely((__pyx_v_r == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L3_error)
-    __pyx_v_clumping = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_clumping == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 64, __pyx_L3_error)
-    __pyx_v_depth_clumping = __Pyx_PyInt_As_int(values[7]); if (unlikely((__pyx_v_depth_clumping == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 64, __pyx_L3_error)
-    __pyx_v_create_history = __Pyx_PyInt_As_int(values[8]); if (unlikely((__pyx_v_create_history == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 65, __pyx_L3_error)
-    __pyx_v_history = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[9], PyBUF_WRITABLE); if (unlikely(!__pyx_v_history.memview)) __PYX_ERR(0, 65, __pyx_L3_error)
-    __pyx_v_history_depth = __Pyx_PyInt_As_int(values[10]); if (unlikely((__pyx_v_history_depth == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 65, __pyx_L3_error)
+    __pyx_v_roi = __Pyx_PyObject_to_MemoryviewSlice_dsds_float(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_roi.memview)) __PYX_ERR(0, 59, __pyx_L3_error)
+    __pyx_v_u = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_u == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 59, __pyx_L3_error)
+    __pyx_v_b = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_b == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 59, __pyx_L3_error)
+    __pyx_v_l = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_l == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 59, __pyx_L3_error)
+    __pyx_v_r = __Pyx_PyInt_As_int(values[5]); if (unlikely((__pyx_v_r == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 59, __pyx_L3_error)
+    __pyx_v_clumping = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_clumping == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L3_error)
+    __pyx_v_depth_clumping = __Pyx_PyInt_As_int(values[7]); if (unlikely((__pyx_v_depth_clumping == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L3_error)
+    __pyx_v_create_history = __Pyx_PyInt_As_int(values[8]); if (unlikely((__pyx_v_create_history == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 61, __pyx_L3_error)
+    __pyx_v_history = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[9], PyBUF_WRITABLE); if (unlikely(!__pyx_v_history.memview)) __PYX_ERR(0, 61, __pyx_L3_error)
+    __pyx_v_history_depth = __Pyx_PyInt_As_int(values[10]); if (unlikely((__pyx_v_history_depth == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 61, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 63, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("convert_realsense", 1, 11, 11, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 59, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("Depth_Displayer.cam_conversion.convert_realsense", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4573,9 +4499,9 @@ static PyObject *__pyx_pf_15Depth_Displayer_14cam_conversion_convert_realsense(C
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("convert_realsense", 0);
   __Pyx_XDECREF(__pyx_r);
-  if (unlikely(!__pyx_v_roi.memview)) { __Pyx_RaiseUnboundLocalError("roi"); __PYX_ERR(0, 63, __pyx_L1_error) }
-  if (unlikely(!__pyx_v_history.memview)) { __Pyx_RaiseUnboundLocalError("history"); __PYX_ERR(0, 63, __pyx_L1_error) }
-  __pyx_t_1 = __pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(__pyx_v_frames, __pyx_v_roi, __pyx_v_u, __pyx_v_b, __pyx_v_l, __pyx_v_r, __pyx_v_clumping, __pyx_v_depth_clumping, __pyx_v_create_history, __pyx_v_history, __pyx_v_history_depth, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
+  if (unlikely(!__pyx_v_roi.memview)) { __Pyx_RaiseUnboundLocalError("roi"); __PYX_ERR(0, 59, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_history.memview)) { __Pyx_RaiseUnboundLocalError("history"); __PYX_ERR(0, 59, __pyx_L1_error) }
+  __pyx_t_1 = __pyx_f_15Depth_Displayer_14cam_conversion_convert_realsense(__pyx_v_frames, __pyx_v_roi, __pyx_v_u, __pyx_v_b, __pyx_v_l, __pyx_v_r, __pyx_v_clumping, __pyx_v_depth_clumping, __pyx_v_create_history, __pyx_v_history, __pyx_v_history_depth, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -20637,8 +20563,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_sum = __Pyx_GetBuiltinName(__pyx_n_s_sum); if (!__pyx_builtin_sum) __PYX_ERR(0, 31, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_builtin_sum = __Pyx_GetBuiltinName(__pyx_n_s_sum); if (!__pyx_builtin_sum) __PYX_ERR(0, 28, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 88, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 272, __pyx_L1_error)
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(1, 856, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(1, 1038, __pyx_L1_error)
@@ -21819,140 +21745,6 @@ static CYTHON_INLINE int __Pyx_div_int(int a, int b) {
     return q;
 }
 
-/* MemviewSliceInit */
-static int
-__Pyx_init_memviewslice(struct __pyx_memoryview_obj *memview,
-                        int ndim,
-                        __Pyx_memviewslice *memviewslice,
-                        int memview_is_new_reference)
-{
-    __Pyx_RefNannyDeclarations
-    int i, retval=-1;
-    Py_buffer *buf = &memview->view;
-    __Pyx_RefNannySetupContext("init_memviewslice", 0);
-    if (memviewslice->memview || memviewslice->data) {
-        PyErr_SetString(PyExc_ValueError,
-            "memviewslice is already initialized!");
-        goto fail;
-    }
-    if (buf->strides) {
-        for (i = 0; i < ndim; i++) {
-            memviewslice->strides[i] = buf->strides[i];
-        }
-    } else {
-        Py_ssize_t stride = buf->itemsize;
-        for (i = ndim - 1; i >= 0; i--) {
-            memviewslice->strides[i] = stride;
-            stride *= buf->shape[i];
-        }
-    }
-    for (i = 0; i < ndim; i++) {
-        memviewslice->shape[i]   = buf->shape[i];
-        if (buf->suboffsets) {
-            memviewslice->suboffsets[i] = buf->suboffsets[i];
-        } else {
-            memviewslice->suboffsets[i] = -1;
-        }
-    }
-    memviewslice->memview = memview;
-    memviewslice->data = (char *)buf->buf;
-    if (__pyx_add_acquisition_count(memview) == 0 && !memview_is_new_reference) {
-        Py_INCREF(memview);
-    }
-    retval = 0;
-    goto no_fail;
-fail:
-    memviewslice->memview = 0;
-    memviewslice->data = 0;
-    retval = -1;
-no_fail:
-    __Pyx_RefNannyFinishContext();
-    return retval;
-}
-#ifndef Py_NO_RETURN
-#define Py_NO_RETURN
-#endif
-static void __pyx_fatalerror(const char *fmt, ...) Py_NO_RETURN {
-    va_list vargs;
-    char msg[200];
-#ifdef HAVE_STDARG_PROTOTYPES
-    va_start(vargs, fmt);
-#else
-    va_start(vargs);
-#endif
-    vsnprintf(msg, 200, fmt, vargs);
-    va_end(vargs);
-    Py_FatalError(msg);
-}
-static CYTHON_INLINE int
-__pyx_add_acquisition_count_locked(__pyx_atomic_int *acquisition_count,
-                                   PyThread_type_lock lock)
-{
-    int result;
-    PyThread_acquire_lock(lock, 1);
-    result = (*acquisition_count)++;
-    PyThread_release_lock(lock);
-    return result;
-}
-static CYTHON_INLINE int
-__pyx_sub_acquisition_count_locked(__pyx_atomic_int *acquisition_count,
-                                   PyThread_type_lock lock)
-{
-    int result;
-    PyThread_acquire_lock(lock, 1);
-    result = (*acquisition_count)--;
-    PyThread_release_lock(lock);
-    return result;
-}
-static CYTHON_INLINE void
-__Pyx_INC_MEMVIEW(__Pyx_memviewslice *memslice, int have_gil, int lineno)
-{
-    int first_time;
-    struct __pyx_memoryview_obj *memview = memslice->memview;
-    if (!memview || (PyObject *) memview == Py_None)
-        return;
-    if (__pyx_get_slice_count(memview) < 0)
-        __pyx_fatalerror("Acquisition count is %d (line %d)",
-                         __pyx_get_slice_count(memview), lineno);
-    first_time = __pyx_add_acquisition_count(memview) == 0;
-    if (first_time) {
-        if (have_gil) {
-            Py_INCREF((PyObject *) memview);
-        } else {
-            PyGILState_STATE _gilstate = PyGILState_Ensure();
-            Py_INCREF((PyObject *) memview);
-            PyGILState_Release(_gilstate);
-        }
-    }
-}
-static CYTHON_INLINE void __Pyx_XDEC_MEMVIEW(__Pyx_memviewslice *memslice,
-                                             int have_gil, int lineno) {
-    int last_time;
-    struct __pyx_memoryview_obj *memview = memslice->memview;
-    if (!memview ) {
-        return;
-    } else if ((PyObject *) memview == Py_None) {
-        memslice->memview = NULL;
-        return;
-    }
-    if (__pyx_get_slice_count(memview) <= 0)
-        __pyx_fatalerror("Acquisition count is %d (line %d)",
-                         __pyx_get_slice_count(memview), lineno);
-    last_time = __pyx_sub_acquisition_count(memview) == 1;
-    memslice->data = NULL;
-    if (last_time) {
-        if (have_gil) {
-            Py_CLEAR(memslice->memview);
-        } else {
-            PyGILState_STATE _gilstate = PyGILState_Ensure();
-            Py_CLEAR(memslice->memview);
-            PyGILState_Release(_gilstate);
-        }
-    } else {
-        memslice->memview = NULL;
-    }
-}
-
 /* PyCFunctionFastCall */
 #if CYTHON_FAST_PYCCALL
 static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
@@ -22252,6 +22044,140 @@ static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
     return __Pyx_GetBuiltinName(name);
 }
 
+/* MemviewSliceInit */
+static int
+__Pyx_init_memviewslice(struct __pyx_memoryview_obj *memview,
+                        int ndim,
+                        __Pyx_memviewslice *memviewslice,
+                        int memview_is_new_reference)
+{
+    __Pyx_RefNannyDeclarations
+    int i, retval=-1;
+    Py_buffer *buf = &memview->view;
+    __Pyx_RefNannySetupContext("init_memviewslice", 0);
+    if (memviewslice->memview || memviewslice->data) {
+        PyErr_SetString(PyExc_ValueError,
+            "memviewslice is already initialized!");
+        goto fail;
+    }
+    if (buf->strides) {
+        for (i = 0; i < ndim; i++) {
+            memviewslice->strides[i] = buf->strides[i];
+        }
+    } else {
+        Py_ssize_t stride = buf->itemsize;
+        for (i = ndim - 1; i >= 0; i--) {
+            memviewslice->strides[i] = stride;
+            stride *= buf->shape[i];
+        }
+    }
+    for (i = 0; i < ndim; i++) {
+        memviewslice->shape[i]   = buf->shape[i];
+        if (buf->suboffsets) {
+            memviewslice->suboffsets[i] = buf->suboffsets[i];
+        } else {
+            memviewslice->suboffsets[i] = -1;
+        }
+    }
+    memviewslice->memview = memview;
+    memviewslice->data = (char *)buf->buf;
+    if (__pyx_add_acquisition_count(memview) == 0 && !memview_is_new_reference) {
+        Py_INCREF(memview);
+    }
+    retval = 0;
+    goto no_fail;
+fail:
+    memviewslice->memview = 0;
+    memviewslice->data = 0;
+    retval = -1;
+no_fail:
+    __Pyx_RefNannyFinishContext();
+    return retval;
+}
+#ifndef Py_NO_RETURN
+#define Py_NO_RETURN
+#endif
+static void __pyx_fatalerror(const char *fmt, ...) Py_NO_RETURN {
+    va_list vargs;
+    char msg[200];
+#ifdef HAVE_STDARG_PROTOTYPES
+    va_start(vargs, fmt);
+#else
+    va_start(vargs);
+#endif
+    vsnprintf(msg, 200, fmt, vargs);
+    va_end(vargs);
+    Py_FatalError(msg);
+}
+static CYTHON_INLINE int
+__pyx_add_acquisition_count_locked(__pyx_atomic_int *acquisition_count,
+                                   PyThread_type_lock lock)
+{
+    int result;
+    PyThread_acquire_lock(lock, 1);
+    result = (*acquisition_count)++;
+    PyThread_release_lock(lock);
+    return result;
+}
+static CYTHON_INLINE int
+__pyx_sub_acquisition_count_locked(__pyx_atomic_int *acquisition_count,
+                                   PyThread_type_lock lock)
+{
+    int result;
+    PyThread_acquire_lock(lock, 1);
+    result = (*acquisition_count)--;
+    PyThread_release_lock(lock);
+    return result;
+}
+static CYTHON_INLINE void
+__Pyx_INC_MEMVIEW(__Pyx_memviewslice *memslice, int have_gil, int lineno)
+{
+    int first_time;
+    struct __pyx_memoryview_obj *memview = memslice->memview;
+    if (!memview || (PyObject *) memview == Py_None)
+        return;
+    if (__pyx_get_slice_count(memview) < 0)
+        __pyx_fatalerror("Acquisition count is %d (line %d)",
+                         __pyx_get_slice_count(memview), lineno);
+    first_time = __pyx_add_acquisition_count(memview) == 0;
+    if (first_time) {
+        if (have_gil) {
+            Py_INCREF((PyObject *) memview);
+        } else {
+            PyGILState_STATE _gilstate = PyGILState_Ensure();
+            Py_INCREF((PyObject *) memview);
+            PyGILState_Release(_gilstate);
+        }
+    }
+}
+static CYTHON_INLINE void __Pyx_XDEC_MEMVIEW(__Pyx_memviewslice *memslice,
+                                             int have_gil, int lineno) {
+    int last_time;
+    struct __pyx_memoryview_obj *memview = memslice->memview;
+    if (!memview ) {
+        return;
+    } else if ((PyObject *) memview == Py_None) {
+        memslice->memview = NULL;
+        return;
+    }
+    if (__pyx_get_slice_count(memview) <= 0)
+        __pyx_fatalerror("Acquisition count is %d (line %d)",
+                         __pyx_get_slice_count(memview), lineno);
+    last_time = __pyx_sub_acquisition_count(memview) == 1;
+    memslice->data = NULL;
+    if (last_time) {
+        if (have_gil) {
+            Py_CLEAR(memslice->memview);
+        } else {
+            PyGILState_STATE _gilstate = PyGILState_Ensure();
+            Py_CLEAR(memslice->memview);
+            PyGILState_Release(_gilstate);
+        }
+    } else {
+        memslice->memview = NULL;
+    }
+}
+
 /* PyObjectCallNoArg */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
@@ -22310,171 +22236,6 @@ static CYTHON_INLINE Py_ssize_t __Pyx_div_Py_ssize_t(Py_ssize_t a, Py_ssize_t b)
     q -= ((r != 0) & ((r ^ b) < 0));
     return q;
 }
-
-/* pyobject_as_double */
-static double __Pyx__PyObject_AsDouble(PyObject* obj) {
-    PyObject* float_value;
-#if !CYTHON_USE_TYPE_SLOTS
-    float_value = PyNumber_Float(obj);  if ((0)) goto bad;
-#else
-    PyNumberMethods *nb = Py_TYPE(obj)->tp_as_number;
-    if (likely(nb) && likely(nb->nb_float)) {
-        float_value = nb->nb_float(obj);
-        if (likely(float_value) && unlikely(!PyFloat_Check(float_value))) {
-            PyErr_Format(PyExc_TypeError,
-                "__float__ returned non-float (type %.200s)",
-                Py_TYPE(float_value)->tp_name);
-            Py_DECREF(float_value);
-            goto bad;
-        }
-    } else if (PyUnicode_CheckExact(obj) || PyBytes_CheckExact(obj)) {
-#if PY_MAJOR_VERSION >= 3
-        float_value = PyFloat_FromString(obj);
-#else
-        float_value = PyFloat_FromString(obj, 0);
-#endif
-    } else {
-        PyObject* args = PyTuple_New(1);
-        if (unlikely(!args)) goto bad;
-        PyTuple_SET_ITEM(args, 0, obj);
-        float_value = PyObject_Call((PyObject*)&PyFloat_Type, args, 0);
-        PyTuple_SET_ITEM(args, 0, 0);
-        Py_DECREF(args);
-    }
-#endif
-    if (likely(float_value)) {
-        double value = PyFloat_AS_DOUBLE(float_value);
-        Py_DECREF(float_value);
-        return value;
-    }
-bad:
-    return (double)-1;
-}
-
-/* PyIntBinop */
-#if !CYTHON_COMPILING_IN_PYPY
-#if PY_MAJOR_VERSION < 3 || CYTHON_USE_PYLONG_INTERNALS
-#define __Pyx_PyInt_RemainderObjC_ZeroDivisionError(operand)\
-    if (unlikely(zerodivision_check && ((operand) == 0))) {\
-        PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");\
-        return NULL;\
-    }
-#endif
-static PyObject* __Pyx_PyInt_RemainderObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, int inplace, int zerodivision_check) {
-    (void)inplace;
-    (void)zerodivision_check;
-    #if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_CheckExact(op1))) {
-        const long b = intval;
-        long x;
-        long a = PyInt_AS_LONG(op1);
-            __Pyx_PyInt_RemainderObjC_ZeroDivisionError(b)
-            x = a % b;
-            x += ((x != 0) & ((x ^ b) < 0)) * b;
-            return PyInt_FromLong(x);
-    }
-    #endif
-    #if CYTHON_USE_PYLONG_INTERNALS
-    if (likely(PyLong_CheckExact(op1))) {
-        const long b = intval;
-        long a, x;
-#ifdef HAVE_LONG_LONG
-        const PY_LONG_LONG llb = intval;
-        PY_LONG_LONG lla, llx;
-#endif
-        const digit* digits = ((PyLongObject*)op1)->ob_digit;
-        const Py_ssize_t size = Py_SIZE(op1);
-        if (likely(__Pyx_sst_abs(size) <= 1)) {
-            a = likely(size) ? digits[0] : 0;
-            if (size == -1) a = -a;
-        } else {
-            switch (size) {
-                case -2:
-                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                        a = -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case 2:
-                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                        a = (long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case -3:
-                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                        a = -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case 3:
-                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                        a = (long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case -4:
-                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
-                        a = -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case 4:
-                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
-                        a = (long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                default: return PyLong_Type.tp_as_number->nb_remainder(op1, op2);
-            }
-        }
-                __Pyx_PyInt_RemainderObjC_ZeroDivisionError(b)
-                x = a % b;
-                x += ((x != 0) & ((x ^ b) < 0)) * b;
-            return PyLong_FromLong(x);
-#ifdef HAVE_LONG_LONG
-        long_long:
-                llx = lla % llb;
-                llx += ((llx != 0) & ((llx ^ llb) < 0)) * llb;
-            return PyLong_FromLongLong(llx);
-#endif
-        
-        
-    }
-    #endif
-    return (inplace ? PyNumber_InPlaceRemainder : PyNumber_Remainder)(op1, op2);
-}
-#endif
 
 /* RaiseArgTupleInvalid */
 static void __Pyx_RaiseArgtupleInvalid(

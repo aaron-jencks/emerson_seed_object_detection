@@ -1,7 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="22d3bdb7-8250-4496-b991-49a742fef7b3" name="Default Changelist" comment="" />
+    <list default="true" id="22d3bdb7-8250-4496-b991-49a742fef7b3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Furrow Edge Detection/projects/Furrow Edge Detection aaron.lvproj" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Furrow Edge Detection/projects/Furrow Edge Detection aaron.lvproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/ROIed Video Frame/ROI Apply.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/ROIed Video Frame/ROI Apply.vi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/ROIed Video Frame/ROIed Video Frame Create.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/ROIed Video Frame/ROIed Video Frame Create.vi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/ROIed Video Frame/ROIed Video Frame.lvclass" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/ROIed Video Frame/ROIed Video Frame.lvclass" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/ROIed Video Frame/Video Frame to ROIed Frame.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/ROIed Video Frame/Video Frame to ROIed Frame.vi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video File/Video File Create.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video File/Video File Create.vi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video File/Video File Frame Read.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video File/Video File Frame Read.vi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video File/Video File Open.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video File/Video File Open.vi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Frame/Compute Average.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Frame/Compute Average.vi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Frame/Depth Frame Read.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Frame/Depth Frame Read.vi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Frame/Video Frame.lvclass" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Frame/Video Frame.lvclass" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Compute Average.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Compute Average.vi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Frame History Process.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Frame History Process.vi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Frame Process.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Frame Process.vi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Video File Frame Read.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Video File Frame Read.vi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Video Processor Create.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Video Processor Create.vi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Video Processor.lvclass" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Video Processor.lvclass" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Project/Video Viewer Project Aaron.lvlps" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Project/Video Viewer Project Aaron.lvlps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Project/Video Viewer Project Aaron.lvproj" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/Project/Video Viewer Project Aaron.lvproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/builds/Depth Comparator/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/builds/Depth Comparator/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/builds/Depth Comparator/depth_comparator.exe" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/builds/Depth Comparator/depth_comparator.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/builds/Depth Comparator/depth_comparator.ini" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/builds/Depth Comparator/depth_comparator.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/builds/Depth Comparator/depth_comparator.zip" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/builds/Depth Comparator/depth_comparator.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/main.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../LabVIEW/Projects/Paul's Video Viewer/main.vi" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,10 +37,10 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="311" />
-    <option name="y" value="182" />
-    <option name="width" value="1366" />
-    <option name="height" value="768" />
+    <option name="x" value="-3528" />
+    <option name="y" value="-10" />
+    <option name="width" value="1936" />
+    <option name="height" value="1096" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -35,6 +60,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Course" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -68,11 +94,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+    <frame x="-3528" y="-10" width="1936" height="1096" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24968314" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2521322" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Statistic" />
+      <window_info anchor="bottom" id="Educational.CheckDetails" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -84,6 +112,7 @@
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="right" id="PlantUML" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
