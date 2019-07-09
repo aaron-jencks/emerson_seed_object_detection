@@ -1,26 +1,20 @@
 import socketserver
 import time
+from multiprocessing import Queue
 
-from video_util.cam import Cam
 from video_util.data import VideoStreamType, VideoStream
 from .datapacket_util import VideoInitDatagram, VideoStreamDatagram
 
 
 class VideoStreamingServer(socketserver.TCPServer):
-    def __init__(self, device_identifier: str, cam: Cam, **kwargs):
+    def __init__(self, device_identifier: str, cam_q: Queue, **kwargs):
         super().__init__(**kwargs)
         self.dev = device_identifier
-        self.cam = cam
-        self.cam.connect()
+        self.cam_q = cam_q
 
 
 class VideoStreamingHandler(socketserver.StreamRequestHandler):
     """Request Handler for handling video streaming"""
-
-    def setup(self):
-        super().setup()
-        self.server.cam.connect()
-        self.server.cam.start_capture()
 
     def handle(self):
 
@@ -37,7 +31,7 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
         while True:
             start = time.time()
             try:
-                rgb, ir, depth = self.server.cam.get_frame()
+                rgb, ir, depth = self.server.cam_q.get()
                 # self.wfile.write((VideoStreamDatagram(self.server.dev, 'rgb', rgb).to_json() + '\n').encode('utf-8'))
                 self.wfile.write((VideoStreamDatagram(self.server.dev, 'depth', depth).to_json() + '\n').encode('utf-8'))
             except Exception as e:
@@ -46,8 +40,3 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
 
             print('\rRunning at {} fps'.format(1 / (time.time() - start)), end='')
         print('')
-
-    def finish(self):
-        super().finish()
-        self.server.cam.stop_capture()
-        self.server.cam.disconnect()
