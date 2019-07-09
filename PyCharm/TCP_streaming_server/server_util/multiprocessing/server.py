@@ -7,7 +7,7 @@ class VideoStreamServerWrapper(Process):
     """Wraps a VideoStreamingServer object inside of a process that can be launched on another thread"""
 
     def __init__(self, device_identifier: str, cam_q: Queue, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__()
         self.server = VideoStreamingServer
         self.dev = device_identifier
         self.q = cam_q

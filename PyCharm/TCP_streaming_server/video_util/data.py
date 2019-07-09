@@ -3,7 +3,8 @@ from enum import Enum
 
 class VideoStreamType(Enum):
     RGB = 0
-    Z16 = 1
+    GRAY = 1
+    Z16 = 2
 
 
 class VideoStream:

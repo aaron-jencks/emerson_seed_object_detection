@@ -7,8 +7,9 @@ from .datapacket_util import VideoInitDatagram, VideoStreamDatagram
 
 
 class VideoStreamingServer(socketserver.TCPServer):
-    def __init__(self, device_identifier: str, cam_q: Queue, **kwargs):
+    def __init__(self, device_identifier: str, cam_q: Queue, stream_type: VideoStream, **kwargs):
         super().__init__(RequestHandlerClass=VideoStreamingHandler, **kwargs)
+        self.stream_type = stream_type
         self.dev = device_identifier
         self.cam_q = cam_q
 
@@ -23,9 +24,7 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
 
         # region Sets up the video streams
 
-        depth_stream_info = VideoInitDatagram(self.server.dev, [
-            VideoStream('rgb', self.server.cam.resolution, self.server.cam.framerate, VideoStreamType.RGB),
-            VideoStream('depth', self.server.cam.resolution, self.server.cam.framerate, VideoStreamType.Z16)])
+        depth_stream_info = VideoInitDatagram(self.server.dev, [self.server.stream_type])
 
         self.wfile.write((depth_stream_info.to_json() + '\n').encode('utf-8'))
 
@@ -34,9 +33,10 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
         while True:
             start = time.time()
             try:
-                rgb, ir, depth = self.server.cam_q.get()
+                data = self.server.cam_q.get()
                 # self.wfile.write((VideoStreamDatagram(self.server.dev, 'rgb', rgb).to_json() + '\n').encode('utf-8'))
-                self.wfile.write((VideoStreamDatagram(self.server.dev, 'depth', depth).to_json() + '\n').encode('utf-8'))
+                self.wfile.write((VideoStreamDatagram(self.server.dev, self.server.stream_type.name,
+                                                      data).to_json() + '\n').encode('utf-8'))
             except Exception as e:
                 print(e)
                 break

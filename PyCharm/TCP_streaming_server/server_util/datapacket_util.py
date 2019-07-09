@@ -41,7 +41,7 @@ class VideoInitDatagram(Datagram):
 class VideoStreamDatagram(Datagram):
     """Contains a single frame from a video stream along with the name that the stream belongs to"""
 
-    def __init__(self, device_identifier: str, name: str, frame: np.ndarray, flatten: bool = True):
+    def __init__(self, device_identifier: str, name: str, frame: np.ndarray, flatten: bool = False):
         super().__init__(device_identifier, "VideoFrame")
         self.frame = frame.reshape(-1) if flatten else frame
         self.name = name
