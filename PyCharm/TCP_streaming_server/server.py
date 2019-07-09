@@ -1,8 +1,24 @@
+from multiprocessing import Queue
+
 from video_util.cam import RealsenseCam
+from video_util.multiprocessing import SplitCamServer
 from server_util.server import VideoStreamingServer, VideoStreamingHandler
 
 
-server_name = 'Fuck You'
+server_name = 'CameraServer'
+
+
+def main():
+    cam = RealsenseCam()
+    cam.start_streams()
+
+    c_q = Queue()
+    i_q = Queue()
+    d_q = Queue()
+
+    cam_server = SplitCamServer(cam, c_q, i_q, d_q)
+
+    rgb_server
 
 
 if __name__ == "__main__":
