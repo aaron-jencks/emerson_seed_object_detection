@@ -2,11 +2,13 @@ import socket
 import numpy as np
 import matplotlib.pyplot as plt
 import time
+import json
+from multiprocessing import Process
 
 from server_util.datapacket_util import VideoStreamDatagram, VideoInitDatagram
 
 
-host = '0.tcp.ngrok.io'
+host = 'localhost'
 buffsize = 3072000
 residual_data = ''
 
@@ -47,9 +49,9 @@ def readline(sock: socket.socket) -> str:
     return result
 
 
-if __name__ == '__main__':
+def frame_socket(port: int):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        sock.connect((host, int(input('Port number to connect to? '))))
+        sock.connect((host, port))
 
         streams = None
         framedata = None
@@ -57,14 +59,10 @@ if __name__ == '__main__':
 
         first = True
         while True:
-            # print('\rProcessing frame {}'.format(iteration), end='')
             iteration += 1
 
-            start = time.time()
             data = readline(sock)
-            print('\rIteration {} took {} seconds to read this frame from the internet'.format(iteration,
-                                                                                               time.time() - start),
-                  end='')
+
             if data != '':
                 if first:
                     first = False
@@ -86,8 +84,16 @@ if __name__ == '__main__':
                         plt.imshow(rgb_frame)
                         plt.draw()
                         plt.pause(0.001)
+                    if framedata.name == 'ir':
+                        res = streams.streams[0].resolution
+                        ir_frame = np.reshape(framedata.frame, newshape=(res[1], res[0]))
+
+                        plt.clf()
+                        plt.imshow(ir_frame)
+                        plt.draw()
+                        plt.pause(0.001)
                     if framedata.name == 'depth':
-                        res = streams.streams[1].resolution
+                        res = streams.streams[0].resolution
                         depth_frame = np.reshape(framedata.frame, newshape=(res[1], res[0]))
                         depth_frame = np.multiply(depth_frame, 1 / depth_frame.max())
 
@@ -95,3 +101,16 @@ if __name__ == '__main__':
                         plt.imshow(depth_frame)
                         plt.draw()
                         plt.pause(0.001)
+
+
+if __name__ == '__main__':
+    processes = [
+                    Process(target=frame_socket, args=(int(input('RGB Port Number: ')),)),
+                    Process(target=frame_socket, args=(int(input('Depth Port Number: ')),)),
+                ]
+
+    for p in processes:
+        p.start()
+
+    for p in processes:
+        p.join()

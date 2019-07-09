@@ -20,14 +20,15 @@ class CameraServer(Process):
         self.is_stopping = True
         super().join(**kwargs)
 
-    def lossy_put(self, q: Queue, data):
-        if not self.ignore:
-            while q.full():
-                q.get()
+    def lossy_put(self, q, data):
+        if q is not None:
+            if not self.ignore:
+                while q.full():
+                    q.get()
 
-            q.put(data)
-        elif not q.full():
-            q.put(data)
+                q.put(data)
+            elif not q.full():
+                q.put(data)
 
     def run(self) -> None:
         self.cam = self.cam(self.filename)
@@ -40,6 +41,13 @@ class CameraServer(Process):
                 if self.q.full() and self.sleep:
                     time.sleep(1)
                     continue
+                elif self.q.full():
+                    print('Purging queue')
+                    while not self.q.empty():
+                        try:
+                            self.q.get_nowait()
+                        finally:
+                            break
 
                 frames = self.cam.get_frame()
                 self.lossy_put(self.q, frames)
@@ -51,13 +59,14 @@ class CameraServer(Process):
 class SplitCamServer(CameraServer):
     """Same as a CameraServer, but accepts 3 Queues and places the rgb, ir, and depth into their own queues"""
 
-    def __init__(self, cam_type, rgb_q: Queue, ir_q: Queue, depth_q: Queue, ignore_if_full: bool = True,
-                 sleep_if_full: bool = True, filename: str = ""):
+    def __init__(self, cam_type, rgb_q: Queue, ir_q: Queue = None, depth_q: Queue = None, ignore_if_full: bool = True,
+                 sleep_if_full: bool = False, filename: str = ""):
         super().__init__(cam_type, rgb_q, ignore_if_full, sleep_if_full, filename)
         self.cam = cam_type
         self.rgb_q = rgb_q
         self.ir_q = ir_q
         self.depth_q = depth_q
+        print("Creating split camera server")
 
     def run(self) -> None:
         self.cam = self.cam(self.filename)
@@ -67,9 +76,35 @@ class SplitCamServer(CameraServer):
 
         try:
             while not self.is_stopping:
-                if (self.rgb_q.full() or self.ir_q.full() or self.depth_q.full()) and self.sleep:
+                if (
+                        (self.rgb_q is not None and self.rgb_q.full()) or
+                        (self.ir_q is not None and self.ir_q.full()) or
+                        (self.depth_q is not None and self.depth_q.full())
+                   ) and self.sleep:
                     time.sleep(1)
                     continue
+                elif (self.rgb_q is not None and self.rgb_q.full()) or \
+                        (self.ir_q is not None and self.ir_q.full()) or \
+                        (self.depth_q is not None and self.depth_q.full()):
+                    print('Purging queues')
+                    if self.rgb_q is not None:
+                        while not self.rgb_q.empty():
+                            try:
+                                self.rgb_q.get_nowait()
+                            finally:
+                                break
+                    if self.ir_q is not None:
+                        while not self.ir_q.empty():
+                            try:
+                                self.ir_q.get_nowait()
+                            finally:
+                                break
+                    if self.depth_q is not None:
+                        while not self.depth_q.empty():
+                            try:
+                                self.depth_q.get_nowait()
+                            finally:
+                                break
 
                 rgb, ir, depth = self.cam.get_frame()
                 self.lossy_put(self.rgb_q, rgb.tolist())

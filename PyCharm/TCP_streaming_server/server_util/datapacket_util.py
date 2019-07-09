@@ -47,7 +47,7 @@ class VideoStreamDatagram(Datagram):
         self.name = name
 
     def to_json(self) -> str:
-        return json.dumps({'dev': self.device, 'name': self.name, 'frame': self.frame.tolist()})
+        return json.dumps({'dev': self.device, 'name': self.name, 'frame': self.frame})
 
     @staticmethod
     def from_json(s: str):

@@ -6,5 +6,6 @@ import numpy as np
 
 setup(
     ext_modules=cythonize('video_util/cy_collection_util.pyx'),
-    include_dirs=[np.get_include()]
+    include_dirs=[np.get_include()],
+    requires=['cython', 'numpy', 'pyrealsense2', 'pillow'],
 )
