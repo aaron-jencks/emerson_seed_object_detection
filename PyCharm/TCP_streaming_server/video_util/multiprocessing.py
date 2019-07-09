@@ -1,5 +1,6 @@
 from multiprocessing import Process, Queue
 import time
+import numpy as np
 
 
 class CameraServer(Process):
@@ -106,9 +107,9 @@ class SplitCamServer(CameraServer):
                                 break
 
                 rgb, ir, depth = self.cam.get_frame()
-                self.lossy_put(self.rgb_q, rgb.tolist())
-                self.lossy_put(self.ir_q, ir.tolist())
-                self.lossy_put(self.depth_q, depth.tolist())
+                self.lossy_put(self.rgb_q, rgb.reshape(-1).tolist())
+                self.lossy_put(self.ir_q, ir.reshape(-1).tolist())
+                self.lossy_put(self.depth_q, depth.reshape(-1).tolist())
         finally:
             self.cam.stop_capture()
             self.cam.disconnect()

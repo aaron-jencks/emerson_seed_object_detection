@@ -1,5 +1,9 @@
 import json
 import numpy as np
+import io
+import base64
+from PIL import Image
+import sys
 
 from video_util.data import VideoStream
 
@@ -45,11 +49,15 @@ class VideoStreamDatagram(Datagram):
         super().__init__(device_identifier, "VideoFrame")
         self.frame = frame.reshape(-1) if flatten else frame
         self.name = name
+        self.buf = io.BytesIO()
 
     def to_json(self) -> str:
-        return json.dumps({'dev': self.device, 'name': self.name, 'frame': self.frame})
+        b = b''
+        for p in self.frame:
+            b += p.to_bytes(2, sys.byteorder)
+        return json.dumps({'dev': self.device, 'name': self.name, 'frame': base64.b64encode(b)})
 
     @staticmethod
     def from_json(s: str):
         j_obj = json.loads(s)
-        return VideoStreamDatagram(j_obj['dev'], j_obj['name'], np.asarray(j_obj['frame']))
+        return VideoStreamDatagram(j_obj['dev'], j_obj['name'], np.asarray(base64.b64decode(j_obj['frame'])))

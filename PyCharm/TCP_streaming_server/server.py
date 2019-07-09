@@ -22,13 +22,14 @@ def main():
     #                                       stream_type=VideoStream('rgb', (720, 1280), 30, VideoStreamType.RGB))
 
     depth_server = VideoStreamServerWrapper("{}_depth".format(server_name), d_q, server_address=('10.42.0.76', 0),
-                                            stream_type=VideoStream('depth', (640, 480), 30, VideoStreamType.Z16))
+                                            stream_type=VideoStream('depth', (848, 480), 30, VideoStreamType.Z16,
+                                                                    depth_scale=0.001))
 
     # cam_server.start()
     # rgb_server.start()
     depth_server.start()
 
-    cam_server.start()
+    cam_server.run()
 
     try:
         while cam_server.is_alive():  # and rgb_server.is_alive() and depth_server.is_alive():

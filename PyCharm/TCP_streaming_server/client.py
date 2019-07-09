@@ -19,13 +19,13 @@ def readline(sock: socket.socket) -> str:
 
     global residual_data
 
-    if '\n' in residual_data:
-        index = residual_data.find('\n')
+    if '~~~\n' in residual_data:
+        index = residual_data.find('~~~\n')
 
         temp = residual_data[:index]
 
-        if index < len(residual_data) - 1:
-            residual_data = residual_data[index + 1:]
+        if index < len(residual_data) - 4:
+            residual_data = residual_data[index + 4:]
         else:
             residual_data = ''
 
@@ -34,15 +34,15 @@ def readline(sock: socket.socket) -> str:
     result = residual_data
 
     data_read = sock.recv(buffsize).decode('utf-8')
-    while data_read != '' and '\n' not in data_read:
+    while data_read != '' and '~~~\n' not in data_read:
         result += data_read
         data_read = sock.recv(buffsize).decode('utf-8')
 
     if data_read != '':
-        index = data_read.find('\n')
+        index = data_read.find('~~~\n')
         result += data_read[:index]
-        if index < len(data_read) - 1:
-            residual_data = data_read[index + 1:]
+        if index < len(data_read) - 4:
+            residual_data = data_read[index + 4:]
         else:
             residual_data = ''
 
