@@ -75,9 +75,9 @@ class RealsenseCam(Cam):
         if self.isCapturing:
             try:
                 frames = self.pipeline.wait_for_frames()
-                frame, depth_frame = cu.convert_realsense(frames, self.depth_scale)
+                rgb_frame, frame, depth_frame = cu.convert_realsense(frames, self.depth_scale)
 
-                return [frame, depth_frame]
+                return [rgb_frame, frame, depth_frame]
             except RuntimeError as e:
                 print(e)
                 print("Something went wrong while trying to collect frame for the camera")

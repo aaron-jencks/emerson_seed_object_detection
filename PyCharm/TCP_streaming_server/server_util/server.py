@@ -37,7 +37,7 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
         while True:
             start = time.time()
             try:
-                rgb, depth = self.server.cam.get_frame()
+                rgb, ir, depth = self.server.cam.get_frame()
                 # self.wfile.write((VideoStreamDatagram(self.server.dev, 'rgb', rgb).to_json() + '\n').encode('utf-8'))
                 self.wfile.write((VideoStreamDatagram(self.server.dev, 'depth', depth).to_json() + '\n').encode('utf-8'))
             except Exception as e:
