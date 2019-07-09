@@ -6,7 +6,7 @@ import time
 from server_util.datapacket_util import VideoStreamDatagram, VideoInitDatagram
 
 
-host = 'localhost'
+host = '0.tcp.ngrok.io'
 buffsize = 3072000
 residual_data = ''
 
@@ -70,7 +70,12 @@ if __name__ == '__main__':
                     first = False
                     streams = VideoInitDatagram.from_json(data)
                 else:
-                    framedata = VideoStreamDatagram.from_json(data)
+                    try:
+                        framedata = VideoStreamDatagram.from_json(data)
+                    except json.decoder.JSONDecoderError as e:
+                        print(e)
+                        print("Detecting incomplete frame, skipping")
+                        continue
 
                 if framedata is not None:
                     if framedata.name == 'rgb':
