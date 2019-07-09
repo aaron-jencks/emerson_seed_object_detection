@@ -8,7 +8,7 @@ from multiprocessing import Process
 from server_util.datapacket_util import VideoStreamDatagram, VideoInitDatagram
 
 
-host = 'localhost'
+host = '172.16.66.120'
 buffsize = 3072000
 residual_data = ''
 
@@ -105,7 +105,7 @@ def frame_socket(port: int):
 
 if __name__ == '__main__':
     processes = [
-                    Process(target=frame_socket, args=(int(input('RGB Port Number: ')),)),
+                    # Process(target=frame_socket, args=(int(input('RGB Port Number: ')),)),
                     Process(target=frame_socket, args=(int(input('Depth Port Number: ')),)),
                 ]
 

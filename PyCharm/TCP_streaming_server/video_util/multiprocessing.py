@@ -86,7 +86,6 @@ class SplitCamServer(CameraServer):
                 elif (self.rgb_q is not None and self.rgb_q.full()) or \
                         (self.ir_q is not None and self.ir_q.full()) or \
                         (self.depth_q is not None and self.depth_q.full()):
-                    print('Purging queues')
                     if self.rgb_q is not None:
                         while not self.rgb_q.empty():
                             try:
