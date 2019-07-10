@@ -3,13 +3,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 import json
-from multiprocessing import Process
+from multiprocessing import Process, Queue
 import base64
 import struct
 import array
 
 import pyqtgraph as pg
-from PyQt5.QtWidgets import QMainWindow, QGridLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout, QWidget
+from PyQt5.QtCore import pyqtSignal, QThread
 
 from server_util.datapacket_util import VideoStreamDatagram, VideoInitDatagram
 from video_util.data import VideoStreamType
@@ -57,7 +58,7 @@ def readline(sock: socket.socket) -> str:
     return result
 
 
-def frame_socket(port: int):
+def frame_socket(port: int, output_q: Queue):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         sock.connect((host, port))
 
@@ -89,23 +90,71 @@ def frame_socket(port: int):
                 if device is not None:
                     start = time.time()
 
-                    plt.clf()
-                    plt.imshow(frame)
-                    plt.draw()
-                    plt.pause(0.001)
+                    # plt.clf()
+                    # plt.imshow(frame)
+                    # plt.draw()
+                    # plt.pause(0.001)
+
+                    output_q.put(frame)
 
             elapsed = time.time() - start
             print('\rProcessing at {} fps'.format(round((1 / elapsed) if elapsed != 0 else np.inf, 3)), end='')
 
 
+class WindowUpdater(QThread):
+    def __init__(self, cam_q: Queue, img_control: pg.ImageView, **kwargs):
+        super().__init__(**kwargs)
+
+        self.q = cam_q
+        self.c = img_control
+
+    def run(self) -> None:
+        while True:
+            timg = self.q.get()
+            self.c.setImage(timg)
+
+
 if __name__ == '__main__':
+    import sys
+
+    d_q = Queue()
+
     processes = [
                     # Process(target=frame_socket, args=(int(input('RGB Port Number: ')),)),
-                    Process(target=frame_socket, args=(int(input('Depth Port Number: ')),)),
+                    Process(target=frame_socket, args=(int(input('Depth Port Number: ')), d_q)),
                 ]
 
     for p in processes:
         p.start()
 
+    # region Qt Window
+
+    app = QApplication(sys.argv)
+    window = QMainWindow()
+
+    grid = QGridLayout()
+    grid.setSpacing(10)
+    widg = QWidget()
+    widg.setLayout(grid)
+    window.setCentralWidget(widg)
+    window.show()
+
+    window.setGeometry(300, 300, 500, 400)
+    window.setWindowTitle('Remote Viewing Utility')
+    window.statusBar().showMessage('Ready')
+    window.show()
+
+    img = pg.ImageView(window)
+    grid.addWidget(img)
+    img_item = pg.ImageItem()
+    img.addItem(img_item)
+
+    d_thread = WindowUpdater(d_q, img)
+    d_thread.start()
+
+    app.exec_()
+
+    # endregion
+
     for p in processes:
-        p.join()
+        p.kill()

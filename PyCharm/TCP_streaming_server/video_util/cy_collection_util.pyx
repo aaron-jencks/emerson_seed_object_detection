@@ -33,15 +33,15 @@ cpdef bytes_to_depth(bytes depth_bytes, int dtype, int height, int width):
         darr = np.asarray(array.array('H', depth_bytes))
         dtarr = np.multiply(darr, 1 / np.asarray(darr).max())
         drearr = np.reshape(dtarr, (height, width))
-        return np.asarray(drearr)
+        return np.rot90(np.asarray(drearr))
     elif dtype == 1:
         arr = np.asarray(array.array('B', depth_bytes))
         grearr = np.reshape(arr, (height, width))
-        return np.asarray(grearr)
+        return np.rot90(np.asarray(grearr))
     else:
         arr = np.asarray(array.array('B', depth_bytes))
         rearr = np.reshape(arr, (height, width, -1))
-        return np.asarray(rearr)
+        return np.rot90(np.asarray(rearr))
 
 
 @cython.boundscheck(False)

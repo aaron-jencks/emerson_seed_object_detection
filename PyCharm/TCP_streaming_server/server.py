@@ -74,9 +74,9 @@ def main():
     except Exception as e:
         print(e)
     finally:
-        cam_server.join()
-        rgb_server.join()
-        depth_server.join()
+        cam_server.kill()
+        rgb_server.kill()
+        depth_server.kill()
 
         c_q.close()
         d_q.close()
