@@ -12,7 +12,7 @@ cam_num = 0
 server_name = 'CameraServer_{}'.format(cam_num)
 cam_settings_filename = 'C:\\Users\\aaron.jencks\\Documents\\' \
                         'GitHub\\emerson_seed_object_detection\\realsense_cam_settings.json'
-address = 'localhost'  # '10.42.0.76'
+address = '10.42.0.76'
 
 
 def main():

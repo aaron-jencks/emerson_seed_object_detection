@@ -2,71 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="00bfeffd-59c1-41cd-a576-5b86c13c510a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Depth_Displayer_Roughness/Depth_Displayer/cam_conversion.cp36-win_amd64.pyd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Depth_Displayer_Roughness/build/temp.win-amd64-3.6/Release/cam_conversion.cp36-win_amd64.exp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Depth_Displayer_Roughness/build/temp.win-amd64-3.6/Release/cam_conversion.cp36-win_amd64.lib" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Depth_Displayer_Roughness/build/temp.win-amd64-3.6/Release/cam_conversion.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Depth_Displayer_Roughness/cam_conversion.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Depth_Displayer_Roughness/cam_conversion.pyx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Depth_Displayer_Roughness/dependencies/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Depth_Displayer_Roughness/dependencies/display_util/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Depth_Displayer_Roughness/dependencies/display_util/array_display_util.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Depth_Displayer_Roughness/dependencies/display_util/dialogue.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Depth_Displayer_Roughness/dependencies/display_util/menu.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Depth_Displayer_Roughness/dependencies/display_util/string_display_util.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Depth_Displayer_Roughness/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Depth_Displayer_Roughness/setup.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_dust_test/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_dust_test/cam_util/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_dust_test/cam_util/cam_ctrl_util.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_dust_test/cam_util/cy_collection_util.pyx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_dust_test/cam_util/daemons.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_dust_test/dependencies/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_dust_test/dependencies/archive_util/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_dust_test/dependencies/archive_util/data_recording.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_dust_test/dependencies/display_util/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_dust_test/dependencies/display_util/dialogue.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_dust_test/dependencies/display_util/menu.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_dust_test/dependencies/display_util/string_display_util.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_dust_test/distribution.pyx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_dust_test/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_dust_test/setup.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pmd_implementation/dependencies/archive_util/data_recording.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Furrow Edge Detection/projects/Furrow Edge Detection aaron.lvproj" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Furrow Edge Detection/projects/Furrow Edge Detection aaron.lvproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/ROIed Video Frame/ROI Apply.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/ROIed Video Frame/ROI Apply.vi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/ROIed Video Frame/ROIed Video Frame Create.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/ROIed Video Frame/ROIed Video Frame Create.vi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/ROIed Video Frame/ROIed Video Frame.lvclass" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/ROIed Video Frame/ROIed Video Frame.lvclass" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/ROIed Video Frame/Video Frame to ROIed Frame.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/ROIed Video Frame/Video Frame to ROIed Frame.vi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video File/Video File Create.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video File/Video File Create.vi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video File/Video File Frame Read.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video File/Video File Frame Read.vi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video File/Video File Open.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video File/Video File Open.vi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Frame/Compute Average.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Frame/Compute Average.vi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Frame/Depth Frame Read.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Frame/Depth Frame Read.vi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Frame/Video Frame.lvclass" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Frame/Video Frame.lvclass" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Compute Average.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Compute Average.vi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Frame History Process.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Frame History Process.vi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Frame Process.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Frame Process.vi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Video File Frame Read.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Video File Frame Read.vi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Video Processor Create.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Video Processor Create.vi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Video Processor.lvclass" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Classes/Video Processor/Video Processor.lvclass" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Project/Video Viewer Project Aaron.lvlps" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Project/Video Viewer Project Aaron.lvlps" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Project/Video Viewer Project Aaron.lvproj" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/Project/Video Viewer Project Aaron.lvproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/builds/Depth Comparator/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/builds/Depth Comparator/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/builds/Depth Comparator/depth_comparator.exe" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/builds/Depth Comparator/depth_comparator.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/builds/Depth Comparator/depth_comparator.ini" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/builds/Depth Comparator/depth_comparator.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/builds/Depth Comparator/depth_comparator.zip" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/builds/Depth Comparator/depth_comparator.zip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/main.vi" beforeDir="false" afterPath="$PROJECT_DIR$/../../LabVIEW/Projects/Paul's Video Viewer/main.vi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TCP_streaming_server/build/temp.win-amd64-3.6/Release/video_util/cy_collection_util.obj" beforeDir="false" afterPath="$PROJECT_DIR$/../TCP_streaming_server/build/temp.win-amd64-3.6/Release/video_util/cy_collection_util.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TCP_streaming_server/build/temp.win-amd64-3.7/Release/video_util/cy_collection_util.cp37-win_amd64.exp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TCP_streaming_server/build/temp.win-amd64-3.7/Release/video_util/cy_collection_util.cp37-win_amd64.lib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TCP_streaming_server/build/temp.win-amd64-3.7/Release/video_util/cy_collection_util.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TCP_streaming_server/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/../TCP_streaming_server/client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TCP_streaming_server/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/../TCP_streaming_server/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TCP_streaming_server/video_util/cy_collection_util.c" beforeDir="false" afterPath="$PROJECT_DIR$/../TCP_streaming_server/video_util/cy_collection_util.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TCP_streaming_server/video_util/cy_collection_util.cp36-win_amd64.pyd" beforeDir="false" afterPath="$PROJECT_DIR$/../TCP_streaming_server/video_util/cy_collection_util.cp36-win_amd64.pyd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TCP_streaming_server/video_util/cy_collection_util.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/../TCP_streaming_server/video_util/cy_collection_util.pyx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Depth_Displayer/Depth_Displayer/cam_conversion.cp36-win_amd64.pyd" beforeDir="false" afterPath="$PROJECT_DIR$/Depth_Displayer/Depth_Displayer/cam_conversion.cp36-win_amd64.pyd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Depth_Displayer/build/temp.win-amd64-3.6/Release/cam_conversion.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Depth_Displayer/build/temp.win-amd64-3.6/Release/cam_conversion.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Depth_Displayer/cam_conversion.c" beforeDir="false" afterPath="$PROJECT_DIR$/Depth_Displayer/cam_conversion.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Depth_Displayer/cam_conversion.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/Depth_Displayer/cam_conversion.pyx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Depth_Displayer/dependencies/archive_util/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Depth_Displayer_Roughness/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Depth_Displayer/dependencies/archive_util/archive.py" beforeDir="false" afterPath="$PROJECT_DIR$/pmd_dust_test/dependencies/archive_util/archive.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Depth_Displayer/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Depth_Displayer/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/labview_recorder/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/labview_recorder/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../pmd_implementation/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../pmd_implementation/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../realsense_cam_settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../realsense_cam_settings.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -75,36 +20,84 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pmd_dust_test/main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" selection-start-line="12" selection-end-line="13" selection-end-column="37" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Depth_Displayer_Roughness/cam_conversion.pyx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="104">
-              <caret line="36" selection-start-line="36" selection-end-line="36" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-                <element signature="e#2695#2718#0" />
-                <element signature="e#6011#7766#0" />
-                <element signature="e#7885#8670#0" />
-                <element signature="e#9076#9714#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5288978">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/labview_recorder/main.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="901">
+                  <caret line="71" column="45" selection-start-line="71" selection-start-column="45" selection-end-line="71" selection-end-column="45" />
+                  <folding>
+                    <element signature="e#0#31#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/cam_viewer/display_util/display_util.py">
+              <provider selected="true" editor-type-id="text-editor" />
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/mvc_implementation/main.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="340">
+                  <caret line="27" column="4" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="15" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/mvc_implementation/display_util/daemons.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-1001">
+                  <caret line="253" column="13" selection-start-line="253" selection-start-column="13" selection-end-line="253" selection-end-column="13" />
+                  <folding>
+                    <element signature="e#0#87#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/mvc_implementation/data_structures/state_machine.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="399">
+                  <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+                  <folding>
+                    <element signature="e#0#11#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/mvc_implementation/display_util/display_util.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-122">
+                  <caret line="3" column="75" selection-start-line="3" selection-start-column="75" selection-end-line="3" selection-end-column="75" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/mvc_implementation/display_util/display_util.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-136">
+                  <caret line="3" column="75" selection-start-line="3" selection-start-column="75" selection-end-line="3" selection-end-column="75" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -238,16 +231,16 @@
         <option value="$PROJECT_DIR$/pmd_dust_test/main.py" />
         <option value="$PROJECT_DIR$/labview_recorder/main.py" />
         <option value="$PROJECT_DIR$/Depth_Displayer/cam_conversion.pyx" />
-        <option value="$PROJECT_DIR$/Depth_Displayer/main.py" />
         <option value="$PROJECT_DIR$/Depth_Displayer_Roughness/cam_conversion.pyx" />
+        <option value="$PROJECT_DIR$/Depth_Displayer/main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="343" />
-    <option name="y" value="-20" />
-    <option name="width" value="1200" />
-    <option name="height" value="676" />
+    <option name="x" value="1912" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1096" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -257,6 +250,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Course" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -280,6 +274,13 @@
               <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
               <item name="Depth_Displayer" type="462c0819:PsiDirectoryNode" />
               <item name="dependencies" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
+              <item name="Depth_Displayer" type="462c0819:PsiDirectoryNode" />
+              <item name="dependencies" type="462c0819:PsiDirectoryNode" />
+              <item name="display_util" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
@@ -322,6 +323,18 @@
               <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
               <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
               <item name="mvc_implementation" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
+              <item name="mvc_implementation" type="462c0819:PsiDirectoryNode" />
+              <item name="data_structures" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pmd_implementation" type="462c0819:PsiDirectoryNode" />
+              <item name="mvc_implementation" type="462c0819:PsiDirectoryNode" />
+              <item name="display_util" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="pmd_implementation" type="b2602c69:ProjectViewProjectNode" />
@@ -377,8 +390,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Course" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -552,10 +563,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="916" extended-state="6" />
+    <frame x="1912" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20051414" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20682302" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -665,8 +676,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/new/scratch_3.py" />
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/new/scratch_4.py" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/new/scratch_5.py" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/new/scratch_6.py" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/emerson_pmd/new/scratch_7.py" />
@@ -743,46 +752,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mvc_implementation/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="26" column="32" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mvc_implementation/cam_util/daemons.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" column="15" selection-start-line="11" selection-start-column="15" selection-end-line="11" selection-end-column="15" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mvc_implementation/display_util/daemons.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3298">
-          <caret line="194" selection-start-line="194" selection-end-line="194" />
-          <folding>
-            <element signature="e#0#87#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mvc_implementation/display_util/display_util.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="75" selection-start-line="3" selection-start-column="75" selection-end-line="3" selection-end-column="75" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mvc_implementation/data_structures/state_machine.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="26" column="60" selection-start-line="18" selection-end-line="26" selection-end-column="60" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -892,16 +867,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/labview_recorder/distribution.pyx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="20" column="39" selection-start-line="20" selection-start-column="39" selection-end-line="20" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pmd_implementation/dependencies/archive_util/data_recording.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -959,46 +924,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/labview_recorder/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="22" column="37" selection-start-line="22" selection-start-column="37" selection-end-line="22" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pmd_dust_test/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" selection-start-line="12" selection-end-line="13" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Depth_Displayer/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="422">
-          <caret line="164" column="72" selection-start-line="164" selection-start-column="72" selection-end-line="164" selection-end-column="72" />
-          <folding>
-            <element signature="e#0#59#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Depth_Displayer/cam_conversion.pyx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="938">
-          <caret line="119" column="60" selection-start-line="119" selection-start-column="60" selection-end-line="119" selection-end-column="60" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pmd_dust_test/cam_util/cam_ctrl_util.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="463">
@@ -1009,17 +934,110 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/labview_recorder/distribution.pyx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="19" column="32" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Depth_Displayer/cam_conversion.pyx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="881">
+          <caret line="119" column="60" selection-start-line="119" selection-start-column="60" selection-end-line="119" selection-end-column="60" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Depth_Displayer_Roughness/cam_conversion.pyx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="104">
           <caret line="36" selection-start-line="36" selection-end-line="36" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <element signature="e#2695#2718#0" />
-            <element signature="e#6011#7766#0" />
-            <element signature="e#7885#8670#0" />
-            <element signature="e#9076#9714#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pmd_dust_test/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="12" selection-start-line="12" selection-end-line="13" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/labview_recorder/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="901">
+          <caret line="71" column="45" selection-start-line="71" selection-start-column="45" selection-end-line="71" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Depth_Displayer/dependencies/display_util/string_display_util.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" selection-start-line="6" selection-end-line="14" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mvc_implementation/display_util/display_util.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-122">
+          <caret line="3" column="75" selection-start-line="3" selection-start-column="75" selection-end-line="3" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Depth_Displayer/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="411">
+          <caret line="108" column="57" lean-forward="true" selection-start-line="108" selection-start-column="8" selection-end-line="108" selection-end-column="57" />
+          <folding>
+            <element signature="e#0#59#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cam_viewer/display_util/display_util.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mvc_implementation/display_util/daemons.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1001">
+          <caret line="253" column="13" selection-start-line="253" selection-start-column="13" selection-end-line="253" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#87#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mvc_implementation/data_structures/state_machine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mvc_implementation/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="27" column="4" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="15" />
         </state>
       </provider>
     </entry>
