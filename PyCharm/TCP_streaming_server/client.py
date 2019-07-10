@@ -8,6 +8,9 @@ import base64
 import struct
 import array
 
+import pyqtgraph as pg
+from PyQt5.QtWidgets import QMainWindow, QGridLayout
+
 from server_util.datapacket_util import VideoStreamDatagram, VideoInitDatagram
 from video_util.data import VideoStreamType
 import video_util.cy_collection_util as cu
@@ -81,34 +84,15 @@ def frame_socket(port: int):
                     first = False
                     streams = VideoInitDatagram.from_json(data)
                 else:
-                    device, name, frame, dtype = VideoStreamDatagram.from_json(data)
+                    device, name, frame, dtype = VideoStreamDatagram.from_json(data, streams.streams[0].resolution)
 
                 if device is not None:
-                    if name == 'rgb':
-                        res = streams.streams[0].resolution
-                        rgb_frame = np.reshape(frame, newshape=(res[1], res[0]))
+                    start = time.time()
 
-                        plt.clf()
-                        plt.imshow(rgb_frame)
-                        plt.draw()
-                        plt.pause(0.001)
-                    if name == 'ir':
-                        res = streams.streams[0].resolution
-                        ir_frame = np.reshape(frame, newshape=(res[1], res[0]))
-
-                        plt.clf()
-                        plt.imshow(ir_frame)
-                        plt.draw()
-                        plt.pause(0.001)
-                    if name == 'depth':
-                        res = streams.streams[0].resolution
-                        depth_frame = np.reshape(frame, newshape=(res[1], res[0]))
-                        depth_frame = np.multiply(depth_frame, 1 / depth_frame.max())
-
-                        plt.clf()
-                        plt.imshow(depth_frame)
-                        plt.draw()
-                        plt.pause(0.001)
+                    plt.clf()
+                    plt.imshow(frame)
+                    plt.draw()
+                    plt.pause(0.001)
 
             elapsed = time.time() - start
             print('\rProcessing at {} fps'.format(round((1 / elapsed) if elapsed != 0 else np.inf, 3)), end='')

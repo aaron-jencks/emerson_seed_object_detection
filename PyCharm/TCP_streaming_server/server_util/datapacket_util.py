@@ -65,14 +65,14 @@ class VideoStreamDatagram(Datagram):
             self.dtype.name + self.data_separator + b.decode('latin-1')
 
     @staticmethod
-    def from_json(s: str):
+    def from_json(s: str, resolution):
         # start = time.time()
 
         j_obj = s.split(VideoStreamDatagram.data_separator)
         dtype = VideoStreamType[j_obj[2]]
         b = j_obj[3].encode('latin-1')
 
-        ints = cu.bytes_to_depth(b, dtype.value)
+        ints = cu.bytes_to_depth(b, dtype.value, resolution[1], resolution[0])
 
         # elapsed = time.time() - start
         # print('\rProcessing at {} fps'.format(round((1 / elapsed) if elapsed != 0 else np.inf, 3)), end='')

@@ -27,7 +27,7 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
     """Request Handler for handling video streaming"""
 
     def __init__(self, request, client_address, server):
-        self.wbufsize = 3072000
+        # self.wbufsize = 3072000
         super().__init__(request, client_address, server)
 
     def handle(self):

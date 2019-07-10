@@ -21,9 +21,27 @@ cpdef depth_to_bytes(unsigned short[:, :] depth_image):
     return np.asarray(result)
 
 
-cpdef bytes_to_depth(bytes depth_bytes, int dtype):
-    arr = array.array('H' if dtype == 2 else 'B', depth_bytes)
-    return np.asarray(arr)
+cpdef bytes_to_depth(bytes depth_bytes, int dtype, int height, int width):
+    cdef unsigned short[:] darr
+    cdef double[:] dtarr
+    cdef double[:, :] drearr
+    cdef unsigned char[:] arr
+    cdef unsigned char[:, :] grearr
+    cdef unsigned char[:, :, :] rearr
+
+    if dtype == 2:
+        darr = np.asarray(array.array('H', depth_bytes))
+        dtarr = np.multiply(darr, 1 / np.asarray(darr).max())
+        drearr = np.reshape(dtarr, (height, width))
+        return np.asarray(drearr)
+    elif dtype == 1:
+        arr = np.asarray(array.array('B', depth_bytes))
+        grearr = np.reshape(arr, (height, width))
+        return np.asarray(grearr)
+    else:
+        arr = np.asarray(array.array('B', depth_bytes))
+        rearr = np.reshape(arr, (height, width, -1))
+        return np.asarray(rearr)
 
 
 @cython.boundscheck(False)
