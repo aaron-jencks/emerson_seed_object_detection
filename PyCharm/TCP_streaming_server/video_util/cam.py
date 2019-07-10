@@ -1,4 +1,5 @@
 import pyrealsense2 as rs
+import json
 
 import video_util.cy_collection_util as cu
 
@@ -38,13 +39,40 @@ class Cam:
 
 
 class RealsenseCam(Cam):
-    def __init__(self, filename: str = ""):
+
+    # Products that support advanced mode
+    DS5_product_ids = ["0AD1", "0AD2", "0AD3", "0AD4", "0AD5", "0AF6",
+                       "0AFE", "0AFF", "0B00", "0B01", "0B03", "0B07", "0B3A"]
+
+    def __init__(self, filename: str = "", settings_json_filename: str = ""):
         super().__init__(filename)
+
+        # region Advanced mode
+
+        self.settings = settings_json_filename
+        if self.settings != "":
+            # Tries to load json file
+            dev = self.find_device_that_supports_advanced_mode()
+            advnc_mode = rs.rs400_advanced_mode(dev)
+            advnc_mode.load_json(str(json.load(open(self.settings))).replace("'", '\"'))
+
+        # endregion
 
         self.pipeline = rs.pipeline(rs.context())
         self.config = rs.config()
         self.resolution = (640, 480)
         self.framerate = 90
+
+    def find_device_that_supports_advanced_mode(self):
+        ctx = rs.context()
+        devices = ctx.query_devices()
+        for dev in devices:
+            if dev.supports(rs.camera_info.product_id) and str(
+                    dev.get_info(rs.camera_info.product_id)) in self.DS5_product_ids:
+                if dev.supports(rs.camera_info.name):
+                    print("Found device that supports advanced mode:", dev.get_info(rs.camera_info.name))
+                    return dev
+        raise Exception("No device that supports advanced mode was found")
 
     def connect(self):
         if not self.isConnected:
@@ -114,7 +142,10 @@ class RealsenseCam(Cam):
             self.connect()
 
     def start_ir_stream(self):
-        self.__start_stream(rs.stream.color, self.resolution, rs.format.y8, self.framerate)
+        self.__start_stream(rs.stream.infrared, self.resolution, rs.format.y8, self.framerate)
+
+    def start_color_stream(self):
+        self.__start_stream(rs.stream.color, self.resolution, rs.format.bgr8, self.framerate)
 
     def start_depth_stream(self):
         self.__start_stream(rs.stream.depth, self.resolution, rs.format.z16, self.framerate)

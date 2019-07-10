@@ -1,9 +1,8 @@
 import socketserver
 import time
-import numpy as np
 from multiprocessing import Queue
 
-from video_util.data import VideoStreamType, VideoStream
+from video_util.data import VideoStream
 from .datapacket_util import VideoInitDatagram, VideoStreamDatagram
 
 
@@ -13,6 +12,7 @@ class VideoStreamingServer(socketserver.TCPServer):
         self.stream_type = stream_type
         self.dev = device_identifier
         self.cam_q = cam_q
+        self.fps = 0
 
         print('Starting server {} @ {} on port {}'.format(device_identifier,
                                                           self.socket.getsockname()[0], self.socket.getsockname()[1]))
@@ -47,19 +47,15 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
                 data = self.server.cam_q.get()
                 if first:
                     first = False
-                    datagram = VideoStreamDatagram(self.server.dev, self.server.stream_type.name, data)
+                    datagram = VideoStreamDatagram(self.server.dev, self.server.stream_type.name, data,
+                                                   self.server.stream_type.dtype)
                 else:
                     datagram.frame = data
 
-                # print('\rRunning at {} fps'.format(1 / (time.time() - start)), end='')
-                # self.wfile.write((VideoStreamDatagram(self.server.dev, 'rgb', rgb).to_json() + '\n').encode('utf-8'))
-
                 j = datagram.to_json()
-                print('\rRunning at {} fps'.format(1 / (time.time() - start)), end='')
                 self.wfile.write((j + '~~~\n').encode('utf-8'))
             except Exception as e:
                 print(e)
                 break
 
-            print('\rRunning at {} fps'.format(1 / (time.time() - start)), end='')
-        print('')
+            self.server.fps = 1 / (time.time() - start)

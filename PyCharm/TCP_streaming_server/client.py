@@ -8,7 +8,7 @@ from multiprocessing import Process
 from server_util.datapacket_util import VideoStreamDatagram, VideoInitDatagram
 
 
-host = '172.16.66.120'
+host = 'localhost'
 buffsize = 3072000
 residual_data = ''
 
@@ -33,10 +33,10 @@ def readline(sock: socket.socket) -> str:
 
     result = residual_data
 
-    data_read = sock.recv(buffsize).decode('utf-8')
+    data_read = sock.recv(buffsize).decode('latin-1')
     while data_read != '' and '~~~\n' not in data_read:
         result += data_read
-        data_read = sock.recv(buffsize).decode('utf-8')
+        data_read = sock.recv(buffsize).decode('latin-1')
 
     if data_read != '':
         index = data_read.find('~~~\n')

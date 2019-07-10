@@ -2,10 +2,13 @@ import json
 import numpy as np
 import io
 import base64
+import struct
 from PIL import Image
 import sys
+from tqdm import tqdm
 
-from video_util.data import VideoStream
+from video_util.data import VideoStream, VideoStreamType
+import video_util.cy_collection_util as cu
 
 
 class Datagram:
@@ -45,19 +48,24 @@ class VideoInitDatagram(Datagram):
 class VideoStreamDatagram(Datagram):
     """Contains a single frame from a video stream along with the name that the stream belongs to"""
 
-    def __init__(self, device_identifier: str, name: str, frame: np.ndarray, flatten: bool = False):
+    def __init__(self, device_identifier: str, name: str, frame: np.ndarray, videotype: VideoStreamType,
+                 flatten: bool = False):
         super().__init__(device_identifier, "VideoFrame")
         self.frame = frame.reshape(-1) if flatten else frame
         self.name = name
-        self.buf = io.BytesIO()
+        self.dtype = videotype
 
     def to_json(self) -> str:
-        b = b''
-        for p in self.frame:
-            b += p.to_bytes(2, sys.byteorder)
-        return json.dumps({'dev': self.device, 'name': self.name, 'frame': base64.b64encode(b)})
+        b = base64.b64encode(bytes(cu.depth_to_bytes(self.frame) if self.dtype == VideoStreamType.Z16 else self.frame))
+        return json.dumps({'dev': self.device, 'name': self.name, 'dtype': self.dtype.value,
+                           'frame': b.decode('latin-1')})
 
     @staticmethod
     def from_json(s: str):
         j_obj = json.loads(s)
-        return VideoStreamDatagram(j_obj['dev'], j_obj['name'], np.asarray(base64.b64decode(j_obj['frame'])))
+        dtype = VideoStreamType(j_obj['dtype'])
+        b = base64.b64decode(j_obj['frame'].encode('latin-1'))
+        lb = len(b)
+        fmt = '{}H'.format(lb//2) if dtype == VideoStreamType.Z16 else '{}B'.format(lb)
+        ints = struct.unpack(fmt, b)
+        return VideoStreamDatagram(j_obj['dev'], j_obj['name'], np.asarray(ints), dtype)
