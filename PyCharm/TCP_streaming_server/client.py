@@ -73,14 +73,14 @@ def frame_socket(port: int, output_q: Queue):
         while True:
             iteration += 1
 
-            # start = time.time()
+            start = time.time()
             data = readline(sock)
 
             # elapsed = time.time() - start
             # print('\rProcessing at {} fps'.format(round((1 / elapsed) if elapsed != 0 else np.inf, 3)), end='')
 
             if data != '':
-                start = time.time()
+                # start = time.time()
                 if first:
                     first = False
                     streams = VideoInitDatagram.from_json(data)
