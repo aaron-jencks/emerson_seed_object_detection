@@ -38,6 +38,8 @@ dependencies:
   - pyhamcrest=1.9.0=py36_2
   - pyopenssl=19.0.0=py36_0
   - pyparsing=2.4.0=py_0
+  - pyqt=5.9.2=py36h6538335_2
+  - pyqtgraph=0.10.0=py36h28b3542_3
   - python=3.6.8=h9f7ef89_7
   - python-dateutil=2.8.0=py36_0
   - pytz=2019.1=py_0
@@ -63,5 +65,6 @@ dependencies:
     - autobahn==19.7.1
     - mss==4.0.3
     - pyrealsense2==2.24.0.950
+    - tqdm==4.32.2
     - txaio==18.8.1
 
