@@ -6,6 +6,7 @@ import struct
 from PIL import Image
 import sys
 from tqdm import tqdm
+import time
 
 from video_util.data import VideoStream, VideoStreamType
 import video_util.cy_collection_util as cu
@@ -48,6 +49,8 @@ class VideoInitDatagram(Datagram):
 class VideoStreamDatagram(Datagram):
     """Contains a single frame from a video stream along with the name that the stream belongs to"""
 
+    data_separator = '<br>'
+
     def __init__(self, device_identifier: str, name: str, frame: np.ndarray, videotype: VideoStreamType,
                  flatten: bool = False):
         super().__init__(device_identifier, "VideoFrame")
@@ -56,16 +59,22 @@ class VideoStreamDatagram(Datagram):
         self.dtype = videotype
 
     def to_json(self) -> str:
-        b = base64.b64encode(bytes(cu.depth_to_bytes(self.frame) if self.dtype == VideoStreamType.Z16 else self.frame))
-        return json.dumps({'dev': self.device, 'name': self.name, 'dtype': self.dtype.value,
-                           'frame': b.decode('latin-1')})
+        b = bytes(cu.depth_to_bytes(self.frame) if self.dtype == VideoStreamType.Z16 else self.frame)
+        return self.device + self.data_separator + \
+            self.name + self.data_separator + \
+            self.dtype.name + self.data_separator + b.decode('latin-1')
 
     @staticmethod
     def from_json(s: str):
-        j_obj = json.loads(s)
-        dtype = VideoStreamType(j_obj['dtype'])
-        b = base64.b64decode(j_obj['frame'].encode('latin-1'))
-        lb = len(b)
-        fmt = '{}H'.format(lb//2) if dtype == VideoStreamType.Z16 else '{}B'.format(lb)
-        ints = struct.unpack(fmt, b)
-        return VideoStreamDatagram(j_obj['dev'], j_obj['name'], np.asarray(ints), dtype)
+        # start = time.time()
+
+        j_obj = s.split(VideoStreamDatagram.data_separator)
+        dtype = VideoStreamType[j_obj[2]]
+        b = j_obj[3].encode('latin-1')
+
+        ints = cu.bytes_to_depth(b, dtype.value)
+
+        # elapsed = time.time() - start
+        # print('\rProcessing at {} fps'.format(round((1 / elapsed) if elapsed != 0 else np.inf, 3)), end='')
+
+        return j_obj[0], j_obj[1], ints, dtype

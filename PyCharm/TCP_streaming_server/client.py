@@ -4,8 +4,13 @@ import matplotlib.pyplot as plt
 import time
 import json
 from multiprocessing import Process
+import base64
+import struct
+import array
 
 from server_util.datapacket_util import VideoStreamDatagram, VideoInitDatagram
+from video_util.data import VideoStreamType
+import video_util.cy_collection_util as cu
 
 
 host = 'localhost'
@@ -54,53 +59,59 @@ def frame_socket(port: int):
         sock.connect((host, port))
 
         streams = None
-        framedata = None
+        device = None
+        name = None
+        frame = None
+        dtype = None
         iteration = 0
 
         first = True
         while True:
             iteration += 1
 
+            # start = time.time()
             data = readline(sock)
 
+            # elapsed = time.time() - start
+            # print('\rProcessing at {} fps'.format(round((1 / elapsed) if elapsed != 0 else np.inf, 3)), end='')
+
             if data != '':
+                start = time.time()
                 if first:
                     first = False
                     streams = VideoInitDatagram.from_json(data)
                 else:
-                    try:
-                        framedata = VideoStreamDatagram.from_json(data)
-                    except json.decoder.JSONDecoderError as e:
-                        print(e)
-                        print("Detecting incomplete frame, skipping")
-                        continue
+                    device, name, frame, dtype = VideoStreamDatagram.from_json(data)
 
-                if framedata is not None:
-                    if framedata.name == 'rgb':
+                if device is not None:
+                    if name == 'rgb':
                         res = streams.streams[0].resolution
-                        rgb_frame = np.reshape(framedata.frame, newshape=(res[1], res[0]))
+                        rgb_frame = np.reshape(frame, newshape=(res[1], res[0]))
 
                         plt.clf()
                         plt.imshow(rgb_frame)
                         plt.draw()
                         plt.pause(0.001)
-                    if framedata.name == 'ir':
+                    if name == 'ir':
                         res = streams.streams[0].resolution
-                        ir_frame = np.reshape(framedata.frame, newshape=(res[1], res[0]))
+                        ir_frame = np.reshape(frame, newshape=(res[1], res[0]))
 
                         plt.clf()
                         plt.imshow(ir_frame)
                         plt.draw()
                         plt.pause(0.001)
-                    if framedata.name == 'depth':
+                    if name == 'depth':
                         res = streams.streams[0].resolution
-                        depth_frame = np.reshape(framedata.frame, newshape=(res[1], res[0]))
+                        depth_frame = np.reshape(frame, newshape=(res[1], res[0]))
                         depth_frame = np.multiply(depth_frame, 1 / depth_frame.max())
 
                         plt.clf()
                         plt.imshow(depth_frame)
                         plt.draw()
                         plt.pause(0.001)
+
+            elapsed = time.time() - start
+            print('\rProcessing at {} fps'.format(round((1 / elapsed) if elapsed != 0 else np.inf, 3)), end='')
 
 
 if __name__ == '__main__':

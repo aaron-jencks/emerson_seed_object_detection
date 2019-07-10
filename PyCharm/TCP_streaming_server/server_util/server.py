@@ -1,5 +1,6 @@
 import socketserver
 import time
+import numpy as np
 from multiprocessing import Queue
 
 from video_util.data import VideoStream
@@ -7,15 +8,19 @@ from .datapacket_util import VideoInitDatagram, VideoStreamDatagram
 
 
 class VideoStreamingServer(socketserver.TCPServer):
-    def __init__(self, device_identifier: str, cam_q: Queue, stream_type: VideoStream, **kwargs):
+    def __init__(self, device_identifier: str, cam_q: Queue, stream_type: VideoStream, tx_q: Queue = None, **kwargs):
         super().__init__(RequestHandlerClass=VideoStreamingHandler, **kwargs)
         self.stream_type = stream_type
         self.dev = device_identifier
         self.cam_q = cam_q
+        self.tx_q = tx_q
         self.fps = 0
 
         print('Starting server {} @ {} on port {}'.format(device_identifier,
                                                           self.socket.getsockname()[0], self.socket.getsockname()[1]))
+
+        if tx_q is not None:
+            self.tx_q.put(self.socket.getsockname())
 
 
 class VideoStreamingHandler(socketserver.StreamRequestHandler):
@@ -53,9 +58,16 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
                     datagram.frame = data
 
                 j = datagram.to_json()
-                self.wfile.write((j + '~~~\n').encode('utf-8'))
+                self.wfile.write((j + '~~~\n').encode('latin-1'))
             except Exception as e:
                 print(e)
                 break
 
-            self.server.fps = 1 / (time.time() - start)
+            elapsed = time.time() - start
+
+            self.server.fps = (1 / elapsed) if elapsed != 0 else np.inf
+
+            if self.server.tx_q is not None:
+                self.server.tx_q.put(self.server.fps)
+
+        self.server.fps = 0

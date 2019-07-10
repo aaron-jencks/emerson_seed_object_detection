@@ -6,11 +6,13 @@ import numpy as np
 class CameraServer(Process):
     """Represents a Camera that places it's frames into a Queue object passed in at startup."""
 
-    def __init__(self, cam_type, data_q: Queue, ignore_if_full: bool = True, sleep_if_full: bool = True,
+    def __init__(self, cam_type, data_q: Queue, tx_q: Queue = None,
+                 ignore_if_full: bool = True, sleep_if_full: bool = True,
                  filename: str = "", configuration_file: str = ""):
         super().__init__()
         self.cam = cam_type
         self.q = data_q
+        self.tx_q = tx_q
         self.is_stopping = False
         self.ignore = ignore_if_full
         self.sleep = sleep_if_full
@@ -61,10 +63,10 @@ class CameraServer(Process):
 class SplitCamServer(CameraServer):
     """Same as a CameraServer, but accepts 3 Queues and places the rgb, ir, and depth into their own queues"""
 
-    def __init__(self, cam_type, rgb_q: Queue = None, ir_q: Queue = None, depth_q: Queue = None,
+    def __init__(self, cam_type, rgb_q: Queue = None, ir_q: Queue = None, depth_q: Queue = None, tx_q: Queue = None,
                  ignore_if_full: bool = True, sleep_if_full: bool = False,
                  filename: str = "", configuration_file: str = ""):
-        super().__init__(cam_type, rgb_q, ignore_if_full, sleep_if_full, filename, configuration_file)
+        super().__init__(cam_type, rgb_q, tx_q, ignore_if_full, sleep_if_full, filename, configuration_file)
         self.cam = cam_type
         self.rgb_q = rgb_q
         self.ir_q = ir_q
@@ -127,7 +129,11 @@ class SplitCamServer(CameraServer):
                 self.lossy_put(self.rgb_q, rgb.reshape(-1))
                 self.lossy_put(self.ir_q, ir.reshape(-1))
                 self.lossy_put(self.depth_q, depth)
-                self.fps = 1 / (time.time() - start)
+                elapsed = time.time() - start
+                self.fps = (1 / elapsed) if elapsed != 0 else np.inf
+
+                if self.tx_q is not None:
+                    self.tx_q.put(self.fps)
         finally:
             self.cam.stop_capture()
             self.cam.disconnect()

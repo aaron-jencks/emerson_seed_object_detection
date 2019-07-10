@@ -21,6 +21,11 @@ cpdef depth_to_bytes(unsigned short[:, :] depth_image):
     return np.asarray(result)
 
 
+cpdef bytes_to_depth(bytes depth_bytes, int dtype):
+    arr = array.array('H' if dtype == 2 else 'B', depth_bytes)
+    return np.asarray(arr)
+
+
 @cython.boundscheck(False)
 cpdef convert_realsense(object frames, double scale):
     cdef unsigned char[:, :, :] rgb_frame = np.asanyarray(frames.get_color_frame().get_data(), dtype=np.uint8)
