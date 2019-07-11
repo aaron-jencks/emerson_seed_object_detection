@@ -67,6 +67,7 @@ class SplitCamServer(CameraServer):
                  ignore_if_full: bool = True, sleep_if_full: bool = False,
                  filename: str = "", configuration_file: str = ""):
         super().__init__(cam_type, rgb_q, tx_q, ignore_if_full, sleep_if_full, filename, configuration_file)
+        self.name = 'Cam Server'
         self.cam = cam_type
         self.rgb_q = rgb_q
         self.ir_q = ir_q
@@ -126,8 +127,8 @@ class SplitCamServer(CameraServer):
 
                 start = time.time()
                 rgb, ir, depth = self.cam.get_frame()
-                self.lossy_put(self.rgb_q, rgb.reshape(-1))
-                self.lossy_put(self.ir_q, ir.reshape(-1))
+                self.lossy_put(self.rgb_q, rgb)
+                self.lossy_put(self.ir_q, ir)
                 self.lossy_put(self.depth_q, depth)
                 elapsed = time.time() - start
                 self.fps = (1 / elapsed) if elapsed != 0 else np.inf

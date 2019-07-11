@@ -14,6 +14,7 @@ class VideoStreamServerWrapper(Process):
         self.q = cam_q
         self.tx = tx_q
         self.kwargs = kwargs
+        self.name = 'Video Server'
 
     def run(self) -> None:
         self.act_server = self.server(self.dev, self.q, tx_q=self.tx, **self.kwargs)

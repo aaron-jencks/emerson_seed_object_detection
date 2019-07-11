@@ -38,9 +38,12 @@ def main():
 
     # cam_server.start()
     rgb_server.start()
+    print('rgb pid is {}'.format(rgb_server.pid))
     depth_server.start()
+    print('depth server pid is {}'.format(depth_server.pid))
 
     cam_server.start()
+    print('cam server pid is {}'.format(cam_server.pid))
 
     try:
         rgb_host = c_fps_q.get()
@@ -66,11 +69,13 @@ def main():
                 pass
 
             clear()
-            print('RGB Server: {}, Depth Server: {}'.format(rgb_host[1], depth_host[1]))
-            print('Cam Server: {} fps, RGB Server: {} fps, Depth Server: {}'.format(round(cam_fps, 3),
-                                                                                    round(c_fps, 3),
-                                                                                    round(d_fps, 3)
-                                                                                    ))
+            print('RGB Server {}: {}, Depth Server {}: {}'.format(rgb_server.pid, rgb_host[1],
+                                                                  depth_server.pid, depth_host[1]))
+            print('Cam Server {}: {} fps, RGB Server: {} fps, Depth Server: {}'.format(cam_server.pid,
+                                                                                       round(cam_fps, 3),
+                                                                                       round(c_fps, 3),
+                                                                                       round(d_fps, 3)
+                                                                                       ))
     except Exception as e:
         print(e)
     finally:

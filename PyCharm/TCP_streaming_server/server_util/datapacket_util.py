@@ -83,7 +83,15 @@ class VideoStreamDatagram(Datagram):
         dtype = VideoStreamType[j_obj[2]]
         b = j_obj[3].encode('latin-1')
 
-        ints = cu.bytes_to_depth(b, dtype.value, resolution[1], resolution[0])
+        if dtype == VideoStreamType.Z16:
+            ints = cu.bytes_to_depth(b, dtype.value, resolution[1], resolution[0])
+        else:
+            if dtype == VideoStreamType.RGB:
+                md = 'RGB'
+            else:
+                md = 'L'
+
+            ints = Image.frombytes(md, resolution, b)
 
         # elapsed = time.time() - start
         # print('\rProcessing at {} fps'.format(round((1 / elapsed) if elapsed != 0 else np.inf, 3)), end='')
