@@ -1,5 +1,4 @@
 from multiprocessing import Queue
-import time
 
 from video_util.cam import RealsenseCam
 from video_util.data import VideoStream, VideoStreamType
@@ -21,19 +20,25 @@ def main():
 
     c_q = Queue(10)
     c_fps_q = Queue()
+    c_res = (1280, 720)
+    c_fr = 30
 
     d_q = Queue(10)
     d_fps_q = Queue()
+    d_res = (640, 480)
+    d_fr = 90
 
-    cam_server = SplitCamServer(cam_type=cam, rgb_q=c_q, depth_q=d_q, tx_q=cam_fps_q, ignore_if_full=False,
+    cam_server = SplitCamServer(cam_type=cam, rgb_q=c_q, rgb_resolution=c_res, rgb_framerate=c_fr,
+                                depth_q=d_q, depth_resolution=d_res, depth_framerate=d_fr,
+                                tx_q=cam_fps_q, ignore_if_full=False,
                                 configuration_file=cam_settings_filename)
 
     rgb_server = VideoStreamServerWrapper("{}_rgb".format(server_name), c_q, server_address=(address, 0),
-                                          stream_type=VideoStream('rgb', (1280, 720), 30, VideoStreamType.RGB),
+                                          stream_type=VideoStream('rgb', c_res, c_fr, VideoStreamType.RGB),
                                           tx_q=c_fps_q)
 
     depth_server = VideoStreamServerWrapper("{}_depth".format(server_name), d_q, server_address=(address, 0),
-                                            stream_type=VideoStream('depth', (640, 480), 30, VideoStreamType.Z16,
+                                            stream_type=VideoStream('depth', d_res, d_fr, VideoStreamType.Z16,
                                                                     depth_scale=0.001), tx_q=d_fps_q)
 
     # cam_server.start()

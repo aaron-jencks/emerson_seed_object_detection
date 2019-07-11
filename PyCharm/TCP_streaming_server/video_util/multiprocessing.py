@@ -63,32 +63,49 @@ class CameraServer(Process):
 class SplitCamServer(CameraServer):
     """Same as a CameraServer, but accepts 3 Queues and places the rgb, ir, and depth into their own queues"""
 
-    def __init__(self, cam_type, rgb_q: Queue = None, ir_q: Queue = None, depth_q: Queue = None, tx_q: Queue = None,
+    def __init__(self, cam_type,
+                 rgb_q: Queue = None, rgb_resolution: tuple = (1280, 720), rgb_framerate: int = 30,
+                 ir_q: Queue = None, ir_resolution: tuple = (640, 480), ir_framerate: int = 90,
+                 depth_q: Queue = None, depth_resolution: tuple = (640, 480), depth_framerate: int = 90,
+                 tx_q: Queue = None,
                  ignore_if_full: bool = True, sleep_if_full: bool = False,
                  filename: str = "", configuration_file: str = ""):
         super().__init__(cam_type, rgb_q, tx_q, ignore_if_full, sleep_if_full, filename, configuration_file)
         self.name = 'Cam Server'
         self.cam = cam_type
+
         self.rgb_q = rgb_q
+        self.rgb_data = {'resolution': rgb_resolution, 'fps': rgb_framerate}
+
         self.ir_q = ir_q
+        self.ir_data = {'resolution': ir_resolution, 'fps': ir_framerate}
+
         self.depth_q = depth_q
+        self.depth_data = {'resolution': depth_resolution, 'fps': depth_framerate}
+
         self.fps = 0
         print("Creating split camera server")
 
     def run(self) -> None:
         self.cam = self.cam(self.filename)
 
-        self.cam.set_framerate(90)
-        self.cam.set_resolution(640, 480)
-        self.cam.start_depth_stream()
+        if self.depth_q is not None:
+            res = self.depth_data['resolution']
+            self.cam.set_framerate(self.depth_data['fps'])
+            self.cam.set_resolution(res[0], res[1])
+            self.cam.start_depth_stream()
 
-        self.cam.set_framerate(90)
-        self.cam.set_resolution(640, 480)
-        self.cam.start_ir_stream()
+        if self.ir_q is not None:
+            res = self.ir_data['resolution']
+            self.cam.set_framerate(self.ir_data['fps'])
+            self.cam.set_resolution(res[0], res[1])
+            self.cam.start_ir_stream()
 
-        self.cam.set_framerate(30)
-        self.cam.set_resolution(1280, 720)
-        self.cam.start_color_stream()
+        if self.rgb_q is not None:
+            res = self.rgb_data['resolution']
+            self.cam.set_framerate(self.rgb_data['fps'])
+            self.cam.set_resolution(res[0], res[1])
+            self.cam.start_color_stream()
 
         # self.cam.start_streams()
         self.cam.connect()

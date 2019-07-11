@@ -2,6 +2,7 @@ import json
 import numpy as np
 import io
 from PIL import Image
+import struct
 import sys
 from tqdm import tqdm
 import time
@@ -60,16 +61,31 @@ class VideoStreamDatagram(Datagram):
     def to_json(self) -> str:
         if self.dtype == VideoStreamType.Z16:
             b = bytes(cu.depth_to_bytes(self.frame))
+            ratio = 1.0
         else:
             if self.dtype == VideoStreamType.RGB:
+                # b, ratio = cu.rgb_to_bytes(self.frame, self.buff.getbuffer())
                 md = 'RGB'
             else:
                 md = 'L'
 
+            orig = self.frame.size
             img = Image.fromarray(self.frame, mode=md)
             img.save(self.buff, 'JPEG', quality=30, optimize=True)
 
-            b = bytes(self.buff.getvalue())
+            b = self.buff.getvalue()
+
+            comp = len(b)
+            ratio = comp / orig
+
+            if ratio > 1:
+                ratio = 1.0
+                b = bytes(self.frame.reshape(-1))
+
+        temp = struct.pack('d', ratio)
+        temp += bytes(self.data_separator, 'latin-1')
+        temp += b
+        b = temp
 
         return self.device + self.data_separator + \
             self.name + self.data_separator + \
@@ -81,7 +97,8 @@ class VideoStreamDatagram(Datagram):
 
         j_obj = s.split(VideoStreamDatagram.data_separator)
         dtype = VideoStreamType[j_obj[2]]
-        b = j_obj[3].encode('latin-1')
+        ratio = struct.unpack('d', j_obj[3].encode('latin-1'))[0]
+        b = j_obj[4].encode('latin-1')
 
         if dtype == VideoStreamType.Z16:
             ints = cu.bytes_to_depth(b, dtype.value, resolution[1], resolution[0])
@@ -91,7 +108,9 @@ class VideoStreamDatagram(Datagram):
             else:
                 md = 'L'
 
-            ints = Image.frombytes(md, resolution, b)
+            new_res = (int(resolution[0] * ratio), int(resolution[1] * ratio))
+
+            ints = Image.frombytes(md, new_res, b)
 
         # elapsed = time.time() - start
         # print('\rProcessing at {} fps'.format(round((1 / elapsed) if elapsed != 0 else np.inf, 3)), end='')

@@ -1,5 +1,7 @@
 import pyrealsense2 as rs
 import json
+import sys
+import traceback
 
 import video_util.cy_collection_util as cu
 
@@ -62,6 +64,9 @@ class RealsenseCam(Cam):
         self.config = rs.config()
         self.resolution = (640, 480)
         self.framerate = 90
+        self.rgb = False
+        self.ir = False
+        self.depth = False
 
     def find_device_that_supports_advanced_mode(self):
         ctx = rs.context()
@@ -103,11 +108,18 @@ class RealsenseCam(Cam):
         if self.isCapturing:
             try:
                 frames = self.pipeline.wait_for_frames()
-                rgb_frame, frame, depth_frame = cu.convert_realsense(frames, self.depth_scale)
+                rgb_frame, frame, depth_frame = cu.convert_realsense(frames, self.depth_scale,
+                                                                     1 if self.rgb else 0,
+                                                                     1 if self.ir else 0,
+                                                                     1 if self.depth else 0)
 
                 return [rgb_frame, frame, depth_frame]
             except RuntimeError as e:
-                print(e)
+                et, ev, tb = sys.exc_info()
+                exc = "Exception was thrown: {}\n".format(e)
+                for l in traceback.format_exception(et, ev, tb):
+                    exc += l
+                print(exc)
                 print("Something went wrong while trying to collect frame for the camera")
 
     def get_configure_states(self):
@@ -142,13 +154,19 @@ class RealsenseCam(Cam):
             self.connect()
 
     def start_ir_stream(self):
-        self.__start_stream(rs.stream.infrared, self.resolution, rs.format.y8, self.framerate)
+        if not self.ir:
+            self.__start_stream(rs.stream.infrared, self.resolution, rs.format.y8, self.framerate)
+            self.ir = True
 
     def start_color_stream(self):
-        self.__start_stream(rs.stream.color, self.resolution, rs.format.bgr8, self.framerate)
+        if not self.rgb:
+            self.__start_stream(rs.stream.color, self.resolution, rs.format.bgr8, self.framerate)
+            self.rgb = True
 
     def start_depth_stream(self):
-        self.__start_stream(rs.stream.depth, self.resolution, rs.format.z16, self.framerate)
+        if not self.depth:
+            self.__start_stream(rs.stream.depth, self.resolution, rs.format.z16, self.framerate)
+            self.depth = True
 
     def start_streams(self):
         self.config.enable_all_streams()

@@ -34,4 +34,4 @@ if __name__ == "__main__":
         j = datagram.to_json()
         print('\rProcessing at {} fps'.format(1 / (time.time() - start)), end='')
 
-        datagram = VideoStreamDatagram.from_json(j)
+        device, name, frame, dtype = VideoStreamDatagram.from_json(j, (1280, 720))
