@@ -17,7 +17,7 @@ from video_util.data import VideoStreamType
 import video_util.cy_collection_util as cu
 
 
-host = 'localhost'
+host = '10.42.0.76'
 buffsize = 3072000
 residual_data = ''
 
@@ -88,7 +88,7 @@ def frame_socket(port: int, output_q: Queue):
                 else:
                     device, name, frame, dtype = VideoStreamDatagram.from_json(data, streams.streams[0].resolution)
                     if dtype == VideoStreamType.Z16:
-                        avg = cu.average_depth(frame)
+                        avg, _, _ = cu.average_depth(frame)
 
                 if device is not None:
                     start = time.time()
@@ -125,7 +125,7 @@ if __name__ == '__main__':
     rgb_q = Queue()
 
     processes = [
-                    Process(target=frame_socket, args=(int(input('RGB Port Number: ')), rgb_q)),
+                    # Process(target=frame_socket, args=(int(input('RGB Port Number: ')), rgb_q)),
                     Process(target=frame_socket, args=(int(input('Depth Port Number: ')), d_q)),
                 ]
 
