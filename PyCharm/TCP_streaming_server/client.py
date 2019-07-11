@@ -68,6 +68,7 @@ def frame_socket(port: int, output_q: Queue):
         frame = None
         dtype = None
         iteration = 0
+        avg = 0
 
         first = True
         while True:
@@ -86,6 +87,8 @@ def frame_socket(port: int, output_q: Queue):
                     streams = VideoInitDatagram.from_json(data)
                 else:
                     device, name, frame, dtype = VideoStreamDatagram.from_json(data, streams.streams[0].resolution)
+                    if dtype == VideoStreamType.Z16:
+                        avg = cu.average_depth(frame)
 
                 if device is not None:
                     start = time.time()
@@ -97,8 +100,9 @@ def frame_socket(port: int, output_q: Queue):
 
                     output_q.put(frame)
 
-            elapsed = time.time() - start
-            print('\rProcessing at {} fps'.format(round((1 / elapsed) if elapsed != 0 else np.inf, 3)), end='')
+                elapsed = time.time() - start
+                print('\rProcessing at {} fps, avg depth {}'.format(round((1 / elapsed) if elapsed != 0 else np.inf, 3),
+                                                                    round(avg, 3)), end='')
 
 
 class WindowUpdater(QThread):
@@ -118,9 +122,10 @@ if __name__ == '__main__':
     import sys
 
     d_q = Queue()
+    rgb_q = Queue()
 
     processes = [
-                    # Process(target=frame_socket, args=(int(input('RGB Port Number: ')),)),
+                    Process(target=frame_socket, args=(int(input('RGB Port Number: ')), rgb_q)),
                     Process(target=frame_socket, args=(int(input('Depth Port Number: ')), d_q)),
                 ]
 
@@ -144,13 +149,19 @@ if __name__ == '__main__':
     window.statusBar().showMessage('Ready')
     window.show()
 
-    img = pg.ImageView(window)
-    grid.addWidget(img)
-    img_item = pg.ImageItem()
-    img.addItem(img_item)
+    d_img = pg.ImageView(window)
+    rgb_img = pg.ImageView(window)
+    grid.addWidget(d_img, 0, 0)
+    grid.addWidget(rgb_img, 0, 1)
+    d_img_item = pg.ImageItem()
+    rgb_img_item = pg.ImageItem()
+    d_img.addItem(d_img_item)
+    rgb_img.addItem(rgb_img_item)
 
-    d_thread = WindowUpdater(d_q, img)
-    d_thread.start()
+    threads = [WindowUpdater(d_q, d_img), WindowUpdater(rgb_q, rgb_img)]
+
+    for t in threads:
+        t.start()
 
     app.exec_()
 

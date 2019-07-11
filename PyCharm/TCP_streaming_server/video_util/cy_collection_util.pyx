@@ -21,18 +21,46 @@ cpdef depth_to_bytes(unsigned short[:, :] depth_image):
     return np.asarray(result)
 
 
+@cython.cdivision(True)
+@cython.boundscheck(False)
+cpdef average_depth(unsigned short[:, :] coordinates):
+    cdef double sum = 0, current = 0, mn = 65536, mx = 0
+    cdef int count = 0, i, j
+    cdef int height = coordinates.shape[0], width = coordinates.shape[1], length = height * width
+
+    cdef double[:] depths = np.zeros(shape=length, dtype=float)
+
+    for i in range(height):  # , nogil=True, num_threads=c_count):
+        for j in range(width):
+            current = coordinates[i, j]
+
+            if current > 0:
+                if current < mn:
+                    mn = current
+                if current > mx:
+                    mx = current
+
+                sum += current
+                count += 1
+
+    if count > 0:
+        return sum / float(count), mn, mx
+    else:
+        return 0, 0, 0
+
+
 cpdef bytes_to_depth(bytes depth_bytes, int dtype, int height, int width):
     cdef unsigned short[:] darr
-    cdef double[:] dtarr
-    cdef double[:, :] drearr
+    # cdef double[:] dtarr
+    cdef unsigned short[:, :] drearr
     cdef unsigned char[:] arr
     cdef unsigned char[:, :] grearr
     cdef unsigned char[:, :, :] rearr
 
     if dtype == 2:
         darr = np.asarray(array.array('H', depth_bytes))
-        dtarr = np.multiply(darr, 1 / np.asarray(darr).max())
-        drearr = np.reshape(dtarr, (height, width))
+        # dtarr = np.multiply(darr, 1 / 65536)
+        drearr = np.reshape(darr, (height, width))
         return np.rot90(np.asarray(drearr))
     elif dtype == 1:
         arr = np.asarray(array.array('B', depth_bytes))
