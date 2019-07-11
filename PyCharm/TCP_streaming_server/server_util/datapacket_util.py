@@ -1,8 +1,6 @@
 import json
 import numpy as np
 import io
-import base64
-import struct
 from PIL import Image
 import sys
 from tqdm import tqdm
@@ -57,15 +55,28 @@ class VideoStreamDatagram(Datagram):
         self.frame = frame.reshape(-1) if flatten else frame
         self.name = name
         self.dtype = videotype
+        self.buff = io.BytesIO()
 
     def to_json(self) -> str:
-        b = bytes(cu.depth_to_bytes(self.frame) if self.dtype == VideoStreamType.Z16 else self.frame)
+        if self.dtype == VideoStreamType.Z16:
+            b = bytes(cu.depth_to_bytes(self.frame))
+        else:
+            if self.dtype == VideoStreamType.RGB:
+                md = 'RGB'
+            else:
+                md = 'L'
+
+            img = Image.fromarray(self.frame, mode=md)
+            img.save(self.buff, 'JPEG', quality=30, optimize=True)
+
+            b = bytes(self.buff.getvalue())
+
         return self.device + self.data_separator + \
             self.name + self.data_separator + \
             self.dtype.name + self.data_separator + b.decode('latin-1')
 
     @staticmethod
-    def from_json(s: str, resolution):
+    def from_json(s: str, resolution: tuple = (640, 480)):
         # start = time.time()
 
         j_obj = s.split(VideoStreamDatagram.data_separator)
