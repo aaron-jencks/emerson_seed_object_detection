@@ -11,7 +11,7 @@ cam_num = 0
 server_name = 'CameraServer_{}'.format(cam_num)
 cam_settings_filename = 'C:\\Users\\aaron.jencks\\Documents\\' \
                         'GitHub\\emerson_seed_object_detection\\realsense_cam_settings.json'
-address = '10.42.0.76'
+address = 'localhost'
 
 
 def main():
@@ -33,11 +33,13 @@ def main():
                                 tx_q=cam_fps_q, ignore_if_full=False,
                                 configuration_file=cam_settings_filename)
 
-    rgb_server = VideoStreamServerWrapper("{}_rgb".format(server_name), c_q, server_address=(address, 0),
+    rgb_server = VideoStreamServerWrapper("{}_rgb".format(server_name), c_q,
+                                          server_address=(address, 6667),
                                           stream_type=VideoStream('rgb', c_res, c_fr, VideoStreamType.RGB),
                                           tx_q=c_fps_q)
 
-    depth_server = VideoStreamServerWrapper("{}_depth".format(server_name), d_q, server_address=(address, 0),
+    depth_server = VideoStreamServerWrapper("{}_depth".format(server_name), d_q,
+                                            server_address=(address, 6668),
                                             stream_type=VideoStream('depth', d_res, d_fr, VideoStreamType.Z16,
                                                                     depth_scale=0.001), tx_q=d_fps_q)
 
@@ -73,14 +75,14 @@ def main():
             except Exception as e:
                 pass
 
-            clear()
-            print('RGB Server {}: {}, Depth Server {}: {}'.format(rgb_server.pid, rgb_host[1],
-                                                                  depth_server.pid, depth_host[1]))
-            print('Cam Server {}: {} fps, RGB Server: {} fps, Depth Server: {}'.format(cam_server.pid,
-                                                                                       round(cam_fps, 3),
-                                                                                       round(c_fps, 3),
-                                                                                       round(d_fps, 3)
-                                                                                       ))
+            # clear()
+            # print('RGB Server {}: {}, Depth Server {}: {}'.format(rgb_server.pid, rgb_host[1],
+            #                                                       depth_server.pid, depth_host[1]))
+            # print('Cam Server {}: {} fps, RGB Server: {} fps, Depth Server: {}'.format(cam_server.pid,
+            #                                                                            round(cam_fps, 3),
+            #                                                                            round(c_fps, 3),
+            #                                                                            round(d_fps, 3)
+            #                                                                            ))
     except Exception as e:
         print(e)
     finally:
