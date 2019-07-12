@@ -1,6 +1,8 @@
 import cython
 from cpython cimport array
 import array
+import io
+from PIL import Image
 cimport numpy as np
 import numpy as np
 
@@ -21,6 +23,27 @@ cpdef depth_to_bytes(unsigned short[:, :] depth_image):
             index = index + 2
 
     return np.asarray(result)
+
+
+cpdef rgb_to_bytes(unsigned char[:, :, :] frame, const unsigned char[:] buff):
+    cdef int orig, comp
+    cdef double ratio
+    cdef unsigned char[:] b
+
+    orig = np.asarray(frame).size
+    img = Image.fromarray(np.asarray(frame))
+    img.save(buff, 'JPEG', quality=30, optimize=True)
+
+    b = buff.getvalue()
+
+    comp = len(b)
+    ratio = comp / orig
+
+    if ratio > 1:
+        ratio = 1.0
+        b = bytes(np.asarray(frame).reshape(-1))
+
+    return bytes(b, 'latin-1'), ratio
 
 
 cpdef bytes_to_depth(bytes depth_bytes, int dtype, int height, int width):
@@ -49,11 +72,21 @@ cpdef bytes_to_depth(bytes depth_bytes, int dtype, int height, int width):
 
 
 @cython.boundscheck(False)
-cpdef convert_realsense(object frames, double scale):
-    cdef unsigned char[:, :, :] rgb_frame = np.asanyarray(frames.get_color_frame().get_data(),
-                                                          dtype=np.uint8)[..., ::-1]  # Converts BGR -> RGB using numpy
-    cdef unsigned char[:, :] ir_frame = np.asanyarray(frames.get_infrared_frame().get_data(), dtype=np.uint8)
-    cdef unsigned short[:, :] depth_image = np.asanyarray(frames.get_depth_frame().get_data(), dtype=np.uint16)
+cpdef convert_realsense(object frames, double scale, int rgb = 0, int ir = 0, int depth = 0):
+    cdef unsigned char[:, :, :] rgb_frame = np.zeros(shape=(1, 1, 1), dtype=np.uint8)
+    cdef unsigned char[:, :] ir_frame = np.zeros(shape=(1, 1), dtype=np.uint8)
+    cdef unsigned short[:, :] depth_image = np.zeros(shape=(1, 1), dtype=np.uint16)
+
+    if rgb > 0:
+        rgb_frame = np.asanyarray(frames.get_color_frame().get_data(),
+                                  dtype=np.uint8)[..., ::-1]  # Converts BGR -> RGB using numpy
+
+    if ir > 0:
+        ir_frame = np.asanyarray(frames.get_infrared_frame().get_data(), dtype=np.uint8)
+
+    if depth > 0:
+        depth_image = np.asanyarray(frames.get_depth_frame().get_data(), dtype=np.uint16)
+
     # depth_image = depth_image / depth_image.max()
     
     return np.asarray(rgb_frame), np.asarray(ir_frame), np.asarray(depth_image)
