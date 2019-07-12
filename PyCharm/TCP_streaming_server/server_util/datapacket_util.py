@@ -56,31 +56,41 @@ class VideoStreamDatagram(Datagram):
         self.frame = frame.reshape(-1) if flatten else frame
         self.name = name
         self.dtype = videotype
-        self.buff = io.BytesIO()
+        # self.buff = io.BytesIO()
 
     def to_json(self) -> str:
-        if self.dtype == VideoStreamType.Z16:
-            b = bytes(cu.depth_to_bytes(self.frame))
-            ratio = 1.0
-        else:
-            if self.dtype == VideoStreamType.RGB:
-                # b, ratio = cu.rgb_to_bytes(self.frame, self.buff.getbuffer())
-                md = 'RGB'
-            else:
-                md = 'L'
+        # if self.dtype == VideoStreamType.Z16:
+        #     b = bytes(cu.depth_to_bytes(self.frame) if self.dtype == VideoStreamType.Z16 else self.frame)
+        #     ratio = 1.0
+        # else:
+        #     if self.dtype == VideoStreamType.RGB:
+        #         # b, ratio = cu.rgb_to_bytes(self.frame, self.buff.getbuffer())
+        #         md = 'RGB'
+        #     else:
+        #         md = 'L'
+        #
+        #     self.buff.flush()
+        #
+        #     orig = self.frame.size
+        #     img = Image.fromarray(self.frame, mode=md)
+        #     img.save(self.buff, 'JPEG', quality=30, optimize=True)
+        #
+        #     b = self.buff.getvalue()
+        #
+        #     comp = len(b)
+        #     ratio = comp / orig
+        #
+        #     if ratio > 1:
+        #         ratio = 1.0
+        #         b = bytes(self.frame.reshape(-1))
+        #
+        # temp = struct.pack('d', ratio)
+        # temp += bytes(self.data_separator, 'latin-1')
+        # temp += b
+        # b = temp
 
-            orig = self.frame.size
-            img = Image.fromarray(self.frame, mode=md)
-            img.save(self.buff, 'JPEG', quality=30, optimize=True)
-
-            b = self.buff.getvalue()
-
-            comp = len(b)
-            ratio = comp / orig
-
-            if ratio > 1:
-                ratio = 1.0
-                b = bytes(self.frame.reshape(-1))
+        b = bytes(cu.depth_to_bytes(self.frame) if self.dtype == VideoStreamType.Z16 else self.frame)
+        ratio = 1.0
 
         temp = struct.pack('d', ratio)
         temp += bytes(self.data_separator, 'latin-1')
@@ -97,20 +107,24 @@ class VideoStreamDatagram(Datagram):
 
         j_obj = s.split(VideoStreamDatagram.data_separator)
         dtype = VideoStreamType[j_obj[2]]
-        ratio = struct.unpack('d', j_obj[3].encode('latin-1'))[0]
+        # ratio = struct.unpack('d', j_obj[3].encode('latin-1'))[0]
         b = j_obj[4].encode('latin-1')
 
-        if dtype == VideoStreamType.Z16:
-            ints = cu.bytes_to_depth(b, dtype.value, resolution[1], resolution[0])
-        else:
-            if dtype == VideoStreamType.RGB:
-                md = 'RGB'
-            else:
-                md = 'L'
+        # if dtype == VideoStreamType.Z16:
+        #     ints = cu.bytes_to_depth(b, dtype.value, resolution[1], resolution[0])
+        # else:
+        #     if dtype == VideoStreamType.RGB:
+        #         md = 'RGB'
+        #     else:
+        #         md = 'L'
+        #
+        #     new_res = (int(resolution[0] * ratio), int(resolution[1] * ratio))
+        #
+        #     ints = Image.frombytes(md, new_res, b)
+        #     # comp_res = comp_img.size
+        #     # ints = np.reshape(b, comp_res)
 
-            new_res = (int(resolution[0] * ratio), int(resolution[1] * ratio))
-
-            ints = Image.frombytes(md, new_res, b)
+        ints = cu.bytes_to_depth(b, dtype.value, resolution[1], resolution[0])
 
         # elapsed = time.time() - start
         # print('\rProcessing at {} fps'.format(round((1 / elapsed) if elapsed != 0 else np.inf, 3)), end='')
