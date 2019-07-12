@@ -61,18 +61,16 @@ class WindowUpdater(QThread):
     imageChanged = pyqtSignal(np.ndarray)
     stop_q = Queue()
 
-    def __init__(self, cam_q: Queue, img_control: pg.ImageView, fps_q: Queue, fps_lbl: QLabel,
+    def __init__(self, cam_q: Queue, fps_q: Queue, cam_img: pg.ImageView, fps_lbl: QLabel,
                  lbl: QLabel = None, **kwargs):
         super().__init__(**kwargs)
 
         self.fq = fps_q
         self.f_lbl = fps_lbl
 
+        self.c = cam_img
         self.q = cam_q
         self.lbl = lbl
-
-        self.c = img_control
-
         self.depth_levels = (0, 65536)
 
     def run(self) -> None:
@@ -82,17 +80,19 @@ class WindowUpdater(QThread):
                 fps = self.fq.get_nowait()
 
                 if timg.dtype == VideoStreamType.Z16:
-                    # # graph_lock.acquire(True)
-                    # self.c.setImage(timg.frame, levels=self.depth_levels)
-                    # self.c.updateImage()
-                    # # graph_lock.release()
-                    self.imageChanged.emit(timg.frame)
+                    # graph_lock.acquire(True)
+                    self.c.setImage(timg.frame, levels=self.depth_levels)
+                    self.c.updateImage()
+                    # graph_lock.release()
+                    # self.imageChanged.emit(timg.frame)
                     if self.lbl is not None:
                         avg, _, _ = cu.average_depth(timg.frame)
                         avg *= scale * 39.3701
                         self.lbl.setText('Average Depth: {} inches'.format(avg))
                 else:
-                    self.imageChanged.emit(timg.frame)
+                    # self.imageChanged.emit(timg.frame)
+                    self.c.setImage(timg.frame)
+                    self.c.updateImage()
 
                 self.f_lbl.setText('FPS: {} fps'.format(fps))
             except Empty:
@@ -190,14 +190,14 @@ if __name__ == '__main__':
         # Will allow me to show selected streams later
         if server in depth_qs:
             qs = depth_qs[server]
-            thread = WindowUpdater(qs['img'], d_img, qs['fps'], dfps_lbl, lbl=avg_lbl)
-            thread.imageChanged.connect(lambda x: d_img.setImage(x, levels=(0, 65536)))
+            thread = WindowUpdater(qs['img'], qs['fps'], d_img, dfps_lbl, lbl=avg_lbl)
+            # thread.imageChanged.connect(lambda x: d_img.setImage(x, levels=(0, 65536)))
             threads.append(thread)
 
         if server in rgb_qs:
             qs = rgb_qs[server]
-            thread = WindowUpdater(qs['img'], rgb_img, qs['fps'], rgbfps_lbl)
-            thread.imageChanged.connect(rgb_img.setImage)
+            thread = WindowUpdater(qs['img'], qs['fps'], rgb_img, rgbfps_lbl)
+            # thread.imageChanged.connect(rgb_img.setImage)
             threads.append(thread)
 
     for t in threads:
