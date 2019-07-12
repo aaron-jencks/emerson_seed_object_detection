@@ -1,4 +1,7 @@
 import socket
+# import pyqtgraph as pg
+# from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout, QWidget, QLabel
+# from PyQt5.QtCore import pyqtSlot
 
 
 buffsize = 3072000
@@ -39,3 +42,16 @@ def readline(sock: socket.socket) -> str:
             residual_data = ''
 
     return result
+
+
+# class ClientWidget(QWidget):
+#     def __init__(self, hosts: list, depth_qs: dict, rgb_qs: dict):
+#         super().__init__()
+#
+#         self.hosts = hosts
+#         self.dqs = depth_qs
+#         self.cqs = rgb_qs
+#
+#         self.grid = QGridLayout()
+#         self.grid.setSpacing(10)
+#         self.setLayout(self.grid)

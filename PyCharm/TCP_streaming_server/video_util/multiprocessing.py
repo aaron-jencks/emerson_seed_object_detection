@@ -2,6 +2,7 @@ from multiprocessing import Process, Queue
 import time
 import numpy as np
 import traceback
+import sys
 
 
 class CameraServer(Process):
