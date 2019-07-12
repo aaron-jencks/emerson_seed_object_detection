@@ -21,7 +21,6 @@ import video_util.cy_collection_util as cu
 
 
 host = 'localhost'
-residual_data = ''
 scale = 0.001
 
 
@@ -72,11 +71,15 @@ class WindowUpdater(QThread):
 
         self.q = cam_q
         self.c = img_control
+        self.depth_levels = (0, 65536)
 
     def run(self) -> None:
         while True:
             timg = self.q.get()
-            self.c.setImage(timg.frame)
+            if timg.dtype == VideoStreamType.Z16:
+                self.c.setImage(timg.frame, levels=self.depth_levels)
+            else:
+                self.c.setImage(timg.frame)
 
 
 class RGBWindowUpdater(QThread):
