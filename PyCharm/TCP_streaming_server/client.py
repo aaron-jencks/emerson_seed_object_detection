@@ -72,28 +72,15 @@ class WindowUpdater(QThread):
         self.q = cam_q
         self.c = img_control
         self.depth_levels = (0, 65536)
+        self.is_stopping = False
 
     def run(self) -> None:
-        while True:
+        while not self.is_stopping:
             timg = self.q.get()
             if timg.dtype == VideoStreamType.Z16:
                 self.c.setImage(timg.frame, levels=self.depth_levels)
             else:
                 self.c.setImage(timg.frame)
-
-
-class RGBWindowUpdater(QThread):
-    def __init__(self, cam_q: Queue, img_control: QLabel, **kwargs):
-        super().__init__(**kwargs)
-
-        self.q = cam_q
-        self.c = img_control
-
-    def run(self) -> None:
-        while True:
-            timg = self.q.get()
-            pix = QPixmap.fromImage(ImageQt(timg.convert('RGBA')))
-            self.c.setPixmap(pix)
 
 
 if __name__ == '__main__':
