@@ -7,55 +7,22 @@ from multiprocessing import Process, Queue
 import base64
 import struct
 import array
+from PIL.ImageQt import ImageQt
 
 import pyqtgraph as pg
-from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout, QWidget
-from PyQt5.QtCore import pyqtSignal, QThread
+from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout, QWidget, QLabel
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import QThread
 
 from server_util.datapacket_util import VideoStreamDatagram, VideoInitDatagram
+from server_util.client import readline
 from video_util.data import VideoStreamType
 import video_util.cy_collection_util as cu
 
 
-host = '10.42.0.76'
-buffsize = 3072000
+host = 'localhost'
 residual_data = ''
-
-
-def readline(sock: socket.socket) -> str:
-    """Continuously calls read on the given socket until a '\n' is found,
-    then saves the residual and returns the string"""
-
-    global residual_data
-
-    if '~~~\n' in residual_data:
-        index = residual_data.find('~~~\n')
-
-        temp = residual_data[:index]
-
-        if index < len(residual_data) - 4:
-            residual_data = residual_data[index + 4:]
-        else:
-            residual_data = ''
-
-        return temp
-
-    result = residual_data
-
-    data_read = sock.recv(buffsize).decode('latin-1')
-    while data_read != '' and '~~~\n' not in data_read:
-        result += data_read
-        data_read = sock.recv(buffsize).decode('latin-1')
-
-    if data_read != '':
-        index = data_read.find('~~~\n')
-        result += data_read[:index]
-        if index < len(data_read) - 4:
-            residual_data = data_read[index + 4:]
-        else:
-            residual_data = ''
-
-    return result
+scale = 0.001
 
 
 def frame_socket(port: int, output_q: Queue):
@@ -89,16 +56,10 @@ def frame_socket(port: int, output_q: Queue):
                     device, name, frame, dtype = VideoStreamDatagram.from_json(data, streams.streams[0].resolution)
                     if dtype == VideoStreamType.Z16:
                         avg, _, _ = cu.average_depth(frame)
+                        avg *= scale * 39.3701
 
                 if device is not None:
-                    start = time.time()
-
-                    # plt.clf()
-                    # plt.imshow(frame)
-                    # plt.draw()
-                    # plt.pause(0.001)
-
-                    output_q.put(frame)
+                    output_q.put(VideoStreamDatagram(device, name, frame, dtype, False))
 
                 elapsed = time.time() - start
                 print('\rProcessing at {} fps, avg depth {}'.format(round((1 / elapsed) if elapsed != 0 else np.inf, 3),
@@ -115,17 +76,38 @@ class WindowUpdater(QThread):
     def run(self) -> None:
         while True:
             timg = self.q.get()
-            self.c.setImage(timg)
+            self.c.setImage(timg.frame)
+
+
+class RGBWindowUpdater(QThread):
+    def __init__(self, cam_q: Queue, img_control: QLabel, **kwargs):
+        super().__init__(**kwargs)
+
+        self.q = cam_q
+        self.c = img_control
+
+    def run(self) -> None:
+        while True:
+            timg = self.q.get()
+            pix = QPixmap.fromImage(ImageQt(timg.convert('RGBA')))
+            self.c.setPixmap(pix)
 
 
 if __name__ == '__main__':
     import sys
 
+    # TODO Ask how many servers to connect to, then ask for ports and hosts for each one.  Store these into a list
+    # TODO that the next section will use to start clients to handle the servers.
+
+    depth_qs = []
+    rgb_qs = []
+    # processes = []
+
     d_q = Queue()
     rgb_q = Queue()
 
     processes = [
-                    # Process(target=frame_socket, args=(int(input('RGB Port Number: ')), rgb_q)),
+                    Process(target=frame_socket, args=(int(input('RGB Port Number: ')), rgb_q)),
                     Process(target=frame_socket, args=(int(input('Depth Port Number: ')), d_q)),
                 ]
 
@@ -149,14 +131,16 @@ if __name__ == '__main__':
     window.statusBar().showMessage('Ready')
     window.show()
 
+    # TODO Auto add widgets in a grid fashion, one server per row
+
     d_img = pg.ImageView(window)
-    rgb_img = pg.ImageView(window)
+    rgb_img = pg.ImageView(window)  # QLabel(window)
     grid.addWidget(d_img, 0, 0)
     grid.addWidget(rgb_img, 0, 1)
     d_img_item = pg.ImageItem()
-    rgb_img_item = pg.ImageItem()
+    rgb_img_item = pg.ImageItem()  # !
     d_img.addItem(d_img_item)
-    rgb_img.addItem(rgb_img_item)
+    rgb_img.addItem(rgb_img_item)  # !
 
     threads = [WindowUpdater(d_q, d_img), WindowUpdater(rgb_q, rgb_img)]
 
