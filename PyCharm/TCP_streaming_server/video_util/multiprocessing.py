@@ -1,6 +1,7 @@
 from multiprocessing import Process, Queue
 import time
 import numpy as np
+import traceback
 
 
 class CameraServer(Process):
@@ -87,71 +88,79 @@ class SplitCamServer(CameraServer):
         print("Creating split camera server")
 
     def run(self) -> None:
-        self.cam = self.cam(self.filename)
-
-        if self.depth_q is not None:
-            res = self.depth_data['resolution']
-            self.cam.set_framerate(self.depth_data['fps'])
-            self.cam.set_resolution(res[0], res[1])
-            self.cam.start_depth_stream()
-
-        if self.ir_q is not None:
-            res = self.ir_data['resolution']
-            self.cam.set_framerate(self.ir_data['fps'])
-            self.cam.set_resolution(res[0], res[1])
-            self.cam.start_ir_stream()
-
-        if self.rgb_q is not None:
-            res = self.rgb_data['resolution']
-            self.cam.set_framerate(self.rgb_data['fps'])
-            self.cam.set_resolution(res[0], res[1])
-            self.cam.start_color_stream()
-
-        # self.cam.start_streams()
-        self.cam.connect()
-        self.cam.start_capture()
-
         try:
-            while not self.is_stopping:
-                if (
-                        (self.rgb_q is not None and self.rgb_q.full()) or
-                        (self.ir_q is not None and self.ir_q.full()) or
-                        (self.depth_q is not None and self.depth_q.full())
-                   ) and self.sleep:
-                    time.sleep(1)
-                    continue
-                elif (self.rgb_q is not None and self.rgb_q.full()) or \
-                        (self.ir_q is not None and self.ir_q.full()) or \
-                        (self.depth_q is not None and self.depth_q.full()):
-                    if self.rgb_q is not None:
-                        while not self.rgb_q.empty():
-                            try:
-                                self.rgb_q.get_nowait()
-                            finally:
-                                break
-                    if self.ir_q is not None:
-                        while not self.ir_q.empty():
-                            try:
-                                self.ir_q.get_nowait()
-                            finally:
-                                break
-                    if self.depth_q is not None:
-                        while not self.depth_q.empty():
-                            try:
-                                self.depth_q.get_nowait()
-                            finally:
-                                break
+            self.cam = self.cam(self.filename)
 
-                start = time.time()
-                rgb, ir, depth = self.cam.get_frame()
-                self.lossy_put(self.rgb_q, rgb)
-                self.lossy_put(self.ir_q, ir)
-                self.lossy_put(self.depth_q, depth)
-                elapsed = time.time() - start
-                self.fps = (1 / elapsed) if elapsed != 0 else np.inf
+            if self.depth_q is not None:
+                res = self.depth_data['resolution']
+                self.cam.set_framerate(self.depth_data['fps'])
+                self.cam.set_resolution(res[0], res[1])
+                self.cam.start_depth_stream()
 
-                if self.tx_q is not None:
-                    self.tx_q.put(self.fps)
-        finally:
-            self.cam.stop_capture()
-            self.cam.disconnect()
+            if self.ir_q is not None:
+                res = self.ir_data['resolution']
+                self.cam.set_framerate(self.ir_data['fps'])
+                self.cam.set_resolution(res[0], res[1])
+                self.cam.start_ir_stream()
+
+            if self.rgb_q is not None:
+                res = self.rgb_data['resolution']
+                self.cam.set_framerate(self.rgb_data['fps'])
+                self.cam.set_resolution(res[0], res[1])
+                self.cam.start_color_stream()
+
+            # self.cam.start_streams()
+            self.cam.connect()
+            self.cam.start_capture()
+
+            try:
+                while not self.is_stopping:
+                    if (
+                            (self.rgb_q is not None and self.rgb_q.full()) or
+                            (self.ir_q is not None and self.ir_q.full()) or
+                            (self.depth_q is not None and self.depth_q.full())
+                       ) and self.sleep:
+                        time.sleep(1)
+                        continue
+                    elif (self.rgb_q is not None and self.rgb_q.full()) or \
+                            (self.ir_q is not None and self.ir_q.full()) or \
+                            (self.depth_q is not None and self.depth_q.full()):
+                        if self.rgb_q is not None:
+                            while not self.rgb_q.empty():
+                                try:
+                                    self.rgb_q.get_nowait()
+                                finally:
+                                    break
+                        if self.ir_q is not None:
+                            while not self.ir_q.empty():
+                                try:
+                                    self.ir_q.get_nowait()
+                                finally:
+                                    break
+                        if self.depth_q is not None:
+                            while not self.depth_q.empty():
+                                try:
+                                    self.depth_q.get_nowait()
+                                finally:
+                                    break
+
+                    start = time.time()
+                    rgb, ir, depth = self.cam.get_frame()
+                    self.lossy_put(self.rgb_q, rgb)
+                    self.lossy_put(self.ir_q, ir)
+                    self.lossy_put(self.depth_q, depth)
+                    elapsed = time.time() - start
+                    self.fps = (1 / elapsed) if elapsed != 0 else np.inf
+
+                    if self.tx_q is not None:
+                        self.tx_q.put(self.fps)
+            finally:
+                self.cam.stop_capture()
+                self.cam.disconnect()
+        except Exception as e:
+            et, ev, tb = sys.exc_info()
+            exc = "Exception was thrown: {}\n".format(e)
+            for l in traceback.format_exception(et, ev, tb):
+                exc += l
+            print(exc)
+            print("Something went wrong while trying to collect frame for the camera")
