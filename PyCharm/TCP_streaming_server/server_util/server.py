@@ -2,9 +2,21 @@ import socketserver
 import time
 import numpy as np
 from multiprocessing import Queue
+from netifaces import interfaces, ifaddresses
 
 from video_util.data import VideoStream, VideoStreamType
 from .datapacket_util import VideoInitDatagram, VideoStreamDatagram
+
+
+def find_ip():
+    ints = interfaces()
+    if 'wlp0sl' in ints:
+        addr = ifaddresses('wlp0sl')
+        print('Your ip is {}'.format(addr['addr']))
+        return addr['addr']
+    else:
+        print('Your ip is localhost')
+        return 'localhost'
 
 
 class VideoStreamingServer(socketserver.TCPServer):

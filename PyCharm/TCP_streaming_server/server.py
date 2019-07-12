@@ -5,6 +5,7 @@ from video_util.cam import RealsenseCam
 from video_util.data import VideoStream, VideoStreamType
 from video_util.multiprocessing import SplitCamServer
 from server_util.multiprocessing.server import VideoStreamServerWrapper
+from server_util.server import find_ip
 
 from dependencies.terminal_display_util import clear
 
@@ -12,7 +13,7 @@ cam_num = 0
 server_name = 'CameraServer_{}'.format(cam_num)
 cam_settings_filename = 'C:\\Users\\aaron.jencks\\Documents\\' \
                         'GitHub\\emerson_seed_object_detection\\realsense_cam_settings.json'
-address = 'localhost'
+address = find_ip()
 
 
 def main():
