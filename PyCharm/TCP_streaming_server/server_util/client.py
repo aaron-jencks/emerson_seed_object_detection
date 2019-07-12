@@ -2,6 +2,7 @@ import socket
 
 
 buffsize = 3072000
+residual_data = ''
 
 
 def readline(sock: socket.socket) -> str:
