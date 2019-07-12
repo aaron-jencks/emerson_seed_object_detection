@@ -1,4 +1,5 @@
 from multiprocessing import Queue
+import time
 
 from video_util.cam import RealsenseCam
 from video_util.data import VideoStream, VideoStreamType
@@ -57,23 +58,23 @@ def main():
         depth_host = d_fps_q.get()
 
         while True:  # and rgb_server.is_alive() and depth_server.is_alive():
-            c_fps = 0
-            try:
-                c_fps = c_fps_q.get_nowait()
-            except Exception as e:
-                pass
-
-            d_fps = 0
-            try:
-                d_fps = d_fps_q.get_nowait()
-            except Exception as e:
-                pass
-
-            cam_fps = 0
-            try:
-                cam_fps = cam_fps_q.get_nowait()
-            except Exception as e:
-                pass
+            # c_fps = 0
+            # try:
+            #     c_fps = c_fps_q.get_nowait()
+            # except Exception as e:
+            #     pass
+            #
+            # d_fps = 0
+            # try:
+            #     d_fps = d_fps_q.get_nowait()
+            # except Exception as e:
+            #     pass
+            #
+            # cam_fps = 0
+            # try:
+            #     cam_fps = cam_fps_q.get_nowait()
+            # except Exception as e:
+            #     pass
 
             # clear()
             # print('RGB Server {}: {}, Depth Server {}: {}'.format(rgb_server.pid, rgb_host[1],
@@ -83,6 +84,7 @@ def main():
             #                                                                            round(c_fps, 3),
             #                                                                            round(d_fps, 3)
             #                                                                            ))
+            time.sleep(1)
     except Exception as e:
         print(e)
     finally:
