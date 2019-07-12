@@ -10,8 +10,8 @@ from .datapacket_util import VideoInitDatagram, VideoStreamDatagram
 
 def find_ip():
     ints = interfaces()
-    if 'wlp0sl' in ints:
-        addr = ifaddresses('wlp0sl')
+    if 'wlp1s0' in ints:
+        addr = ifaddresses('wlp1s0')
         print('Your ip is {}'.format(addr['addr']))
         return addr['addr']
     else:

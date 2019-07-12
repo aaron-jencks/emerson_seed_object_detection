@@ -90,7 +90,7 @@ class SplitCamServer(CameraServer):
 
     def run(self) -> None:
         try:
-            self.cam = self.cam(self.filename)
+            self.cam = self.cam(self.filename, self.settings)
 
             if self.depth_q is not None:
                 res = self.depth_data['resolution']

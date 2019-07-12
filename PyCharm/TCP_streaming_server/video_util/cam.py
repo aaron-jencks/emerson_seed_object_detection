@@ -170,3 +170,6 @@ class RealsenseCam(Cam):
 
     def start_streams(self):
         self.config.enable_all_streams()
+        self.ir = True
+        self.rgb = True
+        self.depth = True

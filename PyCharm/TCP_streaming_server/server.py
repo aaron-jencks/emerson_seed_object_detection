@@ -22,13 +22,13 @@ def main():
 
     c_q = Queue(10)
     c_fps_q = Queue()
-    c_res = (1280, 720)
+    c_res = (640, 480)
     c_fr = 30
 
     d_q = Queue(10)
     d_fps_q = Queue()
     d_res = (640, 480)
-    d_fr = 90
+    d_fr = 15
 
     cam_server = SplitCamServer(cam_type=cam, rgb_q=c_q, rgb_resolution=c_res, rgb_framerate=c_fr,
                                 depth_q=d_q, depth_resolution=d_res, depth_framerate=d_fr,
@@ -59,23 +59,23 @@ def main():
         depth_host = d_fps_q.get()
 
         while True:  # and rgb_server.is_alive() and depth_server.is_alive():
-            # c_fps = 0
-            # try:
-            #     c_fps = c_fps_q.get_nowait()
-            # except Exception as e:
-            #     pass
-            #
-            # d_fps = 0
-            # try:
-            #     d_fps = d_fps_q.get_nowait()
-            # except Exception as e:
-            #     pass
-            #
-            # cam_fps = 0
-            # try:
-            #     cam_fps = cam_fps_q.get_nowait()
-            # except Exception as e:
-            #     pass
+            c_fps = 0
+            try:
+                c_fps = c_fps_q.get_nowait()
+            except Exception as e:
+                pass
+
+            d_fps = 0
+            try:
+                d_fps = d_fps_q.get_nowait()
+            except Exception as e:
+                pass
+
+            cam_fps = 0
+            try:
+                cam_fps = cam_fps_q.get_nowait()
+            except Exception as e:
+                pass
 
             # clear()
             # print('RGB Server {}: {}, Depth Server {}: {}'.format(rgb_server.pid, rgb_host[1],
