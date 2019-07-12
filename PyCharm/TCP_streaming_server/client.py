@@ -2,6 +2,7 @@ import socket
 import numpy as np
 import time
 from multiprocessing import Process, Queue
+from queue import Empty
 
 import pyqtgraph as pg
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout, QWidget, QLabel
@@ -19,6 +20,8 @@ scale = 0.001
 def frame_socket(port: int, output_q: Queue, stop_q: Queue, fps_q: Queue, hostname: str = 'localhost'):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         sock.connect((hostname, port))
+
+        print('Successfully connected to {}:{}'.format(hostname, port))
 
         streams = None
         device = None
@@ -74,19 +77,22 @@ class WindowUpdater(QThread):
 
     def run(self) -> None:
         while self.stop_q.empty():
-            timg = self.q.get()
-            fps = self.fq.get()
+            try:
+                timg = self.q.get_nowait()
+                fps = self.fq.get_nowait()
 
-            if timg.dtype == VideoStreamType.Z16:
-                self.c.setImage(timg.frame, levels=self.depth_levels)
-                if self.lbl is not None:
-                    avg, _, _ = cu.average_depth(timg.frame)
-                    avg *= scale * 39.3701
-                    self.lbl.setText('Average Depth: {}'.format(avg))
-            else:
-                self.c.setImage(timg.frame)
+                if timg.dtype == VideoStreamType.Z16:
+                    self.c.setImage(timg.frame, levels=self.depth_levels)
+                    if self.lbl is not None:
+                        avg, _, _ = cu.average_depth(timg.frame)
+                        avg *= scale * 39.3701
+                        self.lbl.setText('Average Depth: {}'.format(avg))
+                else:
+                    self.c.setImage(timg.frame)
 
-            self.f_lbl.setText('FPS: {} fps'.format(fps))
+                self.f_lbl.setText('FPS: {} fps'.format(fps))
+            except Empty:
+                time.sleep(0.1)
 
 
 if __name__ == '__main__':
@@ -143,6 +149,8 @@ if __name__ == '__main__':
     threads = []
 
     for i, server in enumerate(hosts):
+        row = i * 4
+
         d_img = pg.ImageView(window)
         dfps_lbl = QLabel('FPS: 0 fps', window)
         rgb_img = pg.ImageView(window)
@@ -150,12 +158,12 @@ if __name__ == '__main__':
 
         avg_lbl = QLabel('Average Depth: 0', window)
 
-        grid.addWidget(QLabel('{}'.format(server), window), i, 0)
-        grid.addWidget(d_img, i + 1, 0)
-        grid.addWidget(rgb_img, i + 1, 1)
-        grid.addWidget(dfps_lbl, i + 2, 0)
-        grid.addWidget(rgbfps_lbl, i + 2, 1)
-        grid.addWidget(avg_lbl, i + 3, 0)
+        grid.addWidget(QLabel('{}'.format(server), window), row, 0)
+        grid.addWidget(d_img, row + 1, 0)
+        grid.addWidget(rgb_img, row + 1, 1)
+        grid.addWidget(dfps_lbl, row + 2, 0)
+        grid.addWidget(rgbfps_lbl, row + 2, 1)
+        grid.addWidget(avg_lbl, row + 3, 0)
 
         d_img_item = pg.ImageItem()
         rgb_img_item = pg.ImageItem()
