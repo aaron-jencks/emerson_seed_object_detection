@@ -1,5 +1,7 @@
 from multiprocessing import Queue
 import time
+import pyqtgraph as pg
+import matplotlib.pyplot as plt
 
 from video_util.cam import RealsenseCam
 from video_util.data import VideoStreamType
@@ -35,3 +37,8 @@ if __name__ == "__main__":
         print('\rProcessing at {} fps'.format(1 / (time.time() - start)), end='')
 
         device, name, frame, dtype = VideoStreamDatagram.from_json(j, (1280, 720))
+
+        plt.clf()
+        plt.imshow(frame)
+        plt.draw()
+        plt.pause(0.0001)
