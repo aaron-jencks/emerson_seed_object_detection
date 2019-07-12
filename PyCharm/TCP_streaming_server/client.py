@@ -118,11 +118,20 @@ if __name__ == '__main__':
 
         host = input('Hostname for server {}? '.format(server))
         hosts.append(host)
-        depth_qs[host] = {'img': d_q, 'fps': fd_q}
-        rgb_qs[host] = {'img': rgb_q, 'fps': frgb_q}
 
-        processes.append(Process(target=frame_socket, args=(int(input('RGB Port Number: ')),
-                                                            rgb_q, stop_q, frgb_q, host)))
+        md = input("Would you like to stream both RGB and Depth, if no, I'll just stream Depth? (y/n) ").capitalize()
+        while md != 'Y' and md != 'N':
+            print('Lets try that again, shall we...')
+            md = input(
+                "Would you like to stream both RGB and Depth, if no, I'll just stream Depth? (y/n) ").capitalize()
+
+        depth_qs[host] = {'img': d_q, 'fps': fd_q}
+
+        if md == 'Y':
+            rgb_qs[host] = {'img': rgb_q, 'fps': frgb_q}
+            processes.append(Process(target=frame_socket, args=(int(input('RGB Port Number: ')),
+                                                                rgb_q, stop_q, frgb_q, host)))
+
         processes.append(Process(target=frame_socket, args=(int(input('Depth Port Number: ')),
                                                             d_q, stop_q, fd_q, host)))
 
@@ -159,10 +168,16 @@ if __name__ == '__main__':
         avg_lbl = QLabel('Average Depth: 0', window)
 
         grid.addWidget(QLabel('{}'.format(server), window), row, 0)
-        grid.addWidget(d_img, row + 1, 0)
-        grid.addWidget(rgb_img, row + 1, 1)
-        grid.addWidget(dfps_lbl, row + 2, 0)
-        grid.addWidget(rgbfps_lbl, row + 2, 1)
+
+        if server in rgb_qs:
+            grid.addWidget(d_img, row + 1, 0)
+            grid.addWidget(rgb_img, row + 1, 1)
+            grid.addWidget(dfps_lbl, row + 2, 0)
+            grid.addWidget(rgbfps_lbl, row + 2, 1)
+        else:
+            grid.addWidget(d_img, row + 1, 0, 1, 2)
+            grid.addWidget(dfps_lbl, row + 2, 0)
+
         grid.addWidget(avg_lbl, row + 3, 0)
 
         d_img_item = pg.ImageItem()
