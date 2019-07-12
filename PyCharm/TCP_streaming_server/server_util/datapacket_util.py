@@ -53,7 +53,8 @@ class VideoStreamDatagram(Datagram):
     def __init__(self, device_identifier: str, name: str, frame: np.ndarray, videotype: VideoStreamType,
                  flatten: bool = False):
         super().__init__(device_identifier, "VideoFrame")
-        self.frame = frame.reshape(-1) if flatten else frame
+        self.flatten = flatten
+        self.frame = frame
         self.name = name
         self.dtype = videotype
         # self.buff = io.BytesIO()
@@ -88,6 +89,9 @@ class VideoStreamDatagram(Datagram):
         # temp += bytes(self.data_separator, 'latin-1')
         # temp += b
         # b = temp
+
+        if self.flatten:
+            self.frame = self.frame.reshape(-1)
 
         b = bytes(cu.depth_to_bytes(self.frame) if self.dtype == VideoStreamType.Z16 else self.frame)
         ratio = 1.0
