@@ -3,7 +3,7 @@ import time
 import numpy as np
 from multiprocessing import Queue
 
-from video_util.data import VideoStream
+from video_util.data import VideoStream, VideoStreamType
 from .datapacket_util import VideoInitDatagram, VideoStreamDatagram
 
 
@@ -52,8 +52,11 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
                 data = self.server.cam_q.get()
                 if first:
                     first = False
+
+                    # Enables flattening on non-depth images
                     datagram = VideoStreamDatagram(self.server.dev, self.server.stream_type.name, data,
-                                                   self.server.stream_type.dtype)
+                                                   self.server.stream_type.dtype,
+                                                   self.server.stream_type.dtype != VideoStreamType.Z16)
                 else:
                     datagram.frame = data
 
