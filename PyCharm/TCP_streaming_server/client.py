@@ -1,17 +1,10 @@
 import socket
 import numpy as np
-import matplotlib.pyplot as plt
 import time
-import json
 from multiprocessing import Process, Queue
-import base64
-import struct
-import array
-from PIL.ImageQt import ImageQt
 
 import pyqtgraph as pg
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout, QWidget, QLabel
-from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QThread
 
 from server_util.datapacket_util import VideoStreamDatagram, VideoInitDatagram
@@ -20,13 +13,12 @@ from video_util.data import VideoStreamType
 import video_util.cy_collection_util as cu
 
 
-host = 'localhost'
 scale = 0.001
 
 
-def frame_socket(port: int, output_q: Queue):
+def frame_socket(port: int, output_q: Queue, stop_q: Queue, fps_q: Queue, hostname: str = 'localhost'):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        sock.connect((host, port))
+        sock.connect((hostname, port))
 
         streams = None
         device = None
@@ -34,10 +26,9 @@ def frame_socket(port: int, output_q: Queue):
         frame = None
         dtype = None
         iteration = 0
-        avg = 0
 
         first = True
-        while True:
+        while stop_q.empty():
             iteration += 1
 
             start = time.time()
@@ -53,53 +44,81 @@ def frame_socket(port: int, output_q: Queue):
                     streams = VideoInitDatagram.from_json(data)
                 else:
                     device, name, frame, dtype = VideoStreamDatagram.from_json(data, streams.streams[0].resolution)
-                    if dtype == VideoStreamType.Z16:
-                        avg, _, _ = cu.average_depth(frame)
-                        avg *= scale * 39.3701
 
                 if device is not None:
                     output_q.put(VideoStreamDatagram(device, name, frame, dtype, False))
 
                 elapsed = time.time() - start
-                print('\rProcessing at {} fps, avg depth {}'.format(round((1 / elapsed) if elapsed != 0 else np.inf, 3),
-                                                                    round(avg, 3)), end='')
+                fps = round((1 / elapsed) if elapsed != 0 else np.inf, 3)
+                fps_q.put(fps)
+                # print('\rProcessing at {} fps, avg depth {}'.format(fps, round(avg, 3)), end='')
 
 
 class WindowUpdater(QThread):
-    def __init__(self, cam_q: Queue, img_control: pg.ImageView, **kwargs):
+
+    stop_q = Queue()
+
+    def __init__(self, cam_q: Queue, img_control: pg.ImageView, fps_q: Queue, fps_lbl: QLabel,
+                 lbl: QLabel = None, **kwargs):
         super().__init__(**kwargs)
 
+        self.fq = fps_q
+        self.f_lbl = fps_lbl
+
         self.q = cam_q
+        self.lbl = lbl
+
         self.c = img_control
+
         self.depth_levels = (0, 65536)
-        self.is_stopping = False
 
     def run(self) -> None:
-        while not self.is_stopping:
+        while self.stop_q.empty():
             timg = self.q.get()
+            fps = self.fq.get()
+
             if timg.dtype == VideoStreamType.Z16:
                 self.c.setImage(timg.frame, levels=self.depth_levels)
+                if self.lbl is not None:
+                    avg, _, _ = cu.average_depth(timg.frame)
+                    avg *= scale * 39.3701
+                    self.lbl.setText('Average Depth: {}'.format(avg))
             else:
                 self.c.setImage(timg.frame)
+
+            self.f_lbl.setText('FPS: {} fps'.format(fps))
 
 
 if __name__ == '__main__':
     import sys
 
-    # TODO Ask how many servers to connect to, then ask for ports and hosts for each one.  Store these into a list
-    # TODO that the next section will use to start clients to handle the servers.
+    # TODO Ask the user which streams they want to enable to allow control over rgb and depth streams
 
-    depth_qs = []
-    rgb_qs = []
-    # processes = []
+    stop_q = WindowUpdater.stop_q  # Allows control over processes, I can stop them without hanging
 
-    d_q = Queue()
-    rgb_q = Queue()
+    hosts = []
+    depth_qs = {}
+    rgb_qs = {}
+    processes = []
 
-    processes = [
-                    Process(target=frame_socket, args=(int(input('RGB Port Number: ')), rgb_q)),
-                    Process(target=frame_socket, args=(int(input('Depth Port Number: ')), d_q)),
-                ]
+    num_servers = int(input('How many servers are you connecting to? '))
+
+    for server in range(num_servers):
+
+        d_q = Queue()
+        fd_q = Queue()
+        rgb_q = Queue()
+        frgb_q = Queue()
+
+        host = input('Hostname for server {}? '.format(server))
+        hosts.append(host)
+        depth_qs[host] = {'img': d_q, 'fps': fd_q}
+        rgb_qs[host] = {'img': rgb_q, 'fps': frgb_q}
+
+        processes.append(Process(target=frame_socket, args=(int(input('RGB Port Number: ')),
+                                                            rgb_q, stop_q, frgb_q, host)))
+        processes.append(Process(target=frame_socket, args=(int(input('Depth Port Number: ')),
+                                                            d_q, stop_q, fd_q, host)))
 
     for p in processes:
         p.start()
@@ -121,25 +140,44 @@ if __name__ == '__main__':
     window.statusBar().showMessage('Ready')
     window.show()
 
-    # TODO Auto add widgets in a grid fashion, one server per row
+    threads = []
 
-    d_img = pg.ImageView(window)
-    rgb_img = pg.ImageView(window)  # QLabel(window)
-    grid.addWidget(d_img, 0, 0)
-    grid.addWidget(rgb_img, 0, 1)
-    d_img_item = pg.ImageItem()
-    rgb_img_item = pg.ImageItem()  # !
-    d_img.addItem(d_img_item)
-    rgb_img.addItem(rgb_img_item)  # !
+    for i, server in enumerate(hosts):
+        d_img = pg.ImageView(window)
+        dfps_lbl = QLabel('FPS: 0 fps', window)
+        rgb_img = pg.ImageView(window)
+        rgbfps_lbl = QLabel('FPS: 0 fps', window)
 
-    threads = [WindowUpdater(d_q, d_img), WindowUpdater(rgb_q, rgb_img)]
+        avg_lbl = QLabel('Average Depth: 0', window)
+
+        grid.addWidget(QLabel('{}'.format(server), window), i, 0)
+        grid.addWidget(d_img, i + 1, 0)
+        grid.addWidget(rgb_img, i + 1, 1)
+        grid.addWidget(dfps_lbl, i + 2, 0)
+        grid.addWidget(rgbfps_lbl, i + 2, 1)
+        grid.addWidget(avg_lbl, i + 3, 0)
+
+        d_img_item = pg.ImageItem()
+        rgb_img_item = pg.ImageItem()
+        d_img.addItem(d_img_item)
+        rgb_img.addItem(rgb_img_item)
+
+        # Will allow me to show selected streams later
+        if server in depth_qs:
+            qs = depth_qs[server]
+            threads.append(WindowUpdater(qs['img'], d_img, qs['fps'], dfps_lbl, lbl=avg_lbl))
+
+        if server in rgb_qs:
+            qs = rgb_qs[server]
+            threads.append(WindowUpdater(qs['img'], rgb_img, qs['fps'], rgbfps_lbl))
 
     for t in threads:
         t.start()
 
     app.exec_()
 
+    stop_q.put(True)  # Signals to end all zombie processes
+
     # endregion
 
-    for p in processes:
-        p.kill()
+
