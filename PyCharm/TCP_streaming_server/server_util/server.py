@@ -40,7 +40,12 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
 
     def __init__(self, request, client_address, server):
         # self.wbufsize = 3072000
+        self.framerate = 30
         super().__init__(request, client_address, server)
+
+    @property
+    def delay(self) -> float:
+        return 1 / self.framerate
 
     def handle(self):
 
@@ -77,6 +82,12 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
             except Exception as e:
                 print(e)
                 break
+
+            # Ensures at max, 30 fps
+            elapsed = time.time() - start
+            if elapsed < self.delay:
+                diff = self.delay - elapsed
+                time.sleep(diff)
 
             elapsed = time.time() - start
 
