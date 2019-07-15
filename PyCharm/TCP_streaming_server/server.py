@@ -11,9 +11,8 @@ from dependencies.terminal_display_util import clear
 
 cam_num = 0
 server_name = 'CameraServer_{}'.format(cam_num)
-cam_settings_filename = 'C:\\Users\\aaron.jencks\\Documents\\' \
-                        'GitHub\\emerson_seed_object_detection\\realsense_cam_settings.json'
-address = find_ip()  # '10.42.0.76'  # find_ip()
+cam_settings_filename = '../../realsense_cam_settings.json'
+address = '10.42.0.76'  # find_ip()
 
 
 def main():
