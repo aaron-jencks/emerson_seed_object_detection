@@ -97,3 +97,5 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
                 self.server.tx_q.put(self.server.fps)
 
         self.server.fps = 0
+        if self.server.tx_q is not None:
+            self.server.tx_q.put(self.server.fps)
