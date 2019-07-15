@@ -27,6 +27,7 @@ class VideoStreamingServer(socketserver.TCPServer):
         self.cam_q = cam_q
         self.tx_q = tx_q
         self.fps = 0
+        self.first = {}
 
         print('Starting server {} @ {} on port {}'.format(device_identifier,
                                                           self.socket.getsockname()[0], self.socket.getsockname()[1]))
@@ -49,13 +50,18 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
 
     def handle(self):
 
-        print("Client connected")
+        # if self.client_address not in self.server.first:
+        #     self.server.first[self.client_address] = True
+        print("Client connected from {}".format(self.client_address))
 
         # region Sets up the video streams
 
+        # if self.server.first[self.client_address]:
+        #     self.server.first[self.client_address] = False
+
         depth_stream_info = VideoInitDatagram(self.server.dev, [self.server.stream_type])
 
-        self.wfile.write((depth_stream_info.to_json() + '~~~\n').encode('utf-8'))
+        self.wfile.write((depth_stream_info.to_json() + '~~~\n').encode('latin_1'))
 
         # endregion
 
@@ -63,38 +69,38 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
         j = ""
         first = True
 
-        while True:
-            start = time.time()
-            try:
-                data = self.server.cam_q.get()
-                if first:
-                    first = False
+        # while True:
+        start = time.time()
+        try:
+            data = self.server.cam_q.get()
+            if first:
+                first = False
 
-                    # Enables flattening on non-depth images
-                    datagram = VideoStreamDatagram(self.server.dev, self.server.stream_type.name, data,
-                                                   self.server.stream_type.dtype,
-                                                   self.server.stream_type.dtype != VideoStreamType.Z16)
-                else:
-                    datagram.frame = data
+                # Enables flattening on non-depth images
+                datagram = VideoStreamDatagram(self.server.dev, self.server.stream_type.name, data,
+                                               self.server.stream_type.dtype,
+                                               self.server.stream_type.dtype != VideoStreamType.Z16)
+            else:
+                datagram.frame = data
 
-                j = datagram.to_json()
-                self.wfile.write((j + '~~~\n').encode('latin-1'))
-            except Exception as e:
-                print(e)
-                break
+            j = datagram.to_json()
+            self.wfile.write((j + '~~~\n').encode('latin-1'))
+        except Exception as e:
+            print(e)
+            # break
 
-            # Ensures at max, 30 fps
-            elapsed = time.time() - start
-            if elapsed < self.delay:
-                diff = self.delay - elapsed
-                time.sleep(diff)
+        # Ensures at max, 30 fps
+        elapsed = time.time() - start
+        if elapsed < self.delay:
+            diff = self.delay - elapsed
+            time.sleep(diff)
 
-            elapsed = time.time() - start
+        elapsed = time.time() - start
 
-            self.server.fps = (1 / elapsed) if elapsed != 0 else np.inf
+        self.server.fps = (1 / elapsed) if elapsed != 0 else np.inf
 
-            if self.server.tx_q is not None:
-                self.server.tx_q.put(self.server.fps)
+        if self.server.tx_q is not None:
+            self.server.tx_q.put(self.server.fps)
 
         self.server.fps = 0
         if self.server.tx_q is not None:
