@@ -9,8 +9,9 @@ import pyqtgraph as pg
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout, QWidget, QLabel
 from PyQt5.QtCore import QThread, pyqtSignal
 
+from dependencies.queue_ops import lossy_enqueue
 from server_util.datapacket_util import VideoStreamDatagram, VideoInitDatagram
-from server_util.client import readline
+from server_util.client import SocketInfo, InterwovenSocketReader
 from video_util.data import VideoStreamType
 import video_util.cy_collection_util as cu
 
@@ -20,61 +21,48 @@ framerate = 30
 graph_lock = Lock()
 
 
-def lossy_enqueue(q: Queue, data):
-    r = None
-
-    if q.full():
-        try:
-            r = q.get_nowait()
-        except Empty:
-            pass
-
-    q.put(data)
-    return r
-
-
-def frame_socket(port: int, output_q: Queue, stop_q: Queue, fps_q: Queue, hostname: str = 'localhost'):
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        sock.connect((hostname, port))
-
-        print('Successfully connected to {}:{}'.format(hostname, port))
-
-        streams = None
-        device = None
-        name = None
-        frame = None
-        dtype = None
-        spf = 1 / framerate
-
-        first = True
-        while stop_q.empty():
-            start = time.time()
-            data = readline(sock)
-
-            # elapsed = time.time() - start
-            # print('\rProcessing at {} fps'.format(round((1 / elapsed) if elapsed != 0 else np.inf, 3)), end='')
-
-            if data != '':
-                # start = time.time()
-                if first:
-                    first = False
-                    streams = VideoInitDatagram.from_json(data)
-                else:
-                    device, name, frame, dtype = VideoStreamDatagram.from_json(data, streams.streams[0].resolution)
-
-                if device is not None:
-                    lossy_enqueue(output_q, VideoStreamDatagram(device, name, frame, dtype, False))
-
-                elapsed = time.time() - start
-                if elapsed < spf:
-                    diff = spf - elapsed
-                    time.sleep(diff)
-
-                elapsed = time.time() - start
-
-                fps = round((1 / elapsed) if elapsed != 0 else np.inf, 3)
-                lossy_enqueue(fps_q, fps)
-                # print('\rProcessing at {} fps, avg depth {}'.format(fps, round(avg, 3)), end='')
+# def frame_socket(port: int, output_q: Queue, stop_q: Queue, fps_q: Queue, hostname: str = 'localhost'):
+#     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+#         sock.connect((hostname, port))
+#
+#         print('Successfully connected to {}:{}'.format(hostname, port))
+#
+#         streams = None
+#         device = None
+#         name = None
+#         frame = None
+#         dtype = None
+#         spf = 1 / framerate
+#
+#         first = True
+#         while stop_q.empty():
+#             start = time.time()
+#             data = readline(sock)
+#
+#             # elapsed = time.time() - start
+#             # print('\rProcessing at {} fps'.format(round((1 / elapsed) if elapsed != 0 else np.inf, 3)), end='')
+#
+#             if data != '':
+#                 # start = time.time()
+#                 if first:
+#                     first = False
+#                     streams = VideoInitDatagram.from_json(data)
+#                 else:
+#                     device, name, frame, dtype = VideoStreamDatagram.from_json(data, streams.streams[0].resolution)
+#
+#                 if device is not None:
+#                     lossy_enqueue(output_q, VideoStreamDatagram(device, name, frame, dtype, False))
+#
+#                 elapsed = time.time() - start
+#                 if elapsed < spf:
+#                     diff = spf - elapsed
+#                     time.sleep(diff)
+#
+#                 elapsed = time.time() - start
+#
+#                 fps = round((1 / elapsed) if elapsed != 0 else np.inf, 3)
+#                 lossy_enqueue(fps_q, fps)
+#                 # print('\rProcessing at {} fps, avg depth {}'.format(fps, round(avg, 3)), end='')
 
 
 class WindowUpdater:
@@ -141,10 +129,10 @@ if __name__ == '__main__':
 
     stop_q = WindowUpdater.stop_q  # Allows control over processes, I can stop them without hanging
 
-    hosts = []
-    depth_qs = {}
+    sockets = []
+    qs = []
     rgb_qs = {}
-    processes = []
+    depth_qs = {}
 
     num_servers = int(input('How many servers are you connecting to? '))
 
@@ -156,7 +144,6 @@ if __name__ == '__main__':
         frgb_q = Queue(1)
 
         host = input('Hostname for server {}? '.format(server))
-        hosts.append(host)
 
         md = input("Would you like to stream both RGB and Depth, if no, I'll just stream Depth? (y/n) ").capitalize()
         while md != 'Y' and md != 'N':
@@ -168,12 +155,19 @@ if __name__ == '__main__':
 
         if md == 'Y':
             rgb_qs[host] = {'img': rgb_q, 'fps': frgb_q}
-            processes.append(Process(target=frame_socket, args=(6667, rgb_q, stop_q, frgb_q, host)))
+            sockets.append(SocketInfo(6667, host))
+            qs.append((rgb_q, frgb_q))
+            # processes.append(Process(target=frame_socket, args=(6667, rgb_q, stop_q, frgb_q, host)))
 
-        processes.append(Process(target=frame_socket, args=(6668, d_q, stop_q, fd_q, host)))
+        sockets.append(SocketInfo(6668, host))
+        qs.append((d_q, fd_q))
+        # processes.append(Process(target=frame_socket, args=(6668, d_q, stop_q, fd_q, host)))
 
-    for p in processes:
-        p.start()
+    interwover = InterwovenSocketReader(sockets, qs)
+    interwover.start()
+
+    # for p in processes:
+    #     p.start()
 
     # region Qt Window
 
@@ -194,7 +188,7 @@ if __name__ == '__main__':
 
     threads = []
 
-    for i, server in enumerate(hosts):
+    for i, server in enumerate(sockets):
         row = i * 4
 
         d_img = pg.ImageView(window)
@@ -240,6 +234,7 @@ if __name__ == '__main__':
 
     sys.exit(app.exec_())
 
+    interwover.join()
     master.join()
 
     # stop_q.put(True)  # Signals to end all zombie processes

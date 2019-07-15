@@ -4,6 +4,8 @@ import numpy as np
 import traceback
 import sys
 
+from dependencies.queue_ops import lossy_enqueue
+
 
 class CameraServer(Process):
     """Represents a Camera that places it's frames into a Queue object passed in at startup."""
@@ -26,16 +28,6 @@ class CameraServer(Process):
         self.is_stopping = True
         super().join(**kwargs)
 
-    def lossy_put(self, q, data):
-        if q is not None:
-            if not self.ignore:
-                while q.full():
-                    q.get()
-
-                q.put(data)
-            elif not q.full():
-                q.put(data)
-
     def run(self) -> None:
         self.cam = self.cam(self.filename, self.settings)
         self.cam.start_streams()
@@ -56,7 +48,7 @@ class CameraServer(Process):
                             break
 
                 frames = self.cam.get_frame()
-                self.lossy_put(self.q, frames)
+                lossy_enqueue(self.q, frames)
         finally:
             self.cam.stop_capture()
             self.cam.disconnect()
@@ -147,9 +139,9 @@ class SplitCamServer(CameraServer):
 
                     start = time.time()
                     rgb, ir, depth = self.cam.get_frame()
-                    self.lossy_put(self.rgb_q, rgb)
-                    self.lossy_put(self.ir_q, ir)
-                    self.lossy_put(self.depth_q, depth)
+                    lossy_enqueue(self.rgb_q, rgb)
+                    lossy_enqueue(self.ir_q, ir)
+                    lossy_enqueue(self.depth_q, depth)
                     elapsed = time.time() - start
                     self.fps = (1 / elapsed) if elapsed != 0 else np.inf
 
