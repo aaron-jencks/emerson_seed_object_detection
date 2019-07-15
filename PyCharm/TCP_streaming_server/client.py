@@ -200,7 +200,7 @@ if __name__ == '__main__':
 
         grid.addWidget(QLabel('{}'.format(server.host), window), row, 0)
 
-        if _ in rgb_qs:
+        if server.host in rgb_qs:
             grid.addWidget(d_img, row + 1, 0)
             grid.addWidget(rgb_img, row + 1, 1)
             grid.addWidget(dfps_lbl, row + 2, 0)
