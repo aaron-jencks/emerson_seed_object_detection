@@ -13,7 +13,7 @@ cam_num = 0
 server_name = 'CameraServer_{}'.format(cam_num)
 cam_settings_filename = 'C:\\Users\\aaron.jencks\\Documents\\' \
                         'GitHub\\emerson_seed_object_detection\\realsense_cam_settings.json'
-address = find_ip()
+address = find_ip()  # '10.42.0.76'  # find_ip()
 
 
 def main():
@@ -89,9 +89,9 @@ def main():
     except Exception as e:
         print(e)
     finally:
-        cam_server.kill()
-        rgb_server.kill()
-        depth_server.kill()
+        cam_server.join()
+        rgb_server.join()
+        depth_server.join()
 
         c_q.close()
         d_q.close()
