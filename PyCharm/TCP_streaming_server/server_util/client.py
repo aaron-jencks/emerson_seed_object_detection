@@ -7,6 +7,8 @@ import time
 # from PyQt5.QtCore import pyqtSlot
 
 from dependencies.queue_ops import lossy_enqueue
+from server_util.datapacket_util import VideoStreamDatagram, VideoInitDatagram
+import video_util.cy_collection_util as cu
 
 
 buffsize = 3072000
@@ -29,6 +31,7 @@ class SocketInfo:
 
     def connect(self):
         self.sock.connect((self.host, self.port))
+        print('Successfully connected to {}'.format(self.host))
         self.is_connected = True
 
     def readline(self) -> str:
@@ -76,6 +79,8 @@ class InterwovenSocketReader(Process):
     def __init__(self, sockets: list, qs: list):
         super().__init__()
         self.sockets = sockets
+        self.first = [True for _ in sockets]
+        self.streams = [None for _ in sockets]
         self.qs = qs
 
     def join(self, **kwargs):
@@ -85,17 +90,32 @@ class InterwovenSocketReader(Process):
     def run(self) -> None:
         while self.stop_q.empty():
             for i in range(len(self.sockets)):
+                device = None
+                name = None
+                frame = None
+                dtype = None
+
                 s = self.sockets[i]
                 q, fq = self.qs[i]
 
                 start = time.time()
                 data = s.readline()
 
-                lossy_enqueue(q, data)
-                elapsed = time.time() - start
+                if data != '':
+                    if self.first[i]:
+                        self.first[i] = False
+                        self.streams[i] = VideoInitDatagram.from_json(data)
+                    else:
+                        device, name, frame, dtype = VideoStreamDatagram.from_json(data,
+                                                                                   self.streams[i].streams[0].resolution)
 
-                if fq is not None:
-                    lossy_enqueue(fq, (1 / elapsed) if elapsed > 0 else 0)
+                    if device is not None:
+                        lossy_enqueue(q, VideoStreamDatagram(device, name, frame, dtype, False))
+
+                    elapsed = time.time() - start
+
+                    if fq is not None:
+                        lossy_enqueue(fq, (1 / elapsed) if elapsed > 0 else 0)
 
 
 # class ClientWidget(QWidget):
