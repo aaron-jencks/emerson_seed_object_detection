@@ -198,9 +198,9 @@ if __name__ == '__main__':
 
         avg_lbl = QLabel('Average Depth: 0 inches', window)
 
-        grid.addWidget(QLabel('{}'.format(server), window), row, 0)
+        grid.addWidget(QLabel('{}'.format(server.host), window), row, 0)
 
-        if server in rgb_qs:
+        if _ in rgb_qs:
             grid.addWidget(d_img, row + 1, 0)
             grid.addWidget(rgb_img, row + 1, 1)
             grid.addWidget(dfps_lbl, row + 2, 0)
@@ -217,14 +217,14 @@ if __name__ == '__main__':
         rgb_img.addItem(rgb_img_item)
 
         # Will allow me to show selected streams later
-        if server in depth_qs:
-            qs = depth_qs[server]
+        if server.host in depth_qs:
+            qs = depth_qs[server.host]
             thread = WindowUpdater(qs['img'], qs['fps'], d_img, dfps_lbl, lbl=avg_lbl)
             # thread.imageChanged.connect(lambda x: d_img.setImage(x, levels=(0, 65536)))
             threads.append(thread)
 
-        if server in rgb_qs:
-            qs = rgb_qs[server]
+        if server.host in rgb_qs:
+            qs = rgb_qs[server.host]
             thread = WindowUpdater(qs['img'], qs['fps'], rgb_img, rgbfps_lbl)
             # thread.imageChanged.connect(rgb_img.setImage)
             threads.append(thread)
