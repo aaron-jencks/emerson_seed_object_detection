@@ -1,14 +1,15 @@
 import socket
 from multiprocessing import Lock, Process, Queue
 import time
+import numpy as np
 
 # import pyqtgraph as pg
 # from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout, QWidget, QLabel
-# from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSignal, QThread
 
 from dependencies.queue_ops import lossy_enqueue
+from video_util.data import VideoStreamType
 from server_util.datapacket_util import VideoStreamDatagram, VideoInitDatagram
-import video_util.cy_collection_util as cu
 
 
 buffsize = 3072000
@@ -16,12 +17,16 @@ buffsize = 3072000
 
 class SocketInfo:
     """Contains a socket object as well as the port and hostname"""
-    def __init__(self, port: int, hostname: str, auto_connect: bool = True):
+
+    # imageChanged = pyqtSignal(np.ndarray)
+
+    def __init__(self, port: int, hostname: str, types: list, auto_connect: bool = True):
         self.port = port
         self.host = hostname
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.is_connected = False
         self.residual_data = ''
+        self.stream_types = types
 
         if auto_connect:
             self.connect()
@@ -71,17 +76,21 @@ class SocketInfo:
         return result
 
 
-class InterwovenSocketReader(Process):
+class InterwovenSocketReader(QThread):
     """Reads data from multiple sockets equally, ensuring equal framerates coming from multiple cameras."""
+
+    dataCollected = pyqtSignal(str, VideoInitDatagram)
+    imgCollected = pyqtSignal(str, VideoStreamDatagram)
+    fpsCollected = pyqtSignal(str, int, float)
 
     stop_q = Queue(1)
 
-    def __init__(self, sockets: list, qs: list):
+    def __init__(self, sockets: list):  # , qs: list):
         super().__init__()
         self.sockets = sockets
         self.first = [True for _ in sockets]
         self.streams = [None for _ in sockets]
-        self.qs = qs
+        # self.qs = qs
 
     def join(self, **kwargs):
         self.stop_q.put(True)
@@ -96,7 +105,7 @@ class InterwovenSocketReader(Process):
                 dtype = None
 
                 s = self.sockets[i]
-                q, fq = self.qs[i]
+                # q, fq = self.qs[i]
 
                 start = time.time()
                 data = s.readline()
@@ -105,17 +114,24 @@ class InterwovenSocketReader(Process):
                     if self.first[i]:
                         self.first[i] = False
                         self.streams[i] = VideoInitDatagram.from_json(data)
+                        self.dataCollected.emit(s.host, self.streams[i])
                     else:
                         device, name, frame, dtype = VideoStreamDatagram.from_json(data,
                                                                                    self.streams[i].streams[0].resolution)
 
                     if device is not None:
-                        lossy_enqueue(q, VideoStreamDatagram(device, name, frame, dtype, False))
+                        d = VideoStreamDatagram(device, name, frame, dtype, False)
+                        # lossy_enqueue(q, d)
+                        self.imgCollected.emit(s.host, d)
 
                     elapsed = time.time() - start
 
-                    if fq is not None:
-                        lossy_enqueue(fq, (1 / elapsed) if elapsed > 0 else 0)
+                    fps = (1 / elapsed) if elapsed > 0 else 0
+
+                    # if fq is not None:
+                    #     lossy_enqueue(fq, fps)
+
+                    self.fpsCollected.emit(s.host, s.port, fps)
 
 
 # class ClientWidget(QWidget):
