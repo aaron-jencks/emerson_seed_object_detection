@@ -48,15 +48,23 @@ class SocketInfo:
 
     def read_all_available(self) -> str:
 
+        self.sock.settimeout(0.05)
+
         if not self.is_connected:
             self.connect()
 
         result = ''
-        data_read = self.sock.recv(buffsize).decode('latin-1')
-        while data_read != '':
-            result += data_read
+        try:
             data_read = self.sock.recv(buffsize).decode('latin-1')
-        return result
+            while data_read != '':
+                result += data_read
+                try:
+                    data_read = self.sock.recv(buffsize).decode('latin-1')
+                except socket.timeout:
+                    return result
+            return result
+        except socket.timeout:
+            return ''
 
     @staticmethod
     def split_lines(data: str) -> list:
@@ -80,6 +88,12 @@ class SocketInfo:
         result += self.residual_data.pop(0)
 
         return result
+
+    def writeline(self, string: str):
+        if not self.is_connected:
+            self.connect()
+
+        self.sock.sendall('{}\n'.format(string).encode('latin-1'))
 
 
 class InterwovenSocketReader(QThread):
@@ -111,25 +125,35 @@ class InterwovenSocketReader(QThread):
                 dtype = None
 
                 s = self.sockets[i]
-                s.connect()
+                # s.connect()
                 # q, fq = self.qs[i]
 
-                start = time.time()
-                data = s.readline()
+                if self.first[i]:
 
-                if data != '':
-                    # if self.first[i]:
-                    #     self.first[i] = False
-                    #     self.streams[i] = VideoInitDatagram.from_json(data)
-                    #     self.dataCollected.emit(s.host, self.streams[i])
-                    # else:
-                    #     device, name, frame, dtype = VideoStreamDatagram.from_json(data,
-                    #                                                                self.streams[i].streams[0].resolution)
+                    # s.connect()
 
-                    # self.first[i] = False
-                    self.streams[i] = VideoInitDatagram.from_json(data)
-                    self.dataCollected.emit(s.host, self.streams[i])
+                    start = time.time()
+                    data = s.readline()
+                    while data == '':
+                        data = s.readline()
 
+                    if data != '':
+
+                        self.first[i] = False
+
+                        # if self.first[i]:
+                        #     self.first[i] = False
+                        #     self.streams[i] = VideoInitDatagram.from_json(data)
+                        #     self.dataCollected.emit(s.host, self.streams[i])
+                        # else:
+                        #     device, name, frame, dtype = VideoStreamDatagram.from_json(data,
+                        #                                                                self.streams[i].streams[0].resolution)
+
+                        # self.first[i] = False
+                        self.streams[i] = VideoInitDatagram.from_json(data)
+                        self.dataCollected.emit(s.host, self.streams[i])
+
+                s.writeline('READY')
                 data = s.readline()
                 if data != '':
                     device, name, frame, dtype = VideoStreamDatagram.from_json(data,
