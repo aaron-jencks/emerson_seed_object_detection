@@ -16,6 +16,7 @@ import video_util.cy_collection_util as cu
 
 
 scale = 0.001
+framerate = 30
 graph_lock = Lock()
 
 
@@ -43,6 +44,7 @@ def frame_socket(port: int, output_q: Queue, stop_q: Queue, fps_q: Queue, hostna
         name = None
         frame = None
         dtype = None
+        spf = 1 / framerate
 
         first = True
         while stop_q.empty():
@@ -64,6 +66,12 @@ def frame_socket(port: int, output_q: Queue, stop_q: Queue, fps_q: Queue, hostna
                     lossy_enqueue(output_q, VideoStreamDatagram(device, name, frame, dtype, False))
 
                 elapsed = time.time() - start
+                if elapsed < spf:
+                    diff = spf - elapsed
+                    time.sleep(diff)
+
+                elapsed = time.time() - start
+
                 fps = round((1 / elapsed) if elapsed != 0 else np.inf, 3)
                 lossy_enqueue(fps_q, fps)
                 # print('\rProcessing at {} fps, avg depth {}'.format(fps, round(avg, 3)), end='')
