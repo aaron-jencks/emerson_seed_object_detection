@@ -49,7 +49,7 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
 
     def handle(self):
 
-        print("Client connected")
+        print("Client connected from {}".format(self.client_address))
 
         # region Sets up the video streams
 
@@ -83,11 +83,11 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
                 print(e)
                 break
 
-            # Ensures at max, 30 fps
-            elapsed = time.time() - start
-            if elapsed < self.delay:
-                diff = self.delay - elapsed
-                time.sleep(diff)
+            # # Ensures at max, 30 fps
+            # elapsed = time.time() - start
+            # if elapsed < self.delay:
+            #     diff = self.delay - elapsed
+            #     time.sleep(diff)
 
             elapsed = time.time() - start
 
