@@ -19,6 +19,19 @@ scale = 0.001
 graph_lock = Lock()
 
 
+def lossy_enqueue(q: Queue, data):
+    r = None
+
+    if q.full():
+        try:
+            r = q.get_nowait()
+        except Empty:
+            pass
+
+    q.put(data)
+    return r
+
+
 def frame_socket(port: int, output_q: Queue, stop_q: Queue, fps_q: Queue, hostname: str = 'localhost'):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         sock.connect((hostname, port))
@@ -48,15 +61,15 @@ def frame_socket(port: int, output_q: Queue, stop_q: Queue, fps_q: Queue, hostna
                     device, name, frame, dtype = VideoStreamDatagram.from_json(data, streams.streams[0].resolution)
 
                 if device is not None:
-                    output_q.put(VideoStreamDatagram(device, name, frame, dtype, False))
+                    lossy_enqueue(output_q, VideoStreamDatagram(device, name, frame, dtype, False))
 
                 elapsed = time.time() - start
                 fps = round((1 / elapsed) if elapsed != 0 else np.inf, 3)
-                fps_q.put(fps)
+                lossy_enqueue(fps_q, fps)
                 # print('\rProcessing at {} fps, avg depth {}'.format(fps, round(avg, 3)), end='')
 
 
-class WindowUpdater(QThread):
+class WindowUpdater:
 
     imageChanged = pyqtSignal(np.ndarray)
     stop_q = Queue()
@@ -72,31 +85,45 @@ class WindowUpdater(QThread):
         self.q = cam_q
         self.lbl = lbl
         self.depth_levels = (0, 65536)
+        self.scale = 0.0001
+
+
+class MasterWindowUpdater(QThread):
+    stop_q = Queue(1)
+
+    def __init__(self, cams: list, **kwargs):
+        super().__init__(**kwargs)
+        self.cams = cams
+
+    def join(self):
+        self.stop_q.put(True)
+        super().join()
 
     def run(self) -> None:
         while self.stop_q.empty():
-            try:
-                timg = self.q.get_nowait()
-                fps = self.fq.get_nowait()
+            for c in self.cams:
+                try:
+                    timg = c.q.get_nowait()
+                    fps = c.fq.get_nowait()
 
-                if timg.dtype == VideoStreamType.Z16:
-                    # graph_lock.acquire(True)
-                    self.c.setImage(timg.frame, levels=self.depth_levels)
-                    self.c.updateImage()
-                    # graph_lock.release()
-                    # self.imageChanged.emit(timg.frame)
-                    if self.lbl is not None:
-                        avg, _, _ = cu.average_depth(timg.frame)
-                        avg *= scale * 39.3701
-                        self.lbl.setText('Average Depth: {} inches'.format(avg))
-                else:
-                    # self.imageChanged.emit(timg.frame)
-                    self.c.setImage(timg.frame)
-                    self.c.updateImage()
+                    if timg.dtype == VideoStreamType.Z16:
+                        # graph_lock.acquire(True)
+                        c.c.setImage(timg.frame, levels=c.depth_levels)
+                        c.c.updateImage()
+                        # graph_lock.release()
+                        # c.imageChanged.emit(timg.frame)
+                        if c.lbl is not None:
+                            avg, _, _ = cu.average_depth(timg.frame)
+                            avg *= c.scale * 39.3701
+                            c.lbl.setText('Average Depth: {} inches'.format(avg))
+                    else:
+                        # c.imageChanged.emit(timg.frame)
+                        c.c.setImage(timg.frame)
+                        c.c.updateImage()
 
-                self.f_lbl.setText('FPS: {} fps'.format(fps))
-            except Empty:
-                time.sleep(0.1)
+                    c.f_lbl.setText('FPS: {} fps'.format(fps))
+                except Empty:
+                    continue
 
 
 if __name__ == '__main__':
@@ -115,10 +142,10 @@ if __name__ == '__main__':
 
     for server in range(num_servers):
 
-        d_q = Queue()
-        fd_q = Queue()
-        rgb_q = Queue()
-        frgb_q = Queue()
+        d_q = Queue(1)
+        fd_q = Queue(1)
+        rgb_q = Queue(1)
+        frgb_q = Queue(1)
 
         host = input('Hostname for server {}? '.format(server))
         hosts.append(host)
@@ -200,10 +227,12 @@ if __name__ == '__main__':
             # thread.imageChanged.connect(rgb_img.setImage)
             threads.append(thread)
 
-    for t in threads:
-        t.start()
+    master = MasterWindowUpdater(threads)
+    master.start()
 
     sys.exit(app.exec_())
+
+    master.join()
 
     # stop_q.put(True)  # Signals to end all zombie processes
 
