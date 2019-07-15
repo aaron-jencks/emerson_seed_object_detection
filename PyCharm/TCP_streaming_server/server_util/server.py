@@ -72,6 +72,7 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
         while True:
             self.rfile.readline()
             # print('doing a thing')
+            print('waiting for ack')
             start = time.time()
             try:
                 data = self.server.cam_q.get()
@@ -86,6 +87,7 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
                     datagram.frame = data
 
                 j = datagram.to_json()
+                print('sending data')
                 self.wfile.write((j + '~~~\n').encode('latin-1'))
             except Exception as e:
                 print(e)
