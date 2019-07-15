@@ -40,6 +40,7 @@ class GUI(QMainWindow):
         self.show()
 
         self.scales = {}
+        self.levels = (0, 65536)
         self.imgs = {}
         for i, server in enumerate(socks):
             row = i * 4
@@ -112,19 +113,19 @@ class GUI(QMainWindow):
                 if data.dtype == VideoStreamType.RGB and 'rgb' in img:
                     img['rgb'].setImage(data.frame)
                 elif data.dtype == VideoStreamType.Z16 and 'depth' in img:
-                    img['depth'].setImage(data.frame)
+                    img['depth'].setImage(data.frame, levels=self.levels)
 
                     if img['avg depth'] is not None:
                         avg, _, _ = cu.average_depth(data.frame)
-                        avg *= self.scales[h] * 39.3701
+                        avg *= 0.0001 * 39.3701
                         img['avg depth'].setText('Average Depth: {} inches'.format(avg))
             else:
                 if data.dtype == VideoStreamType.Z16 and 'img' in img:
-                    img['img'].setImage(data.frame)
+                    img['img'].setImage(data.frame, levels=self.levels)
 
                     if img['avg'] is not None:
                         avg, _, _ = cu.average_depth(data.frame)
-                        avg *= self.scales[h] * 39.3701
+                        avg *= 0.0001 * 39.3701
                         img['avg'].setText('Average Depth: {} inches'.format(avg))
 
 

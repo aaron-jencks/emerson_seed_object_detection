@@ -72,7 +72,7 @@ cpdef bytes_to_depth(bytes depth_bytes, int dtype, int height, int width):
 
 
 @cython.boundscheck(False)
-cpdef convert_realsense(object frames, double scale, int rgb = 0, int ir = 0, int depth = 0):
+cpdef convert_realsense(object frames, double scale, int rgb, int ir, int depth):
     cdef unsigned char[:, :, :] rgb_frame = np.zeros(shape=(1, 1, 1), dtype=np.uint8)
     cdef unsigned char[:, :] ir_frame = np.zeros(shape=(1, 1), dtype=np.uint8)
     cdef unsigned short[:, :] depth_image = np.zeros(shape=(1, 1), dtype=np.uint16)
