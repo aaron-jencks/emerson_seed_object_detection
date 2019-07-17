@@ -25,7 +25,8 @@ class SocketInfo:
         self.host = hostname
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.is_connected = False
-        self.residual_data = ''
+        self.first = True
+        self.residual_data = []
         self.stream_types = types
 
         if auto_connect:
@@ -35,9 +36,39 @@ class SocketInfo:
         self.sock.close()
 
     def connect(self):
+        if self.is_connected:
+            self.sock.close()
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
         self.sock.connect((self.host, self.port))
-        print('Successfully connected to {}'.format(self.host))
+        if self.first:
+            self.first = False
+            print('Successfully connected to {}'.format(self.host))
         self.is_connected = True
+
+    def read_all_available(self) -> str:
+
+        self.sock.settimeout(0.05)
+
+        if not self.is_connected:
+            self.connect()
+
+        result = ''
+        try:
+            data_read = self.sock.recv(buffsize).decode('latin-1')
+            while data_read != '':
+                result += data_read
+                try:
+                    data_read = self.sock.recv(buffsize).decode('latin-1')
+                except socket.timeout:
+                    return result
+            return result
+        except socket.timeout:
+            return ''
+
+    @staticmethod
+    def split_lines(data: str) -> list:
+        return data.split('~~~\n')
 
     def readline(self) -> str:
         """Continuously calls read on the given socket until a '\n' is found,
@@ -46,34 +77,23 @@ class SocketInfo:
         if not self.is_connected:
             self.connect()
 
-        if '~~~\n' in self.residual_data:
-            index = self.residual_data.find('~~~\n')
+        if len(self.residual_data) > 1:
+            return self.residual_data.pop(0)
+        elif len(self.residual_data) == 1:
+            result = self.residual_data.pop(0)
+        else:
+            result = ''
 
-            temp = self.residual_data[:index]
-
-            if index < len(self.residual_data) - 4:
-                self.residual_data = self.residual_data[index + 4:]
-            else:
-                self.residual_data = ''
-
-            return temp
-
-        result = self.residual_data
-
-        data_read = self.sock.recv(buffsize).decode('latin-1')
-        while data_read != '' and '~~~\n' not in data_read:
-            result += data_read
-            data_read = self.sock.recv(buffsize).decode('latin-1')
-
-        if data_read != '':
-            index = data_read.find('~~~\n')
-            result += data_read[:index]
-            if index < len(data_read) - 4:
-                self.residual_data = data_read[index + 4:]
-            else:
-                self.residual_data = ''
+        self.residual_data.extend(self.split_lines(self.read_all_available()))
+        result += self.residual_data.pop(0)
 
         return result
+
+    def writeline(self, string: str):
+        if not self.is_connected:
+            self.connect()
+
+        self.sock.sendall('{}\n'.format(string).encode('latin-1'))
 
 
 class InterwovenSocketReader(QThread):
@@ -105,19 +125,39 @@ class InterwovenSocketReader(QThread):
                 dtype = None
 
                 s = self.sockets[i]
+                # s.connect()
                 # q, fq = self.qs[i]
 
-                start = time.time()
-                data = s.readline()
+                if self.first[i]:
 
-                if data != '':
-                    if self.first[i]:
+                    # s.connect()
+
+                    start = time.time()
+                    data = s.readline()
+                    while data == '':
+                        data = s.readline()
+
+                    if data != '':
+
                         self.first[i] = False
+
+                        # if self.first[i]:
+                        #     self.first[i] = False
+                        #     self.streams[i] = VideoInitDatagram.from_json(data)
+                        #     self.dataCollected.emit(s.host, self.streams[i])
+                        # else:
+                        #     device, name, frame, dtype = VideoStreamDatagram.from_json(data,
+                        #                                                                self.streams[i].streams[0].resolution)
+
+                        # self.first[i] = False
                         self.streams[i] = VideoInitDatagram.from_json(data)
                         self.dataCollected.emit(s.host, self.streams[i])
-                    else:
-                        device, name, frame, dtype = VideoStreamDatagram.from_json(data,
-                                                                                   self.streams[i].streams[0].resolution)
+
+                s.writeline('READY')
+                data = s.readline()
+                if data != '':
+                    device, name, frame, dtype = VideoStreamDatagram.from_json(data,
+                                                                               self.streams[i].streams[0].resolution)
 
                     if device is not None:
                         d = VideoStreamDatagram(device, name, frame, dtype, False)

@@ -27,6 +27,7 @@ class VideoStreamingServer(socketserver.TCPServer):
         self.cam_q = cam_q
         self.tx_q = tx_q
         self.fps = 0
+        self.first = {}
 
         print('Starting server {} @ {} on port {}'.format(device_identifier,
                                                           self.socket.getsockname()[0], self.socket.getsockname()[1]))
@@ -49,13 +50,18 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
 
     def handle(self):
 
+        # if self.client_address not in self.server.first:
+        #     self.server.first[self.client_address] = True
         print("Client connected from {}".format(self.client_address))
 
         # region Sets up the video streams
 
+        # if self.server.first[self.client_address]:
+        #     self.server.first[self.client_address] = False
+
         depth_stream_info = VideoInitDatagram(self.server.dev, [self.server.stream_type])
 
-        self.wfile.write((depth_stream_info.to_json() + '~~~\n').encode('utf-8'))
+        self.wfile.write((depth_stream_info.to_json() + '~~~\n').encode('latin_1'))
 
         # endregion
 
@@ -64,6 +70,9 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
         first = True
 
         while True:
+            self.rfile.readline()
+            # print('doing a thing')
+            print('waiting for ack')
             start = time.time()
             try:
                 data = self.server.cam_q.get()
@@ -78,10 +87,11 @@ class VideoStreamingHandler(socketserver.StreamRequestHandler):
                     datagram.frame = data
 
                 j = datagram.to_json()
+                print('sending data')
                 self.wfile.write((j + '~~~\n').encode('latin-1'))
             except Exception as e:
                 print(e)
-                break
+                # break
 
             # # Ensures at max, 30 fps
             # elapsed = time.time() - start

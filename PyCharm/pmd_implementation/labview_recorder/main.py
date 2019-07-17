@@ -10,6 +10,7 @@ from queue import Queue
 from collections import deque
 from copy import deepcopy
 import threading
+import struct
 
 from dependencies.display_util.string_display_util import *
 
@@ -81,7 +82,17 @@ if __name__ == "__main__":
 
                 # ret, frame = cap.read()
 
-                depth_frame = db.compute_depth_bytes(depth_frame)
+                # depth_frame = db.compute_depth_bytes(depth_frame)
+                depth_frame_t = np.zeros(shape=(depth_frame.shape[0], depth_frame.shape[1], 3), dtype=np.uint8)
+
+                for i in range(depth_frame.shape[0]):
+                    for j in range(depth_frame.shape[1]):
+                        current = depth_frame[i, j]
+                        broken = struct.pack('H', current)
+                        depth_frame_t[i, j, 0] = broken[0]
+                        depth_frame_t[i, j, 1] = broken[1]
+
+                depth_frame = depth_frame_t
 
                 # print("cv")
                 # print(frame.shape)
@@ -119,7 +130,7 @@ if __name__ == "__main__":
             color_writer.release()
 
             depth_writer = cv2.VideoWriter(os.path.join(out_dir, '{}_depth.avi'.format(
-                os.path.splitext(file)[0].split('\\')[-1])), cv2.VideoWriter_fourcc(*'XVID'), 30, (848, 480))
+                os.path.splitext(file)[0].split('\\')[-1])), cv2.VideoWriter_fourcc(*'XVID'), 30, (640, 480))
             for f in tqdm(range(len(depth_dq))):
                 depth_writer.write(depth_dq.popleft())
             depth_writer.release()

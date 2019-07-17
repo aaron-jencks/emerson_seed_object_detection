@@ -30,6 +30,7 @@ class GUI(QMainWindow):
         self.grid.setSpacing(10)
         self.widg = QWidget()
         self.widg.setLayout(self.grid)
+        self.levels = (0, 65536)
 
         self.setCentralWidget(self.widg)
         self.show()
