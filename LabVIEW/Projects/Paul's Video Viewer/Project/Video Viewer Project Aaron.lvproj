@@ -17,11 +17,15 @@
 					<Item Name="Averager.lvclass" Type="LVClass" URL="../../Classes/Averager/Averager.lvclass"/>
 					<Item Name="Standard Averager.lvclass" Type="LVClass" URL="../../Classes/Standard Averager/Standard Averager.lvclass"/>
 					<Item Name="Standard RMS.lvclass" Type="LVClass" URL="../../Classes/Standard RMS/Standard RMS.lvclass"/>
+					<Item Name="Roughness Averager.lvclass" Type="LVClass" URL="../../Classes/Roughness Averager/Roughness Averager.lvclass"/>
 				</Item>
 				<Item Name="Filter 1D Array.vim" Type="VI" URL="../../Filter 1D Array.vim"/>
 				<Item Name="Filter 2D Array.vim" Type="VI" URL="../../Filter 2D Array.vim"/>
 				<Item Name="Filter Zeros.vim" Type="VI" URL="../../Filter Zeros.vim"/>
 				<Item Name="Flatten Multidimensional Array.vim" Type="VI" URL="../../Flatten Multidimensional Array.vim"/>
+				<Item Name="Roughness.vi" Type="VI" URL="../../Roughness.vi"/>
+				<Item Name="Array Min Max.vim" Type="VI" URL="../../Array Min Max.vim"/>
+				<Item Name="Segmented Array Average.vim" Type="VI" URL="../../Segmented Array Average.vim"/>
 			</Item>
 			<Item Name="Queues" Type="Folder">
 				<Item Name="Resize Queue.vim" Type="VI" URL="../../Resize Queue.vim"/>
@@ -129,6 +133,7 @@
 				<Item Name="subFile Dialog.vi" Type="VI" URL="/&lt;vilib&gt;/express/express input/FileDialogBlock.llb/subFile Dialog.vi"/>
 				<Item Name="Color (U64)" Type="VI" URL="/&lt;vilib&gt;/vision/Image Controls.llb/Color (U64)"/>
 				<Item Name="IMAQ ArrayToColorImage" Type="VI" URL="/&lt;vilib&gt;/vision/Basics.llb/IMAQ ArrayToColorImage"/>
+				<Item Name="NI_Gmath.lvlib" Type="Library" URL="/&lt;vilib&gt;/gmath/NI_Gmath.lvlib"/>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 			<Item Name="nivision.dll" Type="Document" URL="nivision.dll">
