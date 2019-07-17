@@ -36,7 +36,6 @@
 			<Item Name="Camera Viewing Test.vi" Type="VI" URL="../../Testbenches/Camera Viewing Test.vi"/>
 		</Item>
 		<Item Name="Realsense Camera" Type="Folder">
-			<Item Name="libRealSense3.lvlib" Type="Library" URL="../../../../../../../Temp/realsense_labview_sdk/RealSense SDK2.11.0 for LabVIEW/libRealSense3.lvlib"/>
 			<Item Name="Realsense Cam.lvclass" Type="LVClass" URL="../../Classes/Realsense Cam/Realsense Cam.lvclass"/>
 		</Item>
 		<Item Name="build_icon.ico" Type="Document" URL="../../build_icon.ico"/>
@@ -134,7 +133,10 @@
 			<Item Name="nivissvc.dll" Type="Document" URL="nivissvc.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
-			<Item Name="realsense2.dll" Type="Document" URL="../../../../../../../Temp/realsense_labview_sdk/RealSense SDK2.11.0 for LabVIEW/realsense2.dll"/>
+			<Item Name="libRealSense3.lvlib" Type="Library" URL="../../Classes/Realsense Cam/realsense_wrapper_api/libRealSense3.lvlib"/>
+			<Item Name="realsense2.dll" Type="Document" URL="../../Classes/Realsense Cam/realsense_wrapper_api/realsense2.dll"/>
+			<Item Name="rs3 get stream profile data.vi" Type="VI" URL="../../../../../../../Temp/realsense_labview_sdk/RealSense SDK2.11.0 for LabVIEW/rs3 get stream profile data.vi"/>
+			<Item Name="rs3 get stream intrinsics3.vi" Type="VI" URL="../../../../../../../Temp/realsense_labview_sdk/RealSense SDK2.11.0 for LabVIEW/rs3 get stream intrinsics3.vi"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
 			<Item Name="Depth Comparator" Type="EXE">
