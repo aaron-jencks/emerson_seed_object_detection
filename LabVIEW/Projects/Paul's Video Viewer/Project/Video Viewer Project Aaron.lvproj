@@ -21,6 +21,10 @@
 				</Item>
 				<Item Name="Graham Scan" Type="Folder">
 					<Item Name="Heapsort" Type="Folder">
+						<Item Name="With Numbers" Type="Folder">
+							<Item Name="Numeric Heapsort.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Numeric Heapsort.vi"/>
+							<Item Name="Numeric Heapify.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Numeric Heapify.vi"/>
+						</Item>
 						<Item Name="Heapsort.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Heapsort.vi"/>
 						<Item Name="Heapify.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Heapify.vi"/>
 					</Item>
@@ -35,6 +39,7 @@
 					<Item Name="Graham Scan 3-point Cross Product.vi" Type="VI" URL="../../Shared/Graham Scan/Graham Scan 3-point Cross Product.vi"/>
 					<Item Name="Graham Scan Dot Product.vi" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Dot Product.vi"/>
 					<Item Name="UnMap Points From Origin.vi" Type="VI" URL="../../Shared/Graham Scan/UnMap Points From Origin.vi"/>
+					<Item Name="Graham Scan Point to Graph Point.vi" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Point to Graph Point.vi"/>
 				</Item>
 				<Item Name="Filter 1D Array.vim" Type="VI" URL="../../Filter 1D Array.vim"/>
 				<Item Name="Filter 2D Array.vim" Type="VI" URL="../../Filter 2D Array.vim"/>
@@ -68,6 +73,8 @@
 			<Item Name="Camera Viewing Test.vi" Type="VI" URL="../../Testbenches/Camera Viewing Test.vi"/>
 			<Item Name="Segmented Averager Test.vi" Type="VI" URL="../../Testbenches/Segmented Averager Test.vi"/>
 			<Item Name="RGB U32 Color Byte Location Test.vi" Type="VI" URL="../../Testbenches/RGB U32 Color Byte Location Test.vi"/>
+			<Item Name="Convex Hull Test.vi" Type="VI" URL="../../Testbenches/Convex Hull Test.vi"/>
+			<Item Name="Heapsort Test.vi" Type="VI" URL="../../Testbenches/Heapsort Test.vi"/>
 		</Item>
 		<Item Name="Realsense Camera" Type="Folder">
 			<Item Name="Realsense Cam.lvclass" Type="LVClass" URL="../../Classes/Realsense Cam/Realsense Cam.lvclass"/>
@@ -101,6 +108,8 @@
 				<Item Name="JET_QSM_InvalidOption STYP.ctl" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET_QSM/Code/Private/JET_QSM_InvalidOption STYP.ctl"/>
 				<Item Name="JET_QSM_Refnum STYP.ctl" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET_QSM/Code/Private/JET_QSM_Refnum STYP.ctl"/>
 				<Item Name="VI Control - Disable Control.vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET VI Control/VI Control - Disable Control.vi"/>
+				<Item Name="Ranged Random Number.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Random/Ranged Random Number.vim"/>
+				<Item Name="Random Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Random/Random Array.vim"/>
 			</Item>
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="BuildHelpPath.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/BuildHelpPath.vi"/>
