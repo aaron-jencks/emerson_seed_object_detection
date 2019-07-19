@@ -19,6 +19,23 @@
 					<Item Name="Standard RMS.lvclass" Type="LVClass" URL="../../Classes/Standard RMS/Standard RMS.lvclass"/>
 					<Item Name="Roughness Averager.lvclass" Type="LVClass" URL="../../Classes/Roughness Averager/Roughness Averager.lvclass"/>
 				</Item>
+				<Item Name="Graham Scan" Type="Folder">
+					<Item Name="Heapsort" Type="Folder">
+						<Item Name="Heapsort.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Heapsort.vi"/>
+						<Item Name="Heapify.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Heapify.vi"/>
+					</Item>
+					<Item Name="Convex Hull Graham Scan.vi" Type="VI" URL="../../Shared/Graham Scan/Convex Hull Graham Scan.vi"/>
+					<Item Name="Graham Scan Point.ctl" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Point.ctl"/>
+					<Item Name="Map Points to Origin.vi" Type="VI" URL="../../Shared/Graham Scan/Map Points to Origin.vi"/>
+					<Item Name="Graham Scan Origin Point STYP.ctl" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Origin Point STYP.ctl"/>
+					<Item Name="Graham Scan Bounding Rectangle STYP.ctl" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Bounding Rectangle STYP.ctl"/>
+					<Item Name="Graham Scan Cross Product.vi" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Cross Product.vi"/>
+					<Item Name="Graham Scan Point Comparison Less Than.vi" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Point Comparison Less Than.vi"/>
+					<Item Name="Convex Hull.vi" Type="VI" URL="../../Shared/Graham Scan/Convex Hull.vi"/>
+					<Item Name="Graham Scan 3-point Cross Product.vi" Type="VI" URL="../../Shared/Graham Scan/Graham Scan 3-point Cross Product.vi"/>
+					<Item Name="Graham Scan Dot Product.vi" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Dot Product.vi"/>
+					<Item Name="UnMap Points From Origin.vi" Type="VI" URL="../../Shared/Graham Scan/UnMap Points From Origin.vi"/>
+				</Item>
 				<Item Name="Filter 1D Array.vim" Type="VI" URL="../../Filter 1D Array.vim"/>
 				<Item Name="Filter 2D Array.vim" Type="VI" URL="../../Filter 2D Array.vim"/>
 				<Item Name="Filter Zeros.vim" Type="VI" URL="../../Filter Zeros.vim"/>
@@ -26,10 +43,21 @@
 				<Item Name="Roughness.vi" Type="VI" URL="../../Roughness.vi"/>
 				<Item Name="Array Min Max.vim" Type="VI" URL="../../Array Min Max.vim"/>
 				<Item Name="Segmented Array Average.vim" Type="VI" URL="../../Segmented Array Average.vim"/>
+				<Item Name="Slope Spacing and Counting Roughness.vi" Type="VI" URL="../../Slope Spacing and Counting Roughness.vi"/>
+				<Item Name="Swap Array Elements.vim" Type="VI" URL="../../Swap Array Elements.vim"/>
+				<Item Name="Sequential Range.vim" Type="VI" URL="../../Sequential Range.vim"/>
 			</Item>
 			<Item Name="Queues" Type="Folder">
 				<Item Name="Resize Queue.vim" Type="VI" URL="../../Resize Queue.vim"/>
 			</Item>
+			<Item Name="Images" Type="Folder">
+				<Item Name="Depth Array To Image.vi" Type="VI" URL="../../Depth Array To Image.vi"/>
+				<Item Name="RGB Depth To Depth Array.vi" Type="VI" URL="../../RGB Depth To Depth Array.vi"/>
+				<Item Name="RGB Depth To Grayscale Depth.vi" Type="VI" URL="../../RGB Depth To Grayscale Depth.vi"/>
+				<Item Name="Skeletonized Watershed.vi" Type="VI" URL="../../Skeletonized Watershed.vi"/>
+			</Item>
+			<Item Name="Integer Division.vim" Type="VI" URL="../../Integer Division.vim"/>
+			<Item Name="Replace if less than zero.vim" Type="VI" URL="../../Replace if less than zero.vim"/>
 		</Item>
 		<Item Name="Frames" Type="Folder">
 			<Item Name="ROIed Video Frame.lvclass" Type="LVClass" URL="../../Classes/ROIed Video Frame/ROIed Video Frame.lvclass"/>
@@ -38,6 +66,8 @@
 		<Item Name="Tests" Type="Folder">
 			<Item Name="Frame Conversion Test.vi" Type="VI" URL="../../Testbenches/Frame Conversion Test.vi"/>
 			<Item Name="Camera Viewing Test.vi" Type="VI" URL="../../Testbenches/Camera Viewing Test.vi"/>
+			<Item Name="Segmented Averager Test.vi" Type="VI" URL="../../Testbenches/Segmented Averager Test.vi"/>
+			<Item Name="RGB U32 Color Byte Location Test.vi" Type="VI" URL="../../Testbenches/RGB U32 Color Byte Location Test.vi"/>
 		</Item>
 		<Item Name="Realsense Camera" Type="Folder">
 			<Item Name="Realsense Cam.lvclass" Type="LVClass" URL="../../Classes/Realsense Cam/Realsense Cam.lvclass"/>
@@ -134,6 +164,8 @@
 				<Item Name="Color (U64)" Type="VI" URL="/&lt;vilib&gt;/vision/Image Controls.llb/Color (U64)"/>
 				<Item Name="IMAQ ArrayToColorImage" Type="VI" URL="/&lt;vilib&gt;/vision/Basics.llb/IMAQ ArrayToColorImage"/>
 				<Item Name="NI_Gmath.lvlib" Type="Library" URL="/&lt;vilib&gt;/gmath/NI_Gmath.lvlib"/>
+				<Item Name="IMAQ ArrayToImage" Type="VI" URL="/&lt;vilib&gt;/vision/Basics.llb/IMAQ ArrayToImage"/>
+				<Item Name="IMAQ ColorImageToArray" Type="VI" URL="/&lt;vilib&gt;/vision/Basics.llb/IMAQ ColorImageToArray"/>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 			<Item Name="nivision.dll" Type="Document" URL="nivision.dll">
