@@ -20,14 +20,6 @@
 					<Item Name="Roughness Averager.lvclass" Type="LVClass" URL="../../Classes/Roughness Averager/Roughness Averager.lvclass"/>
 				</Item>
 				<Item Name="Graham Scan" Type="Folder">
-					<Item Name="Heapsort" Type="Folder">
-						<Item Name="With Numbers" Type="Folder">
-							<Item Name="Numeric Heapsort.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Numeric Heapsort.vi"/>
-							<Item Name="Numeric Heapify.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Numeric Heapify.vi"/>
-						</Item>
-						<Item Name="Heapsort.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Heapsort.vi"/>
-						<Item Name="Heapify.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Heapify.vi"/>
-					</Item>
 					<Item Name="Convex Hull Graham Scan.vi" Type="VI" URL="../../Shared/Graham Scan/Convex Hull Graham Scan.vi"/>
 					<Item Name="Graham Scan Point.ctl" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Point.ctl"/>
 					<Item Name="Map Points to Origin.vi" Type="VI" URL="../../Shared/Graham Scan/Map Points to Origin.vi"/>
@@ -41,6 +33,14 @@
 					<Item Name="UnMap Points From Origin.vi" Type="VI" URL="../../Shared/Graham Scan/UnMap Points From Origin.vi"/>
 					<Item Name="Graham Scan Point to Graph Point.vi" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Point to Graph Point.vi"/>
 				</Item>
+				<Item Name="Heapsort" Type="Folder">
+					<Item Name="With Numbers" Type="Folder">
+						<Item Name="Numeric Heapsort.vim" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Numeric Heapsort.vim"/>
+						<Item Name="Numeric Heapify.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Numeric Heapify.vi"/>
+					</Item>
+					<Item Name="Heapsort.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Heapsort.vi"/>
+					<Item Name="Heapify.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Heapify.vi"/>
+				</Item>
 				<Item Name="Filter 1D Array.vim" Type="VI" URL="../../Filter 1D Array.vim"/>
 				<Item Name="Filter 2D Array.vim" Type="VI" URL="../../Filter 2D Array.vim"/>
 				<Item Name="Filter Zeros.vim" Type="VI" URL="../../Filter Zeros.vim"/>
@@ -51,6 +51,8 @@
 				<Item Name="Slope Spacing and Counting Roughness.vi" Type="VI" URL="../../Slope Spacing and Counting Roughness.vi"/>
 				<Item Name="Swap Array Elements.vim" Type="VI" URL="../../Swap Array Elements.vim"/>
 				<Item Name="Sequential Range.vim" Type="VI" URL="../../Sequential Range.vim"/>
+				<Item Name="Multi-index 2D Array.vi" Type="VI" URL="../../Multi-index 2D Array.vi"/>
+				<Item Name="Split Array.vim" Type="VI" URL="../../Split Array.vim"/>
 			</Item>
 			<Item Name="Queues" Type="Folder">
 				<Item Name="Resize Queue.vim" Type="VI" URL="../../Resize Queue.vim"/>
@@ -63,6 +65,7 @@
 			</Item>
 			<Item Name="Integer Division.vim" Type="VI" URL="../../Integer Division.vim"/>
 			<Item Name="Replace if less than zero.vim" Type="VI" URL="../../Replace if less than zero.vim"/>
+			<Item Name="Unpack Vector Array.vim" Type="VI" URL="../../Unpack Vector Array.vim"/>
 		</Item>
 		<Item Name="Frames" Type="Folder">
 			<Item Name="ROIed Video Frame.lvclass" Type="LVClass" URL="../../Classes/ROIed Video Frame/ROIed Video Frame.lvclass"/>
@@ -175,6 +178,8 @@
 				<Item Name="NI_Gmath.lvlib" Type="Library" URL="/&lt;vilib&gt;/gmath/NI_Gmath.lvlib"/>
 				<Item Name="IMAQ ArrayToImage" Type="VI" URL="/&lt;vilib&gt;/vision/Basics.llb/IMAQ ArrayToImage"/>
 				<Item Name="IMAQ ColorImageToArray" Type="VI" URL="/&lt;vilib&gt;/vision/Basics.llb/IMAQ ColorImageToArray"/>
+				<Item Name="Assert Fractional Numeric Type.vim" Type="VI" URL="/&lt;vilib&gt;/Utility/TypeAssert/Assert Fractional Numeric Type.vim"/>
+				<Item Name="Assert Integer Type.vim" Type="VI" URL="/&lt;vilib&gt;/Utility/TypeAssert/Assert Integer Type.vim"/>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 			<Item Name="nivision.dll" Type="Document" URL="nivision.dll">
