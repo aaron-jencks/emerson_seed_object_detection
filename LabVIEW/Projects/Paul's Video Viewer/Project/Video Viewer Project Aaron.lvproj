@@ -66,6 +66,7 @@
 			<Item Name="Integer Division.vim" Type="VI" URL="../../Integer Division.vim"/>
 			<Item Name="Replace if less than zero.vim" Type="VI" URL="../../Replace if less than zero.vim"/>
 			<Item Name="Unpack Vector Array.vim" Type="VI" URL="../../Unpack Vector Array.vim"/>
+			<Item Name="Find Vector Distance.vi" Type="VI" URL="../../Find Vector Distance.vi"/>
 		</Item>
 		<Item Name="Frames" Type="Folder">
 			<Item Name="ROIed Video Frame.lvclass" Type="LVClass" URL="../../Classes/ROIed Video Frame/ROIed Video Frame.lvclass"/>
@@ -113,6 +114,7 @@
 				<Item Name="VI Control - Disable Control.vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET VI Control/VI Control - Disable Control.vi"/>
 				<Item Name="Ranged Random Number.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Random/Ranged Random Number.vim"/>
 				<Item Name="Random Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Random/Random Array.vim"/>
+				<Item Name="Pythagorean Theorem.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Math/Pythagorean Theorem.vim"/>
 			</Item>
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="BuildHelpPath.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/BuildHelpPath.vi"/>

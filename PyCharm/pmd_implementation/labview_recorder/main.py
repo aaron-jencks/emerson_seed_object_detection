@@ -130,7 +130,7 @@ if __name__ == "__main__":
             color_writer.release()
 
             depth_writer = cv2.VideoWriter(os.path.join(out_dir, '{}_depth.avi'.format(
-                os.path.splitext(file)[0].split('\\')[-1])), cv2.VideoWriter_fourcc(*'XVID'), 30, (640, 480))
+                os.path.splitext(file)[0].split('\\')[-1])), cv2.VideoWriter_fourcc(*'XVID'), 30, (848, 480))
             for f in tqdm(range(len(depth_dq))):
                 depth_writer.write(depth_dq.popleft())
             depth_writer.release()
