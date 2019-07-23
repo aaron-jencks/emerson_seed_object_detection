@@ -33,6 +33,8 @@ if __name__ == "__main__":
     in_dir = input("Input file path: ")
     out_dir = input("Ourput file path: ")
 
+    codec = cv2.VideoWriter_fourcc(*'LAGS')
+
     for file in os.listdir(in_dir):
         file = os.path.join(in_dir, file)
 
@@ -60,10 +62,15 @@ if __name__ == "__main__":
         print("Saving to {}".format(os.path.join(out_dir,
                                                  '{}_depth.mp4'.format(os.path.splitext(file)[0].split('\\')[-1]))))
 
+        iteration = 0
+
         try:
             first = True
 
             while not is_stopping:
+
+                iteration += 1
+                print('\rIterations {}'.format(iteration), end='')
 
                 frames = pipeline.wait_for_frames()
                 depth_frame = np.asanyarray(frames.get_depth_frame().get_data(), dtype=np.uint16)
@@ -82,37 +89,37 @@ if __name__ == "__main__":
 
                 # ret, frame = cap.read()
 
-                # depth_frame = db.compute_depth_bytes(depth_frame)
-                depth_frame_t = np.zeros(shape=(depth_frame.shape[0], depth_frame.shape[1], 3), dtype=np.uint8)
-
-                for i in range(depth_frame.shape[0]):
-                    for j in range(depth_frame.shape[1]):
-                        current = depth_frame[i, j]
-                        broken = struct.pack('H', current)
-                        depth_frame_t[i, j, 0] = broken[0]
-                        depth_frame_t[i, j, 1] = broken[1]
-
-                depth_frame = depth_frame_t
+                depth_frame = db.compute_depth_bytes(depth_frame)
+                # depth_frame_t = np.zeros(shape=(depth_frame.shape[0], depth_frame.shape[1], 3), dtype=np.uint8)
+                #
+                # for i in range(depth_frame.shape[0]):
+                #     for j in range(depth_frame.shape[1]):
+                #         current = depth_frame[i, j]
+                #         broken = struct.pack('H', current)
+                #         depth_frame_t[i, j, 0] = broken[0]
+                #         depth_frame_t[i, j, 1] = broken[1]
+                #
+                # depth_frame = depth_frame_t
 
                 # print("cv")
                 # print(frame.shape)
                 # print("rs")
                 # print(color_frame.shape)
 
-                plot.clear()
-                plot.imshow(depth_frame)
-                plot.axis('off')
+                # plot.clear()
+                # plot.imshow(depth_frame)
+                # plot.axis('off')
 
                 # norm = db.normal_distribution(frames)
 
-                dist.clear()
-                dist.imshow(color_frame)
-                dist.axis('off')
+                # dist.clear()
+                # dist.imshow(color_frame)
+                # dist.axis('off')
                 # dist.hist(np.multiply(norm, scale), range=(-1, 1), histtype='step')
                 # dist.hist(norm[:, 1])  # , range=(-5, 5))  # [:, 1])
 
-                plt.draw()
-                plt.pause(0.001)
+                # plt.draw()
+                # plt.pause(0.001)
 
                 depth_dq.append(deepcopy(depth_frame))
                 color_dq.append(deepcopy(color_frame))
@@ -130,7 +137,7 @@ if __name__ == "__main__":
             color_writer.release()
 
             depth_writer = cv2.VideoWriter(os.path.join(out_dir, '{}_depth.avi'.format(
-                os.path.splitext(file)[0].split('\\')[-1])), cv2.VideoWriter_fourcc(*'XVID'), 30, (848, 480))
+                os.path.splitext(file)[0].split('\\')[-1])), codec, 30, (848, 480))
             for f in tqdm(range(len(depth_dq))):
                 depth_writer.write(depth_dq.popleft())
             depth_writer.release()
