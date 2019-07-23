@@ -41,6 +41,10 @@
 					<Item Name="Heapsort.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Heapsort.vi"/>
 					<Item Name="Heapify.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Heapify.vi"/>
 				</Item>
+				<Item Name="BFS" Type="Folder">
+					<Item Name="BFS.vi" Type="VI" URL="../../Shared/BFS/BFS.vi"/>
+					<Item Name="BFS Find Neighbors.vi" Type="VI" URL="../../Shared/BFS/BFS Find Neighbors.vi"/>
+				</Item>
 				<Item Name="Filter 1D Array.vim" Type="VI" URL="../../Filter 1D Array.vim"/>
 				<Item Name="Filter 2D Array.vim" Type="VI" URL="../../Filter 2D Array.vim"/>
 				<Item Name="Filter Zeros.vim" Type="VI" URL="../../Filter Zeros.vim"/>
