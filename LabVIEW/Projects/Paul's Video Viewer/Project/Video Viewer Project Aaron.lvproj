@@ -32,6 +32,7 @@
 					<Item Name="Graham Scan Dot Product.vi" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Dot Product.vi"/>
 					<Item Name="UnMap Points From Origin.vi" Type="VI" URL="../../Shared/Graham Scan/UnMap Points From Origin.vi"/>
 					<Item Name="Graham Scan Point to Graph Point.vi" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Point to Graph Point.vi"/>
+					<Item Name="Compute Convex Hull from points.vi" Type="VI" URL="../../Shared/Compute Convex Hull from points.vi"/>
 				</Item>
 				<Item Name="Heapsort" Type="Folder">
 					<Item Name="With Numbers" Type="Folder">
@@ -99,7 +100,6 @@
 		<Item Name="Video Processor.lvclass" Type="LVClass" URL="../../Classes/Video Processor/Video Processor.lvclass"/>
 		<Item Name="Status STYP.ctl" Type="VI" URL="../../Classes/Main/Status STYP.ctl"/>
 		<Item Name="Get Video Processor.vi" Type="VI" URL="../../Get Video Processor.vi"/>
-		<Item Name="Compute Convex Hull from points.vi" Type="VI" URL="../../Shared/Compute Convex Hull from points.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="user.lib" Type="Folder">
 				<Item Name="JET_QSM - Add State [Array API].vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET_QSM/Code/Private/JET_QSM - Add State [Array API].vi"/>
@@ -220,7 +220,7 @@
 				<Property Name="Bld_localDestDirType" Type="Str">relativeToCommon</Property>
 				<Property Name="Bld_modifyLibraryFile" Type="Bool">true</Property>
 				<Property Name="Bld_previewCacheID" Type="Str">{6242D609-D6AA-4BE1-93A6-56F5C5D0F999}</Property>
-				<Property Name="Bld_version.build" Type="Int">7</Property>
+				<Property Name="Bld_version.build" Type="Int">8</Property>
 				<Property Name="Bld_version.major" Type="Int">1</Property>
 				<Property Name="Destination[0].destName" Type="Str">depth_comparator.exe</Property>
 				<Property Name="Destination[0].path" Type="Path">../builds/Depth Comparator/depth_comparator.exe</Property>

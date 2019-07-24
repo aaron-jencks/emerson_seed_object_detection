@@ -133,6 +133,20 @@
 				<Property Name="NI.ClassItem.State" Type="Int">1082139136</Property>
 			</Item>
 		</Item>
+		<Item Name="Roughness" Type="Property Definition">
+			<Property Name="NI.ClassItem.Property.LongName" Type="Str">Roughness</Property>
+			<Property Name="NI.ClassItem.Property.ShortName" Type="Str">Roughness</Property>
+			<Property Name="NI.ClassItem.Property.SortKey" Type="Int">-1</Property>
+			<Item Name="Read Roughness.vi" Type="VI" URL="../Read Roughness.vi">
+				<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">'!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!*W!!!!(!!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!!V!#A!(18:F=G&amp;H:1!*1!I!!V*.5Q!&gt;1!I!&amp;U&amp;C=W^M&gt;82F)%VF97YA2'6W;7&amp;U;7^O!":!5!!$!!5!"A!(#%&amp;W:8*B:W6T!!!*1!I!!UVB?!!*1!I!!UVJ&lt;A!81!I!%%VB?#"1:7&amp;L,82P,6"F97M!!"Z!5!!$!!E!#A!,%5&gt;M&lt;W*B&lt;#"):86S;8.U;7.T!!^!#A!*5WNF&gt;W2O:8.T!!^!#A!)3X6S&gt;'^T;8-!!!N!#A!&amp;5HJ%35Y!#U!+!!63?EJ*5Q!;1&amp;!!"A!)!!Q!$1!/!!]!%!:/&lt;X*N97Q!!!F!#A!$5G2R!!F!#A!$5G2B!"R!5!!#!")!%R"4&lt;'^Q:3"198*B&lt;76U:8*T!!!41!I!$&amp;"F97MA2'6O=WFU?1!!'%"1!!%!&amp;1^"=G6B&lt;#"3&lt;X6H;'ZF=X-!&amp;E"1!!-!%1!5!"9*5G^V:WBO:8.T!$:!=!!?!!!:&amp;V:J:'6P)&amp;"S&lt;W.F=X.P=CZM&gt;G.M98.T!".7;72F&lt;S"1=G^D:8.T&lt;X)A&lt;X6U!#"!5!!$!!!!!1!#%W6S=G^S)'FO)#BO&lt;S"F=H*P=CE!.E"Q!"Y!!"E86GFE:7]A5(*P9W6T=W^S,GRW9WRB=X-!%F:J:'6P)&amp;"S&lt;W.F=X.P=C"J&lt;A!!6!$Q!!Q!!Q!%!"=!'!!%!!1!"!!%!"E!"!!%!"I#!!"Y!!!.#!!!!!!!!!E!!!#.#Q!!!!!!!!!!!!!!!!!!!!!!!!A!!!!!!!!!!!!!!*!!!!!!!1!&lt;!!!!!!</Property>
+				<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
+				<Property Name="NI.ClassItem.Flags" Type="Int">0</Property>
+				<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">false</Property>
+				<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
+				<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
+				<Property Name="NI.ClassItem.State" Type="Int">1107821056</Property>
+			</Item>
+		</Item>
 		<Item Name="Threshold Boundaries" Type="Property Definition">
 			<Property Name="NI.ClassItem.Property.LongName" Type="Str">Threshold Boundaries</Property>
 			<Property Name="NI.ClassItem.Property.ShortName" Type="Str">Threshold Boundaries</Property>
@@ -157,20 +171,6 @@
 			</Item>
 		</Item>
 	</Item>
-	<Item Name="Roughness" Type="Property Definition">
-		<Property Name="NI.ClassItem.Property.LongName" Type="Str">Roughness</Property>
-		<Property Name="NI.ClassItem.Property.ShortName" Type="Str">Roughness</Property>
-		<Property Name="NI.ClassItem.Property.SortKey" Type="Int">-1</Property>
-		<Item Name="Read Roughness.vi" Type="VI" URL="../Read Roughness.vi">
-			<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">'!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!*W!!!!(!!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!!V!#A!(18:F=G&amp;H:1!*1!I!!V*.5Q!&gt;1!I!&amp;U&amp;C=W^M&gt;82F)%VF97YA2'6W;7&amp;U;7^O!":!5!!$!!5!"A!(#%&amp;W:8*B:W6T!!!*1!I!!UVB?!!*1!I!!UVJ&lt;A!81!I!%%VB?#"1:7&amp;L,82P,6"F97M!!"Z!5!!$!!E!#A!,%5&gt;M&lt;W*B&lt;#"):86S;8.U;7.T!!^!#A!*5WNF&gt;W2O:8.T!!^!#A!)3X6S&gt;'^T;8-!!!N!#A!&amp;5HJ%35Y!#U!+!!63?EJ*5Q!;1&amp;!!"A!)!!Q!$1!/!!]!%!:/&lt;X*N97Q!!!F!#A!$5G2R!!F!#A!$5G2B!"R!5!!#!")!%R"4&lt;'^Q:3"198*B&lt;76U:8*T!!!41!I!$&amp;"F97MA2'6O=WFU?1!!'%"1!!%!&amp;1^"=G6B&lt;#"3&lt;X6H;'ZF=X-!&amp;E"1!!-!%1!5!"9*5G^V:WBO:8.T!$:!=!!?!!!:&amp;V:J:'6P)&amp;"S&lt;W.F=X.P=CZM&gt;G.M98.T!".7;72F&lt;S"1=G^D:8.T&lt;X)A&lt;X6U!#"!5!!$!!!!!1!#%W6S=G^S)'FO)#BO&lt;S"F=H*P=CE!.E"Q!"Y!!"E86GFE:7]A5(*P9W6T=W^S,GRW9WRB=X-!%F:J:'6P)&amp;"S&lt;W.F=X.P=C"J&lt;A!!6!$Q!!Q!!Q!%!"=!'!!%!!1!"!!%!"E!"!!%!"I#!!"Y!!!.#!!!!!!!!!E!!!#.#Q!!!!!!!!!!!!!!!!!!!!!!!!A!!!!!!!!!!!!!!*!!!!!!!1!&lt;!!!!!!</Property>
-			<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
-			<Property Name="NI.ClassItem.Flags" Type="Int">0</Property>
-			<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">false</Property>
-			<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
-			<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
-			<Property Name="NI.ClassItem.State" Type="Int">1107821056</Property>
-		</Item>
-	</Item>
 	<Item Name="Compute Average.vi" Type="VI" URL="../Compute Average.vi">
 		<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">'!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!&amp;)!!!!#Q!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!$:!=!!?!!!:&amp;V:J:'6P)&amp;"S&lt;W.F=X.P=CZM&gt;G.M98.T!".7;72F&lt;S"1=G^D:8.T&lt;X)A&lt;X6U!#"!5!!$!!!!!1!#%W6S=G^S)'FO)#BO&lt;S"F=H*P=CE!$5!+!!&gt;/&gt;7VF=GFD!"*!1!!"`````Q!("%2B&gt;'%!!$:!=!!?!!!:&amp;V:J:'6P)&amp;"S&lt;W.F=X.P=CZM&gt;G.M98.T!"*7;72F&lt;S"1=G^D:8.T&lt;X)A;7Y!!&amp;1!]!!-!!-!"!!%!!5!"!!%!!1!"!!'!!1!#!!*!Q!!?!!!$1A!!!!!!!!!!!!!D1M!!!!!!!!!!!!!!!!!!!!!!!!+!!!!!!!!!AA!!!#3!!!!!!%!#A!!!!!</Property>
 		<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
@@ -187,7 +187,7 @@
 		<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">false</Property>
 		<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
 		<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
-		<Property Name="NI.ClassItem.State" Type="Int">1107821072</Property>
+		<Property Name="NI.ClassItem.State" Type="Int">1342710288</Property>
 	</Item>
 	<Item Name="Frame Process.vi" Type="VI" URL="../Frame Process.vi">
 		<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">'!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!&amp;8!!!!#A!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!$:!=!!?!!!:&amp;V:J:'6P)&amp;"S&lt;W.F=X.P=CZM&gt;G.M98.T!".7;72F&lt;S"1=G^D:8.T&lt;X)A&lt;X6U!#"!5!!$!!!!!1!#%W6S=G^S)'FO)#BO&lt;S"F=H*P=CE!,E"Q!"Y!!"546GFE:7]A2H*B&lt;75O&lt;(:D&lt;'&amp;T=Q!/6GFE:7]A2H*B&lt;75A37Y!!$:!=!!?!!!:&amp;V:J:'6P)&amp;"S&lt;W.F=X.P=CZM&gt;G.M98.T!"*7;72F&lt;S"1=G^D:8.T&lt;X)A;7Y!!&amp;1!]!!-!!-!"!!%!!5!"!!%!!1!"!!'!!1!"Q!)!Q!!?!!!$1A!!!!!!!!!!!!!D1M!!!!!!!!!!!!!!!!!!!!!!!!+!!!!!!!!!")!!!#3!!!!!!%!#1!!!!!</Property>
