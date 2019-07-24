@@ -83,6 +83,7 @@
 			<Item Name="RGB U32 Color Byte Location Test.vi" Type="VI" URL="../../Testbenches/RGB U32 Color Byte Location Test.vi"/>
 			<Item Name="Convex Hull Test.vi" Type="VI" URL="../../Testbenches/Convex Hull Test.vi"/>
 			<Item Name="Heapsort Test.vi" Type="VI" URL="../../Testbenches/Heapsort Test.vi"/>
+			<Item Name="Data Plopper.vi" Type="VI" URL="../../Testbenches/Data Plopper.vi"/>
 		</Item>
 		<Item Name="Realsense Camera" Type="Folder">
 			<Item Name="Realsense Cam.lvclass" Type="LVClass" URL="../../Classes/Realsense Cam/Realsense Cam.lvclass"/>
