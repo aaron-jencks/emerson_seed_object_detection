@@ -77,6 +77,7 @@
 			<Item Name="Find Vector Distance.vi" Type="VI" URL="../../Find Vector Distance.vi"/>
 			<Item Name="Number is even.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Comparison/Number is even.vim"/>
 			<Item Name="Numeric Is Divisible By N.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Comparison/Numeric Is Divisible By N.vim"/>
+			<Item Name="Depth Parameters to inches.vi" Type="VI" URL="../../Shared/Depth Parameters to inches.vi"/>
 		</Item>
 		<Item Name="Frames" Type="Folder">
 			<Item Name="ROIed Video Frame.lvclass" Type="LVClass" URL="../../Classes/ROIed Video Frame/ROIed Video Frame.lvclass"/>
