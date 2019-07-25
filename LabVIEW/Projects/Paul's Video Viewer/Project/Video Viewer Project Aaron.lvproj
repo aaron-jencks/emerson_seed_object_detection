@@ -57,7 +57,10 @@
 				<Item Name="Swap Array Elements.vim" Type="VI" URL="../../Swap Array Elements.vim"/>
 				<Item Name="Sequential Range.vim" Type="VI" URL="../../Sequential Range.vim"/>
 				<Item Name="Multi-index 2D Array.vi" Type="VI" URL="../../Multi-index 2D Array.vi"/>
-				<Item Name="Split Array.vim" Type="VI" URL="../../Split Array.vim"/>
+				<Item Name="Split Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Split Array.vim"/>
+				<Item Name="Split 2D Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Split 2D Array.vim"/>
+				<Item Name="Pad 2D Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Pad 2D Array.vim"/>
+				<Item Name="Binary Search.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Binary Search.vim"/>
 			</Item>
 			<Item Name="Queues" Type="Folder">
 				<Item Name="Resize Queue.vim" Type="VI" URL="../../Resize Queue.vim"/>
@@ -72,6 +75,8 @@
 			<Item Name="Replace if less than zero.vim" Type="VI" URL="../../Replace if less than zero.vim"/>
 			<Item Name="Unpack Vector Array.vim" Type="VI" URL="../../Unpack Vector Array.vim"/>
 			<Item Name="Find Vector Distance.vi" Type="VI" URL="../../Find Vector Distance.vi"/>
+			<Item Name="Number is even.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Comparison/Number is even.vim"/>
+			<Item Name="Numeric Is Divisible By N.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Comparison/Numeric Is Divisible By N.vim"/>
 		</Item>
 		<Item Name="Frames" Type="Folder">
 			<Item Name="ROIed Video Frame.lvclass" Type="LVClass" URL="../../Classes/ROIed Video Frame/ROIed Video Frame.lvclass"/>
@@ -100,6 +105,7 @@
 		<Item Name="Video Processor.lvclass" Type="LVClass" URL="../../Classes/Video Processor/Video Processor.lvclass"/>
 		<Item Name="Status STYP.ctl" Type="VI" URL="../../Classes/Main/Status STYP.ctl"/>
 		<Item Name="Get Video Processor.vi" Type="VI" URL="../../Get Video Processor.vi"/>
+		<Item Name="Filter Thresholds (fast).vi" Type="VI" URL="../../Classes/Video Processor/Filter Thresholds (fast).vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="user.lib" Type="Folder">
 				<Item Name="JET_QSM - Add State [Array API].vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET_QSM/Code/Private/JET_QSM - Add State [Array API].vi"/>
