@@ -93,6 +93,7 @@
 			<Item Name="Heapsort Test.vi" Type="VI" URL="../../Testbenches/Heapsort Test.vi"/>
 			<Item Name="Data Plopper.vi" Type="VI" URL="../../Testbenches/Data Plopper.vi"/>
 			<Item Name="Modular Test.vi" Type="VI" URL="../../Testbenches/Modular Test.vi"/>
+			<Item Name="Enhanced Data Plopper.vi" Type="VI" URL="../../Testbenches/Enhanced Data Plopper.vi"/>
 		</Item>
 		<Item Name="Realsense Camera" Type="Folder">
 			<Item Name="Realsense Cam.lvclass" Type="LVClass" URL="../../Classes/Realsense Cam/Realsense Cam.lvclass"/>
