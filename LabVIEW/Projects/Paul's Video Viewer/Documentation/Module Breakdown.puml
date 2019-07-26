@@ -52,7 +52,7 @@ class Realsense_Cam_File_Wrapper{
 }
 
 Realsense_Cam *.. Realsense_Cam_File_Wrapper
-Video_File <|-- Realsense_Cam_File_Wrapper
+Video_Processor <|-- Realsense_Cam_File_Wrapper
 
 class Video_Cam_Procssor{
 }
