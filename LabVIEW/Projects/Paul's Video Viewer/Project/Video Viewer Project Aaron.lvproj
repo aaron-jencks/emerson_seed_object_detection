@@ -78,6 +78,7 @@
 			<Item Name="Number is even.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Comparison/Number is even.vim"/>
 			<Item Name="Numeric Is Divisible By N.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Comparison/Numeric Is Divisible By N.vim"/>
 			<Item Name="Depth Parameters to inches.vi" Type="VI" URL="../../Shared/Depth Parameters to inches.vi"/>
+			<Item Name="Depth Parameters to Array.vi" Type="VI" URL="../../Shared/Depth Parameters to Array.vi"/>
 		</Item>
 		<Item Name="Frames" Type="Folder">
 			<Item Name="ROIed Video Frame.lvclass" Type="LVClass" URL="../../Classes/ROIed Video Frame/ROIed Video Frame.lvclass"/>
@@ -106,7 +107,9 @@
 		<Item Name="Video Processor.lvclass" Type="LVClass" URL="../../Classes/Video Processor/Video Processor.lvclass"/>
 		<Item Name="Status STYP.ctl" Type="VI" URL="../../Classes/Main/Status STYP.ctl"/>
 		<Item Name="Get Video Processor.vi" Type="VI" URL="../../Get Video Processor.vi"/>
-		<Item Name="Filter Thresholds (fast).vi" Type="VI" URL="../../Classes/Video Processor/Filter Thresholds (fast).vi"/>
+		<Item Name="Report File.lvclass" Type="LVClass" URL="../../Classes/Report File/Report File.lvclass"/>
+		<Item Name="Create Delimitted Data Line.vim" Type="VI" URL="../../Shared/Create Delimitted Data Line.vim"/>
+		<Item Name="Data Logger Module.vi" Type="VI" URL="../../Shared/Data Logger Module.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="user.lib" Type="Folder">
 				<Item Name="JET_QSM - Add State [Array API].vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET_QSM/Code/Private/JET_QSM - Add State [Array API].vi"/>
