@@ -92,11 +92,26 @@
 			<Item Name="Convex Hull Test.vi" Type="VI" URL="../../Testbenches/Convex Hull Test.vi"/>
 			<Item Name="Heapsort Test.vi" Type="VI" URL="../../Testbenches/Heapsort Test.vi"/>
 			<Item Name="Data Plopper.vi" Type="VI" URL="../../Testbenches/Data Plopper.vi"/>
+			<Item Name="Modular Test.vi" Type="VI" URL="../../Testbenches/Modular Test.vi"/>
 		</Item>
 		<Item Name="Realsense Camera" Type="Folder">
 			<Item Name="Realsense Cam.lvclass" Type="LVClass" URL="../../Classes/Realsense Cam/Realsense Cam.lvclass"/>
 			<Item Name="Realsense Cam File Wrapper.lvclass" Type="LVClass" URL="../../Classes/Realsense Cam Video File Wrapper/Realsense Cam File Wrapper.lvclass"/>
 			<Item Name="Video Cam Processor.lvclass" Type="LVClass" URL="../../Classes/Video Cam Processor/Video Cam Processor.lvclass"/>
+		</Item>
+		<Item Name="Modules" Type="Folder">
+			<Item Name="Image Processing Handler" Type="Folder">
+				<Item Name="Image Processing Handler.lvclass" Type="LVClass" URL="../../Classes/Image Processing Handler/Image Processing Handler.lvclass"/>
+				<Item Name="Image Processing Handler Module.vi" Type="VI" URL="../../Classes/Image Processing Handler/Image Processing Handler Module.vi"/>
+			</Item>
+			<Item Name="Communication" Type="Folder">
+				<Item Name="Message.lvclass" Type="LVClass" URL="../../Classes/Message/Message.lvclass"/>
+				<Item Name="STOP.lvclass" Type="LVClass" URL="../../Classes/STOP Message/STOP.lvclass"/>
+				<Item Name="Frame Data Message.lvclass" Type="LVClass" URL="../../Classes/Frame Data Message/Frame Data Message.lvclass"/>
+			</Item>
+			<Item Name="Data Logging Handler" Type="Folder">
+				<Item Name="Data Logger Module.vi" Type="VI" URL="../../Shared/Data Logger Module.vi"/>
+			</Item>
 		</Item>
 		<Item Name="build_icon.ico" Type="Document" URL="../../build_icon.ico"/>
 		<Item Name="Calculate Playback Position.vi" Type="VI" URL="../../Classes/Main/Calculate Playback Position.vi"/>
@@ -109,7 +124,6 @@
 		<Item Name="Get Video Processor.vi" Type="VI" URL="../../Get Video Processor.vi"/>
 		<Item Name="Report File.lvclass" Type="LVClass" URL="../../Classes/Report File/Report File.lvclass"/>
 		<Item Name="Create Delimitted Data Line.vim" Type="VI" URL="../../Shared/Create Delimitted Data Line.vim"/>
-		<Item Name="Data Logger Module.vi" Type="VI" URL="../../Shared/Data Logger Module.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="user.lib" Type="Folder">
 				<Item Name="JET_QSM - Add State [Array API].vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET_QSM/Code/Private/JET_QSM - Add State [Array API].vi"/>
