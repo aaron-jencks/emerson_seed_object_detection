@@ -74,4 +74,9 @@ class Frame_Data_Message{
 Message <|-- Frame_Data_Message
 Video_Frame *.. Frame_Data_Message
 
+class Depth_Data_Message{
+}
+
+Message <|-- Depth_Data_Message
+
 @enduml

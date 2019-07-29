@@ -79,6 +79,7 @@
 			<Item Name="Numeric Is Divisible By N.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Comparison/Numeric Is Divisible By N.vim"/>
 			<Item Name="Depth Parameters to inches.vi" Type="VI" URL="../../Shared/Depth Parameters to inches.vi"/>
 			<Item Name="Depth Parameters to Array.vi" Type="VI" URL="../../Shared/Depth Parameters to Array.vi"/>
+			<Item Name="Calculate Percent Complete.vim" Type="VI" URL="../../Calculate Percent Complete.vim"/>
 		</Item>
 		<Item Name="Frames" Type="Folder">
 			<Item Name="ROIed Video Frame.lvclass" Type="LVClass" URL="../../Classes/ROIed Video Frame/ROIed Video Frame.lvclass"/>
@@ -94,6 +95,7 @@
 			<Item Name="Data Plopper.vi" Type="VI" URL="../../Testbenches/Data Plopper.vi"/>
 			<Item Name="Modular Test.vi" Type="VI" URL="../../Testbenches/Modular Test.vi"/>
 			<Item Name="Enhanced Data Plopper.vi" Type="VI" URL="../../Testbenches/Enhanced Data Plopper.vi"/>
+			<Item Name="Headless Modular Test.vi" Type="VI" URL="../../Testbenches/Headless Modular Test.vi"/>
 		</Item>
 		<Item Name="Realsense Camera" Type="Folder">
 			<Item Name="Realsense Cam.lvclass" Type="LVClass" URL="../../Classes/Realsense Cam/Realsense Cam.lvclass"/>
@@ -102,6 +104,12 @@
 		</Item>
 		<Item Name="Modules" Type="Folder">
 			<Item Name="Image Processing Handler" Type="Folder">
+				<Item Name="Headless" Type="Folder">
+					<Item Name="Messages" Type="Folder">
+						<Item Name="Depth Data Message.lvclass" Type="LVClass" URL="../../Classes/Depth Data Message/Depth Data Message.lvclass"/>
+					</Item>
+					<Item Name="Headless Image Processing Handler.lvclass" Type="LVClass" URL="../../Classes/Headless Image Processing Handler/Headless Image Processing Handler.lvclass"/>
+				</Item>
 				<Item Name="Image Processing Handler.lvclass" Type="LVClass" URL="../../Classes/Image Processing Handler/Image Processing Handler.lvclass"/>
 				<Item Name="Image Processing Handler Module.vi" Type="VI" URL="../../Classes/Image Processing Handler/Image Processing Handler Module.vi"/>
 			</Item>
@@ -113,15 +121,27 @@
 			<Item Name="Data Logging Handler" Type="Folder">
 				<Item Name="Data Logger Module.vi" Type="VI" URL="../../Shared/Data Logger Module.vi"/>
 			</Item>
+			<Item Name="Folder Processor" Type="Folder">
+				<Item Name="private" Type="Folder">
+					<Item Name="Video Processor main Status STYP.ctl" Type="VI" URL="../../Video Processor main Status STYP.ctl"/>
+					<Item Name="Video Processor main Core Status STYP.ctl" Type="VI" URL="../../Video Processor main Core Status STYP.ctl"/>
+					<Item Name="Video Processor main File Status STYP.ctl" Type="VI" URL="../../Video Processor main File Status STYP.ctl"/>
+					<Item Name="Video Processor main Core Status Indicator STYP.ctl" Type="VI" URL="../../Video Processor main Core Status Indicator STYP.ctl"/>
+				</Item>
+				<Item Name="Video Processor main.vi" Type="VI" URL="../../Video Processor main.vi"/>
+				<Item Name="Headless Modular Test W Events.vi" Type="VI" URL="../../Testbenches/Headless Modular Test W Events.vi"/>
+			</Item>
+			<Item Name="main" Type="Folder">
+				<Item Name="main.vi" Type="VI" URL="../../main.vi"/>
+				<Item Name="Status STYP.ctl" Type="VI" URL="../../Classes/Main/Status STYP.ctl"/>
+			</Item>
 		</Item>
 		<Item Name="build_icon.ico" Type="Document" URL="../../build_icon.ico"/>
 		<Item Name="Calculate Playback Position.vi" Type="VI" URL="../../Classes/Main/Calculate Playback Position.vi"/>
 		<Item Name="Determine Playable.vi" Type="VI" URL="../../Classes/Main/Determine Playable.vi"/>
 		<Item Name="Find Timeout.vi" Type="VI" URL="../../Classes/Main/Find Timeout.vi"/>
-		<Item Name="main.vi" Type="VI" URL="../../main.vi"/>
 		<Item Name="Video File.lvclass" Type="LVClass" URL="../../Classes/Video File/Video File.lvclass"/>
 		<Item Name="Video Processor.lvclass" Type="LVClass" URL="../../Classes/Video Processor/Video Processor.lvclass"/>
-		<Item Name="Status STYP.ctl" Type="VI" URL="../../Classes/Main/Status STYP.ctl"/>
 		<Item Name="Get Video Processor.vi" Type="VI" URL="../../Get Video Processor.vi"/>
 		<Item Name="Report File.lvclass" Type="LVClass" URL="../../Classes/Report File/Report File.lvclass"/>
 		<Item Name="Create Delimitted Data Line.vim" Type="VI" URL="../../Shared/Create Delimitted Data Line.vim"/>
@@ -258,7 +278,7 @@
 				<Property Name="Source[0].itemID" Type="Str">{A9DF8057-7EA9-4C45-811D-9363E3CF947B}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[1].itemID" Type="Ref">/My Computer/main.vi</Property>
+				<Property Name="Source[1].itemID" Type="Ref">/My Computer/Modules/main/main.vi</Property>
 				<Property Name="Source[1].sourceInclusion" Type="Str">TopLevel</Property>
 				<Property Name="Source[1].type" Type="Str">VI</Property>
 				<Property Name="SourceCount" Type="Int">2</Property>
