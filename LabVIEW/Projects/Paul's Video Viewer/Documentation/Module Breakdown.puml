@@ -1,49 +1,10 @@
 @startuml
 
-abstract class Module{
-    {field} +Queue Tx
-    {field} +Queue Rx
-    {field} +Queue Stop_q
-}
-
-class Report_File{
-}
-
-class Data_Logger_Module{
-}
-
-Module <|-- Data_Logger_Module
-Report_File *.. Data_Logger_Module
-
-
-abstract class IMAQ_Processor{
-}
-
 class Video_Frame{
 }
 
-IMAQ_Processor <|-- Video_Frame
-
-class ROIed_Video_Frame{
-}
-
-Video_Frame <|-- ROIed_Video_Frame
-
 abstract class Video_File{
 }
-
-IMAQ_Processor <|-- Video_File
-
-class Image_Processor_Handler{
-}
-
-Module <|-- Image_Processor_Handler
-Video_File *.. Image_Processor_Handler
-
-class Video_Processor{
-}
-
-Video_File <|-- Video_Processor
 
 class Realsense_Cam{
 }
@@ -52,13 +13,7 @@ class Realsense_Cam_File_Wrapper{
 }
 
 Realsense_Cam *.. Realsense_Cam_File_Wrapper
-Video_Processor <|-- Realsense_Cam_File_Wrapper
-
-class Video_Cam_Procssor{
-}
-
-Realsense_Cam_File_Wrapper <|-- Video_Cam_Procssor
-Video_Processor *.. Video_Cam_Procssor
+Video_File <|-- Realsense_Cam_File_Wrapper
 
 abstract class Message{
 }
@@ -68,15 +23,27 @@ class STOP_Message{
 
 Message <|-- STOP_Message
 
-class Frame_Data_Message{
-}
-
-Message <|-- Frame_Data_Message
-Video_Frame *.. Frame_Data_Message
-
 class Depth_Data_Message{
 }
 
 Message <|-- Depth_Data_Message
+
+abstract class Module{
+    {field} +Queue Tx
+    {field} +Queue Rx
+    {field} +Queue Stop_q
+}
+
+Message *.. Module
+
+class Report_File{
+}
+
+class Data_Logger_Module{
+}
+
+Module <|-- Data_Logger_Module
+Report_File *.. Data_Logger_Module
+Depth_Data_Message *.. Data_Logger_Module
 
 @enduml

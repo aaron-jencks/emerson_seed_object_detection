@@ -57,7 +57,7 @@
 				<Item Name="Swap Array Elements.vim" Type="VI" URL="../../Swap Array Elements.vim"/>
 				<Item Name="Sequential Range.vim" Type="VI" URL="../../Sequential Range.vim"/>
 				<Item Name="Multi-index 2D Array.vi" Type="VI" URL="../../Multi-index 2D Array.vi"/>
-				<Item Name="Split Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Split Array.vim"/>
+				<Item Name="Split Array.vim" Type="VI" URL="../../Split Array.vim"/>
 				<Item Name="Split 2D Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Split 2D Array.vim"/>
 				<Item Name="Pad 2D Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Pad 2D Array.vim"/>
 				<Item Name="Binary Search.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Binary Search.vim"/>
@@ -167,6 +167,7 @@
 				<Item Name="Ranged Random Number.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Random/Ranged Random Number.vim"/>
 				<Item Name="Random Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Random/Random Array.vim"/>
 				<Item Name="Pythagorean Theorem.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Math/Pythagorean Theorem.vim"/>
+				<Item Name="Split Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Split Array.vim"/>
 			</Item>
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="BuildHelpPath.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/BuildHelpPath.vi"/>
@@ -245,8 +246,6 @@
 			</Item>
 			<Item Name="libRealSense3.lvlib" Type="Library" URL="../../Classes/Realsense Cam/realsense_wrapper_api/libRealSense3.lvlib"/>
 			<Item Name="realsense2.dll" Type="Document" URL="../../Classes/Realsense Cam/realsense_wrapper_api/realsense2.dll"/>
-			<Item Name="rs3 get stream profile data.vi" Type="VI" URL="../../../../../../../Temp/realsense_labview_sdk/RealSense SDK2.11.0 for LabVIEW/rs3 get stream profile data.vi"/>
-			<Item Name="rs3 get stream intrinsics3.vi" Type="VI" URL="../../../../../../../Temp/realsense_labview_sdk/RealSense SDK2.11.0 for LabVIEW/rs3 get stream intrinsics3.vi"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
 			<Item Name="Depth Comparator" Type="EXE">
