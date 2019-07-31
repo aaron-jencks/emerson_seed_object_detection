@@ -90,9 +90,14 @@
 		</Item>
 		<Item Name="Modules" Type="Folder">
 			<Item Name="Communication" Type="Folder">
+				<Item Name="event linkage" Type="Folder">
+					<Item Name="Initialize Event Handler.vi" Type="VI" URL="../../Shared/Message Handling/Initialize Event Handler.vi"/>
+					<Item Name="Message Handling Daemon.vi" Type="VI" URL="../../Shared/Message Handling/Message Handling Daemon.vi"/>
+				</Item>
 				<Item Name="Message.lvclass" Type="LVClass" URL="../../Classes/Message/Message.lvclass"/>
 				<Item Name="STOP.lvclass" Type="LVClass" URL="../../Classes/STOP Message/STOP.lvclass"/>
 				<Item Name="Frame Data Message.lvclass" Type="LVClass" URL="../../Classes/Frame Data Message/Frame Data Message.lvclass"/>
+				<Item Name="Depth Data Message.lvclass" Type="LVClass" URL="../../Classes/Depth Data Message/Depth Data Message.lvclass"/>
 			</Item>
 			<Item Name="Data Logging Handler" Type="Folder">
 				<Item Name="Data Logger Module.vi" Type="VI" URL="../../Shared/Data Logger Module.vi"/>
@@ -197,6 +202,7 @@
 				<Item Name="DialogType.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/DialogType.ctl"/>
 				<Item Name="General Error Handler.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/General Error Handler.vi"/>
 				<Item Name="Simple Error Handler.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Simple Error Handler.vi"/>
+				<Item Name="NI_Data Type.lvlib" Type="Library" URL="/&lt;vilib&gt;/Utility/Data Type/NI_Data Type.lvlib"/>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 			<Item Name="nivision.dll" Type="Document" URL="nivision.dll">
