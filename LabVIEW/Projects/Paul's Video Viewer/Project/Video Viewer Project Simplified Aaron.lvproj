@@ -93,6 +93,7 @@
 				<Item Name="event linkage" Type="Folder">
 					<Item Name="Initialize Event Handler.vi" Type="VI" URL="../../Shared/Message Handling/Initialize Event Handler.vi"/>
 					<Item Name="Message Handling Daemon.vi" Type="VI" URL="../../Shared/Message Handling/Message Handling Daemon.vi"/>
+					<Item Name="Get Message Event Name.vi" Type="VI" URL="../../Shared/Message Handling/Get Message Event Name.vi"/>
 				</Item>
 				<Item Name="Message.lvclass" Type="LVClass" URL="../../Classes/Message/Message.lvclass"/>
 				<Item Name="STOP.lvclass" Type="LVClass" URL="../../Classes/STOP Message/STOP.lvclass"/>
@@ -100,6 +101,12 @@
 				<Item Name="Depth Data Message.lvclass" Type="LVClass" URL="../../Classes/Depth Data Message/Depth Data Message.lvclass"/>
 			</Item>
 			<Item Name="Data Logging Handler" Type="Folder">
+				<Item Name="Messages" Type="Folder">
+					<Item Name="Datalogger Data Save Message.lvclass" Type="LVClass" URL="../../Modules/Datalogger/Messages/Datalogger Data Save Message.lvclass"/>
+					<Item Name="Datalogger Data Clear Message.lvclass" Type="LVClass" URL="../../Modules/Datalogger/Messages/Datalogger Data Clear Message/Datalogger Data Clear Message.lvclass"/>
+					<Item Name="Datalogger Headers Set Message.lvclass" Type="LVClass" URL="../../Modules/Datalogger/Messages/Datalogger Headers Set Message/Datalogger Headers Set Message.lvclass"/>
+					<Item Name="Datalogger Path Set Message.lvclass" Type="LVClass" URL="../../Modules/Datalogger/Messages/Datalogger Path Set Message/Datalogger Path Set Message.lvclass"/>
+				</Item>
 				<Item Name="Data Logger Module.vi" Type="VI" URL="../../Shared/Data Logger Module.vi"/>
 			</Item>
 			<Item Name="Snapshot Viewer" Type="Folder">
@@ -113,6 +120,8 @@
 		<Item Name="Create Delimitted Data Line.vim" Type="VI" URL="../../Shared/Create Delimitted Data Line.vim"/>
 		<Item Name="Roughness Parameters STYP.ctl" Type="VI" URL="../../Shared/Roughness Parameters STYP.ctl"/>
 		<Item Name="Compute Roughness Params.vi" Type="VI" URL="../../Shared/Compute Roughness Params.vi"/>
+		<Item Name="Find Compatible AVI Files.vi" Type="VI" URL="../../Shared/Find Compatible AVI Files.vi"/>
+		<Item Name="Datalogger Status STYP.ctl" Type="VI" URL="../../Modules/Datalogger/Datalogger Status STYP.ctl"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="user.lib" Type="Folder">
 				<Item Name="Pythagorean Theorem.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Math/Pythagorean Theorem.vim"/>
@@ -135,6 +144,7 @@
 				<Item Name="Filter Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Filter Array.vim"/>
 				<Item Name="Split Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Split Array.vim"/>
 				<Item Name="VI Control - Disable Control.vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET VI Control/VI Control - Disable Control.vi"/>
+				<Item Name="File - File Name - Parse.vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET File-Dir-Path/File - File Name - Parse.vi"/>
 			</Item>
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Color to RGB.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/colorconv.llb/Color to RGB.vi"/>
@@ -202,7 +212,7 @@
 				<Item Name="DialogType.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/DialogType.ctl"/>
 				<Item Name="General Error Handler.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/General Error Handler.vi"/>
 				<Item Name="Simple Error Handler.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Simple Error Handler.vi"/>
-				<Item Name="NI_Data Type.lvlib" Type="Library" URL="/&lt;vilib&gt;/Utility/Data Type/NI_Data Type.lvlib"/>
+				<Item Name="Get LV Class Name.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/LVClass/Get LV Class Name.vi"/>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 			<Item Name="nivision.dll" Type="Document" URL="nivision.dll">
