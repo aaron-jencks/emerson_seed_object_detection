@@ -44,12 +44,12 @@
 		</Item>
 	</Item>
 	<Item Name="Datalogger Headers Set Message Create.vi" Type="VI" URL="../Datalogger Headers Set Message Create.vi">
-		<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">'!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!'9!!!!#Q!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!&amp;:!=!!?!!!I*E2B&gt;'&amp;M&lt;W&gt;H:8)A3'6B:'6S=S"4:81A476T=W&amp;H:3ZM&gt;G.M98.T!!!C2'&amp;U97RP:W&gt;F=C"):7&amp;E:8*T)&amp;.F&gt;#".:8.T97&gt;F)'^V&gt;!!!)%"1!!-!!!!"!!)4:8*S&lt;X)A;7YA+'ZP)'6S=G^S+1!11$$`````"F.U=GFO:Q!!&amp;%"!!!(`````!!=(3'6B:'6S=Q"51(!!(A!!+#:%982B&lt;'^H:W6S)%BF972F=H-A5W6U)%VF=X.B:W5O&lt;(:D&lt;'&amp;T=Q!!)52B&gt;'&amp;M&lt;W&gt;H:8)A3'6B:'6S=S"4:81A476T=W&amp;H:3"J&lt;A"B!0!!$!!$!!1!"!!&amp;!!1!"!!%!!1!"A!%!!A!#1)!!(A!!!U)!!!!!!!!!!!!!!U,!!!!!!!!!!!!!!!!!!!!!!!!#!!!!!!!!!))!!!!%A!!$1!!!!Q!!!!!!!!!!!!!!1!+!!!!!!</Property>
+		<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">'!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!'9!!!!#Q!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!&amp;:!=!!?!!!I*E2B&gt;'&amp;M&lt;W&gt;H:8)A3'6B:'6S=S"4:81A476T=W&amp;H:3ZM&gt;G.M98.T!!!C2'&amp;U97RP:W&gt;F=C"):7&amp;E:8*T)&amp;.F&gt;#".:8.T97&gt;F)'^V&gt;!!!)%"1!!-!!!!"!!)4:8*S&lt;X)A;7YA+'ZP)'6S=G^S+1!11$$`````"F.U=GFO:Q!!&amp;%"!!!(`````!!=(3'6B:'6S=Q"51(!!(A!!+#:%982B&lt;'^H:W6S)%BF972F=H-A5W6U)%VF=X.B:W5O&lt;(:D&lt;'&amp;T=Q!!)52B&gt;'&amp;M&lt;W&gt;H:8)A3'6B:'6S=S"4:81A476T=W&amp;H:3"J&lt;A"B!0!!$!!$!!1!"!!&amp;!!1!"!!%!!1!"A!%!!A!#1)!!(A!!!U)!!!!!!!!!!!!!!U,!!!!!!!!!!!!!!!!!!!!!!!!#!!!!!!!!!))!!!!!A!!$1!!!!Q!!!!!!!!!!!!!!1!+!!!!!!</Property>
 		<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
 		<Property Name="NI.ClassItem.Flags" Type="Int">0</Property>
 		<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
 		<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
 		<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
-		<Property Name="NI.ClassItem.State" Type="Int">1107821056</Property>
+		<Property Name="NI.ClassItem.State" Type="Int">1342710272</Property>
 	</Item>
 </LVClass>

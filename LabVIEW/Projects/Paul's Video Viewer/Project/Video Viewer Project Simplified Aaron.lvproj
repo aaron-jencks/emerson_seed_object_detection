@@ -122,6 +122,7 @@
 		<Item Name="Compute Roughness Params.vi" Type="VI" URL="../../Shared/Compute Roughness Params.vi"/>
 		<Item Name="Find Compatible AVI Files.vi" Type="VI" URL="../../Shared/Find Compatible AVI Files.vi"/>
 		<Item Name="Datalogger Status STYP.ctl" Type="VI" URL="../../Modules/Datalogger/Datalogger Status STYP.ctl"/>
+		<Item Name="Enqueue Multiple.vim" Type="VI" URL="../../Enqueue Multiple.vim"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="user.lib" Type="Folder">
 				<Item Name="Pythagorean Theorem.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Math/Pythagorean Theorem.vim"/>

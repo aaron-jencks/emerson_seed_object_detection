@@ -44,12 +44,12 @@
 		</Item>
 	</Item>
 	<Item Name="Datalogger Path Set Message Create.vi" Type="VI" URL="../Datalogger Path Set Message Create.vi">
-		<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">'!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!&amp;E!!!!#A!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!%:!=!!?!!!F)U2B&gt;'&amp;M&lt;W&gt;H:8)A5'&amp;U;#"4:81A476T=W&amp;H:3ZM&gt;G.M98.T!"&gt;%982B&lt;'^H:W6S)&amp;"B&gt;'AA5W6U)'^V&gt;!!A1&amp;!!!Q!!!!%!!B.F=H*P=C"J&lt;C!I&lt;G]A:8*S&lt;X)J!!Z!-P````]%5'&amp;U;!!!2E"Q!"Y!!#5D2'&amp;U97RP:W&gt;F=C"1982I)&amp;.F&gt;#".:8.T97&gt;F,GRW9WRB=X-!&amp;E2B&gt;'&amp;M&lt;W&gt;H:8)A5'&amp;U;#"4:81A;7Y!!'%!]!!-!!-!"!!%!!5!"!!%!!1!"!!'!!1!"Q!)!A!!?!!!$1A!!!!!!!!!!!!!$1M!!!!!!!!!!!!!!!!!!!!!!!!)!!!!!!!!!!A!!!!3!!!.!!!!$!!!!!!!!!!!!!!"!!E!!!!!</Property>
+		<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">'!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!&amp;E!!!!#A!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!%:!=!!?!!!F)U2B&gt;'&amp;M&lt;W&gt;H:8)A5'&amp;U;#"4:81A476T=W&amp;H:3ZM&gt;G.M98.T!"&gt;%982B&lt;'^H:W6S)&amp;"B&gt;'AA5W6U)'^V&gt;!!A1&amp;!!!Q!!!!%!!B.F=H*P=C"J&lt;C!I&lt;G]A:8*S&lt;X)J!!Z!-P````]%5'&amp;U;!!!2E"Q!"Y!!#5D2'&amp;U97RP:W&gt;F=C"1982I)&amp;.F&gt;#".:8.T97&gt;F,GRW9WRB=X-!&amp;E2B&gt;'&amp;M&lt;W&gt;H:8)A5'&amp;U;#"4:81A;7Y!!'%!]!!-!!-!"!!%!!5!"!!%!!1!"!!'!!1!"Q!)!A!!?!!!$1A!!!!!!!!!!!!!$1M!!!!!!!!!!!!!!!!!!!!!!!!)!!!!!!!!!!A!!!!#!!!.!!!!$!!!!!!!!!!!!!!"!!E!!!!!</Property>
 		<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
 		<Property Name="NI.ClassItem.Flags" Type="Int">0</Property>
 		<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
 		<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
 		<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
-		<Property Name="NI.ClassItem.State" Type="Int">1082139136</Property>
+		<Property Name="NI.ClassItem.State" Type="Int">1342710272</Property>
 	</Item>
 </LVClass>
