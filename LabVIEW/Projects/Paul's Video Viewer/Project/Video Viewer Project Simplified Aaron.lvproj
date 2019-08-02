@@ -63,6 +63,7 @@
 			</Item>
 			<Item Name="Queues" Type="Folder">
 				<Item Name="Resize Queue.vim" Type="VI" URL="../../Resize Queue.vim"/>
+				<Item Name="Enqueue Multiple.vim" Type="VI" URL="../../Enqueue Multiple.vim"/>
 			</Item>
 			<Item Name="Images" Type="Folder">
 				<Item Name="Depth Array To Image.vi" Type="VI" URL="../../Depth Array To Image.vi"/>
@@ -79,11 +80,14 @@
 			<Item Name="Depth Parameters to inches.vi" Type="VI" URL="../../Shared/Depth Parameters to inches.vi"/>
 			<Item Name="Depth Parameters to Array.vi" Type="VI" URL="../../Shared/Depth Parameters to Array.vi"/>
 			<Item Name="Calculate Percent Complete.vim" Type="VI" URL="../../Calculate Percent Complete.vim"/>
+			<Item Name="Point STYP.ctl" Type="VI" URL="../../Shared/Point STYP.ctl"/>
 		</Item>
 		<Item Name="Frames" Type="Folder">
 			<Item Name="Video Frame.lvclass" Type="LVClass" URL="../../Classes/Video Frame/Video Frame.lvclass"/>
 		</Item>
-		<Item Name="Tests" Type="Folder"/>
+		<Item Name="Tests" Type="Folder">
+			<Item Name="Data Plopper.vi" Type="VI" URL="../../Testbenches/Data Plopper.vi"/>
+		</Item>
 		<Item Name="Realsense Camera" Type="Folder">
 			<Item Name="Realsense Cam.lvclass" Type="LVClass" URL="../../Classes/Realsense Cam/Realsense Cam.lvclass"/>
 			<Item Name="Realsense Cam File Wrapper.lvclass" Type="LVClass" URL="../../Classes/Realsense Cam Video File Wrapper/Realsense Cam File Wrapper.lvclass"/>
@@ -106,12 +110,20 @@
 					<Item Name="Datalogger Data Clear Message.lvclass" Type="LVClass" URL="../../Modules/Datalogger/Messages/Datalogger Data Clear Message/Datalogger Data Clear Message.lvclass"/>
 					<Item Name="Datalogger Headers Set Message.lvclass" Type="LVClass" URL="../../Modules/Datalogger/Messages/Datalogger Headers Set Message/Datalogger Headers Set Message.lvclass"/>
 					<Item Name="Datalogger Path Set Message.lvclass" Type="LVClass" URL="../../Modules/Datalogger/Messages/Datalogger Path Set Message/Datalogger Path Set Message.lvclass"/>
+					<Item Name="Datalogger Data Undo Message.lvclass" Type="LVClass" URL="../../Modules/Datalogger/Messages/Datalogger Data Undo Message/Datalogger Data Undo Message.lvclass"/>
 				</Item>
 				<Item Name="Data Logger Module.vi" Type="VI" URL="../../Shared/Data Logger Module.vi"/>
+				<Item Name="Datalogger Status STYP.ctl" Type="VI" URL="../../Modules/Datalogger/Datalogger Status STYP.ctl"/>
 			</Item>
 			<Item Name="Snapshot Viewer" Type="Folder">
 				<Item Name="Snapshot Viewer.vi" Type="VI" URL="../../Modules/Snapshot Viewer/Snapshot Viewer.vi"/>
-				<Item Name="Status STYP.ctl" Type="VI" URL="../../Modules/Snapshot Viewer/Private/Status STYP.ctl"/>
+				<Item Name="Snapshot Viewer Status STYP.ctl" Type="VI" URL="../../Modules/Snapshot Viewer/Private/Snapshot Viewer Status STYP.ctl"/>
+			</Item>
+			<Item Name="John&apos;s video viewer" Type="Folder">
+				<Item Name="John&apos;s Video Viewer.vi" Type="VI" URL="../../Modules/John&apos;s Video Viewer/John&apos;s Video Viewer.vi"/>
+				<Item Name="John&apos;s Video Viewer Status STYP.ctl" Type="VI" URL="../../Modules/John&apos;s Video Viewer/John&apos;s Video Viewer Status STYP.ctl"/>
+				<Item Name="Column Averager.vi" Type="VI" URL="../../Modules/John&apos;s Video Viewer/Column Averager.vi"/>
+				<Item Name="John&apos;s Video Viewer Find Timeout.vi" Type="VI" URL="../../Modules/John&apos;s Video Viewer/John&apos;s Video Viewer Find Timeout.vi"/>
 			</Item>
 		</Item>
 		<Item Name="build_icon.ico" Type="Document" URL="../../build_icon.ico"/>
@@ -121,8 +133,8 @@
 		<Item Name="Roughness Parameters STYP.ctl" Type="VI" URL="../../Shared/Roughness Parameters STYP.ctl"/>
 		<Item Name="Compute Roughness Params.vi" Type="VI" URL="../../Shared/Compute Roughness Params.vi"/>
 		<Item Name="Find Compatible AVI Files.vi" Type="VI" URL="../../Shared/Find Compatible AVI Files.vi"/>
-		<Item Name="Datalogger Status STYP.ctl" Type="VI" URL="../../Modules/Datalogger/Datalogger Status STYP.ctl"/>
-		<Item Name="Enqueue Multiple.vim" Type="VI" URL="../../Enqueue Multiple.vim"/>
+		<Item Name="snapshot_icon.ico" Type="Document" URL="../../snapshot_icon.ico"/>
+		<Item Name="Easy Integral.vim" Type="VI" URL="../../Easy Integral.vim"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="user.lib" Type="Folder">
 				<Item Name="Pythagorean Theorem.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Math/Pythagorean Theorem.vim"/>
@@ -142,10 +154,12 @@
 				<Item Name="JET_QSM - Get Next State.vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET_QSM/Code/Public/JET_QSM - Get Next State.vi"/>
 				<Item Name="JET_QSM - Set Debug Options.vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET_QSM/Code/Public/JET_QSM - Set Debug Options.vi"/>
 				<Item Name="JET_QSM - Initialize.vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET_QSM/Code/Public/JET_QSM - Initialize.vi"/>
-				<Item Name="Filter Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Filter Array.vim"/>
 				<Item Name="Split Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Split Array.vim"/>
 				<Item Name="VI Control - Disable Control.vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET VI Control/VI Control - Disable Control.vi"/>
 				<Item Name="File - File Name - Parse.vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET File-Dir-Path/File - File Name - Parse.vi"/>
+				<Item Name="Filter Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Filter Array.vim"/>
+				<Item Name="Pop First and Last.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Pop First and Last.vim"/>
+				<Item Name="Easy Derivative.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Math/Easy Derivative.vim"/>
 			</Item>
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Color to RGB.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/colorconv.llb/Color to RGB.vi"/>
@@ -226,7 +240,6 @@
 			<Item Name="realsense2.dll" Type="Document" URL="../../Classes/Realsense Cam/realsense_wrapper_api/realsense2.dll"/>
 			<Item Name="Video Processor.lvclass" Type="LVClass" URL="../../Classes/Video Processor/Video Processor.lvclass"/>
 			<Item Name="Video Cam Processor.lvclass" Type="LVClass" URL="../../Classes/Video Cam Processor/Video Cam Processor.lvclass"/>
-			<Item Name="Data Plopper.vi" Type="VI" URL="../../Testbenches/Data Plopper.vi"/>
 			<Item Name="ROIed Video Frame.lvclass" Type="LVClass" URL="../../Classes/ROIed Video Frame/ROIed Video Frame.lvclass"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
@@ -362,6 +375,47 @@
 				<Property Name="Source[0].tag" Type="Ref">/My Computer/Build Specifications/Depth Comparator</Property>
 				<Property Name="Source[0].type" Type="Str">EXE</Property>
 				<Property Name="SourceCount" Type="Int">1</Property>
+			</Item>
+			<Item Name="Snapshot Viewer" Type="EXE">
+				<Property Name="App_copyErrors" Type="Bool">true</Property>
+				<Property Name="App_INI_aliasGUID" Type="Str">{9AAA9A78-039D-42AA-A5D6-7CDDA3B57676}</Property>
+				<Property Name="App_INI_GUID" Type="Str">{88C4A524-B5EA-4FDC-8325-ADD7F43A09A5}</Property>
+				<Property Name="App_serverConfig.httpPort" Type="Int">8002</Property>
+				<Property Name="Bld_autoIncrement" Type="Bool">true</Property>
+				<Property Name="Bld_buildCacheID" Type="Str">{2CC50F46-ED60-4C75-9CE0-19269C146AC6}</Property>
+				<Property Name="Bld_buildSpecDescription" Type="Str">Builds the snapshot viewer</Property>
+				<Property Name="Bld_buildSpecName" Type="Str">Snapshot Viewer</Property>
+				<Property Name="Bld_excludeInlineSubVIs" Type="Bool">true</Property>
+				<Property Name="Bld_excludeLibraryItems" Type="Bool">true</Property>
+				<Property Name="Bld_excludePolymorphicVIs" Type="Bool">true</Property>
+				<Property Name="Bld_localDestDir" Type="Path">../builds/NI_AB_PROJECTNAME/Snapshot Viewer</Property>
+				<Property Name="Bld_localDestDirType" Type="Str">relativeToCommon</Property>
+				<Property Name="Bld_modifyLibraryFile" Type="Bool">true</Property>
+				<Property Name="Bld_previewCacheID" Type="Str">{298F1D2D-35B2-4EFD-892E-1B16BDC57345}</Property>
+				<Property Name="Bld_version.major" Type="Int">1</Property>
+				<Property Name="Destination[0].destName" Type="Str">snapshot.exe</Property>
+				<Property Name="Destination[0].path" Type="Path">../builds/NI_AB_PROJECTNAME/Snapshot Viewer/snapshot.exe</Property>
+				<Property Name="Destination[0].preserveHierarchy" Type="Bool">true</Property>
+				<Property Name="Destination[0].type" Type="Str">App</Property>
+				<Property Name="Destination[1].destName" Type="Str">Support Directory</Property>
+				<Property Name="Destination[1].path" Type="Path">../builds/NI_AB_PROJECTNAME/Snapshot Viewer/data</Property>
+				<Property Name="DestinationCount" Type="Int">2</Property>
+				<Property Name="Exe_iconItemID" Type="Ref">/My Computer/snapshot_icon.ico</Property>
+				<Property Name="Source[0].itemID" Type="Str">{E43D04AF-0581-4C98-960E-C009EF0BBB9A}</Property>
+				<Property Name="Source[0].type" Type="Str">Container</Property>
+				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[1].itemID" Type="Ref">/My Computer/Modules/Snapshot Viewer/Snapshot Viewer.vi</Property>
+				<Property Name="Source[1].sourceInclusion" Type="Str">TopLevel</Property>
+				<Property Name="Source[1].type" Type="Str">VI</Property>
+				<Property Name="SourceCount" Type="Int">2</Property>
+				<Property Name="TgtF_companyName" Type="Str">Jet Engineering</Property>
+				<Property Name="TgtF_fileDescription" Type="Str">Snapshot Viewer</Property>
+				<Property Name="TgtF_internalName" Type="Str">Snapshot Viewer</Property>
+				<Property Name="TgtF_legalCopyright" Type="Str">Copyright © 2019 Jet Engineering</Property>
+				<Property Name="TgtF_productName" Type="Str">Snapshot Viewer</Property>
+				<Property Name="TgtF_targetfileGUID" Type="Str">{50457FE4-C040-4C33-ABC7-9B09B257FE08}</Property>
+				<Property Name="TgtF_targetfileName" Type="Str">snapshot.exe</Property>
+				<Property Name="TgtF_versionIndependent" Type="Bool">true</Property>
 			</Item>
 		</Item>
 	</Item>

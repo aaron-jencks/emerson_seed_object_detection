@@ -168,6 +168,7 @@
 				<Item Name="Random Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Random/Random Array.vim"/>
 				<Item Name="Pythagorean Theorem.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Math/Pythagorean Theorem.vim"/>
 				<Item Name="Split Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Split Array.vim"/>
+				<Item Name="File - File Name - Parse.vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET File-Dir-Path/File - File Name - Parse.vi"/>
 			</Item>
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="BuildHelpPath.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/BuildHelpPath.vi"/>
@@ -236,6 +237,7 @@
 				<Item Name="Assert Fractional Numeric Type.vim" Type="VI" URL="/&lt;vilib&gt;/Utility/TypeAssert/Assert Fractional Numeric Type.vim"/>
 				<Item Name="Assert Integer Type.vim" Type="VI" URL="/&lt;vilib&gt;/Utility/TypeAssert/Assert Integer Type.vim"/>
 				<Item Name="NI_AAL_Geometry.lvlib" Type="Library" URL="/&lt;vilib&gt;/Analysis/NI_AAL_Geometry.lvlib"/>
+				<Item Name="Get LV Class Name.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/LVClass/Get LV Class Name.vi"/>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 			<Item Name="nivision.dll" Type="Document" URL="nivision.dll">
@@ -246,6 +248,13 @@
 			</Item>
 			<Item Name="libRealSense3.lvlib" Type="Library" URL="../../Classes/Realsense Cam/realsense_wrapper_api/libRealSense3.lvlib"/>
 			<Item Name="realsense2.dll" Type="Document" URL="../../Classes/Realsense Cam/realsense_wrapper_api/realsense2.dll"/>
+			<Item Name="Datalogger Status STYP.ctl" Type="VI" URL="../../Modules/Datalogger/Datalogger Status STYP.ctl"/>
+			<Item Name="Roughness Parameters STYP.ctl" Type="VI" URL="../../Shared/Roughness Parameters STYP.ctl"/>
+			<Item Name="Datalogger Path Set Message.lvclass" Type="LVClass" URL="../../Modules/Datalogger/Messages/Datalogger Path Set Message/Datalogger Path Set Message.lvclass"/>
+			<Item Name="Datalogger Headers Set Message.lvclass" Type="LVClass" URL="../../Modules/Datalogger/Messages/Datalogger Headers Set Message/Datalogger Headers Set Message.lvclass"/>
+			<Item Name="Initialize Event Handler.vi" Type="VI" URL="../../Shared/Message Handling/Initialize Event Handler.vi"/>
+			<Item Name="Message Handling Daemon.vi" Type="VI" URL="../../Shared/Message Handling/Message Handling Daemon.vi"/>
+			<Item Name="Get Message Event Name.vi" Type="VI" URL="../../Shared/Message Handling/Get Message Event Name.vi"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
 			<Item Name="Depth Comparator" Type="EXE">
