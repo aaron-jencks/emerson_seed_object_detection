@@ -81,12 +81,16 @@
 			<Item Name="Depth Parameters to Array.vi" Type="VI" URL="../../Shared/Depth Parameters to Array.vi"/>
 			<Item Name="Calculate Percent Complete.vim" Type="VI" URL="../../Calculate Percent Complete.vim"/>
 			<Item Name="Point STYP.ctl" Type="VI" URL="../../Shared/Point STYP.ctl"/>
+			<Item Name="Easy Integral.vim" Type="VI" URL="../../Easy Integral.vim"/>
 		</Item>
 		<Item Name="Frames" Type="Folder">
 			<Item Name="Video Frame.lvclass" Type="LVClass" URL="../../Classes/Video Frame/Video Frame.lvclass"/>
+			<Item Name="ROIed Video Frame.lvclass" Type="LVClass" URL="../../Classes/ROIed Video Frame/ROIed Video Frame.lvclass"/>
+			<Item Name="Frame to ROI Frame.vi" Type="VI" URL="../../Shared/Frame to ROI Frame.vi"/>
 		</Item>
 		<Item Name="Tests" Type="Folder">
 			<Item Name="Data Plopper.vi" Type="VI" URL="../../Testbenches/Data Plopper.vi"/>
+			<Item Name="Enhanced Data Plopper.vi" Type="VI" URL="../../Testbenches/Enhanced Data Plopper.vi"/>
 		</Item>
 		<Item Name="Realsense Camera" Type="Folder">
 			<Item Name="Realsense Cam.lvclass" Type="LVClass" URL="../../Classes/Realsense Cam/Realsense Cam.lvclass"/>
@@ -124,6 +128,7 @@
 				<Item Name="John&apos;s Video Viewer Status STYP.ctl" Type="VI" URL="../../Modules/John&apos;s Video Viewer/John&apos;s Video Viewer Status STYP.ctl"/>
 				<Item Name="Column Averager.vi" Type="VI" URL="../../Modules/John&apos;s Video Viewer/Column Averager.vi"/>
 				<Item Name="John&apos;s Video Viewer Find Timeout.vi" Type="VI" URL="../../Modules/John&apos;s Video Viewer/John&apos;s Video Viewer Find Timeout.vi"/>
+				<Item Name="Find Roughness and Standard Deviation.vi" Type="VI" URL="../../Modules/John&apos;s Video Viewer/Find Roughness and Standard Deviation.vi"/>
 			</Item>
 		</Item>
 		<Item Name="build_icon.ico" Type="Document" URL="../../build_icon.ico"/>
@@ -134,7 +139,7 @@
 		<Item Name="Compute Roughness Params.vi" Type="VI" URL="../../Shared/Compute Roughness Params.vi"/>
 		<Item Name="Find Compatible AVI Files.vi" Type="VI" URL="../../Shared/Find Compatible AVI Files.vi"/>
 		<Item Name="snapshot_icon.ico" Type="Document" URL="../../snapshot_icon.ico"/>
-		<Item Name="Easy Integral.vim" Type="VI" URL="../../Easy Integral.vim"/>
+		<Item Name="Pointcloud.lvclass" Type="LVClass" URL="../../Classes/Pointcloud/Pointcloud.lvclass"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="user.lib" Type="Folder">
 				<Item Name="Pythagorean Theorem.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Math/Pythagorean Theorem.vim"/>
@@ -228,6 +233,9 @@
 				<Item Name="General Error Handler.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/General Error Handler.vi"/>
 				<Item Name="Simple Error Handler.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Simple Error Handler.vi"/>
 				<Item Name="Get LV Class Name.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/LVClass/Get LV Class Name.vi"/>
+				<Item Name="NI_3D Picture Control.lvlib" Type="Library" URL="/&lt;vilib&gt;/picture/3D Picture Control/NI_3D Picture Control.lvlib"/>
+				<Item Name="LVRGBAColorTypeDef.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LVRGBAColorTypeDef.ctl"/>
+				<Item Name="LV3DPointTypeDef.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LV3DPointTypeDef.ctl"/>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 			<Item Name="nivision.dll" Type="Document" URL="nivision.dll">
@@ -240,7 +248,6 @@
 			<Item Name="realsense2.dll" Type="Document" URL="../../Classes/Realsense Cam/realsense_wrapper_api/realsense2.dll"/>
 			<Item Name="Video Processor.lvclass" Type="LVClass" URL="../../Classes/Video Processor/Video Processor.lvclass"/>
 			<Item Name="Video Cam Processor.lvclass" Type="LVClass" URL="../../Classes/Video Cam Processor/Video Cam Processor.lvclass"/>
-			<Item Name="ROIed Video Frame.lvclass" Type="LVClass" URL="../../Classes/ROIed Video Frame/ROIed Video Frame.lvclass"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
 			<Item Name="Depth Comparator" Type="EXE">

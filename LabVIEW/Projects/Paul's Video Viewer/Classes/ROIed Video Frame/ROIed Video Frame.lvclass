@@ -134,4 +134,13 @@
 		<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
 		<Property Name="NI.ClassItem.State" Type="Int">1350574608</Property>
 	</Item>
+	<Item Name="Depth Frame Read.vi" Type="VI" URL="../Depth Frame Read.vi">
+		<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">'!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!'%!!!!$1!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!!V!#A!(4H6N:8*J9Q!;1%!!!@````]!"1R%:8"U;#"797RV:8-!!$J!=!!?!!!&lt;'6*0376E)&amp;:J:'6P)%:S97VF,GRW9WRB=X-!&amp;6*0376E)&amp;:J:'6P)%:S97VF)'^V&gt;!!41!I!$5&amp;W:8*B:W5A2'6Q&gt;'A!'5!+!"*4&gt;'&amp;O:'&amp;S:#"%:8:J982J&lt;WY!!#"!5!!$!!!!!1!#%W6S=G^S)'FO)#BO&lt;S"F=H*P=CE!/E"Q!"Y!!"M:5E^*:71A6GFE:7]A2H*B&lt;75O&lt;(:D&lt;'&amp;T=Q!55E^*:71A6GFE:7]A2H*B&lt;75A;7Y!!&amp;1!]!!-!!-!"!!'!!=!#!!%!!E!"!!+!!1!"!!,!Q!!?!!!$1A!!!!!!!!*!!!!D1M!!!E!!!!!!!!!#1!!!!!!!!!+!!!!!!!!!!!!!!#3!!!!!!%!$!!!!!!</Property>
+		<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
+		<Property Name="NI.ClassItem.Flags" Type="Int">0</Property>
+		<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">false</Property>
+		<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
+		<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
+		<Property Name="NI.ClassItem.State" Type="Int">1351361040</Property>
+	</Item>
 </LVClass>
