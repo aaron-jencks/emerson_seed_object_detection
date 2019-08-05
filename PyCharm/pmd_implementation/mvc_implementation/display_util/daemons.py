@@ -2,7 +2,7 @@ from mvc_implementation.data_structures.state_machine import SocketedStateMachin
 from mvc_implementation.display_util.display_util import *
 from mvc_implementation.dependencies.display_util.dialogue import get_yes_no, get_filename, get_text
 
-import pyximport; pyximport.install()
+# import pyximport; pyximport.install()
 import mvc_implementation.data_util.cy_scatter as ct
 
 import pyqtgraph as pg

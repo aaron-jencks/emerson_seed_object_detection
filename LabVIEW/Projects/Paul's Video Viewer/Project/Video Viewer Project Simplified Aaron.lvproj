@@ -129,6 +129,12 @@
 				<Item Name="Column Averager.vi" Type="VI" URL="../../Modules/John&apos;s Video Viewer/Column Averager.vi"/>
 				<Item Name="John&apos;s Video Viewer Find Timeout.vi" Type="VI" URL="../../Modules/John&apos;s Video Viewer/John&apos;s Video Viewer Find Timeout.vi"/>
 				<Item Name="Find Roughness and Standard Deviation.vi" Type="VI" URL="../../Modules/John&apos;s Video Viewer/Find Roughness and Standard Deviation.vi"/>
+				<Item Name="Parse Video Config File.vi" Type="VI" URL="../../Modules/John&apos;s Video Viewer/Parse Video Config File.vi"/>
+			</Item>
+			<Item Name="Headless Video Analyzer" Type="Folder">
+				<Item Name="Headless Video Analyzer.vi" Type="VI" URL="../../Modules/Headless Video Analyzer/Headless Video Analyzer.vi"/>
+				<Item Name="Headless Video Analyzer Status STYP.ctl" Type="VI" URL="../../Modules/Headless Video Analyzer/Private/Headless Video Analyzer Status STYP.ctl"/>
+				<Item Name="Headless Video Analyzer Get Timeout.vi" Type="VI" URL="../../Modules/Headless Video Analyzer/Private/Headless Video Analyzer Get Timeout.vi"/>
 			</Item>
 		</Item>
 		<Item Name="build_icon.ico" Type="Document" URL="../../build_icon.ico"/>
@@ -140,6 +146,7 @@
 		<Item Name="Find Compatible AVI Files.vi" Type="VI" URL="../../Shared/Find Compatible AVI Files.vi"/>
 		<Item Name="snapshot_icon.ico" Type="Document" URL="../../snapshot_icon.ico"/>
 		<Item Name="Pointcloud.lvclass" Type="LVClass" URL="../../Classes/Pointcloud/Pointcloud.lvclass"/>
+		<Item Name="Video Intrinsics STYP.ctl" Type="VI" URL="../../Modules/John&apos;s Video Viewer/Video Intrinsics STYP.ctl"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="user.lib" Type="Folder">
 				<Item Name="Pythagorean Theorem.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Math/Pythagorean Theorem.vim"/>
@@ -236,6 +243,11 @@
 				<Item Name="NI_3D Picture Control.lvlib" Type="Library" URL="/&lt;vilib&gt;/picture/3D Picture Control/NI_3D Picture Control.lvlib"/>
 				<Item Name="LVRGBAColorTypeDef.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LVRGBAColorTypeDef.ctl"/>
 				<Item Name="LV3DPointTypeDef.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LV3DPointTypeDef.ctl"/>
+				<Item Name="8.6CompatibleGlobalVar.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/8.6CompatibleGlobalVar.vi"/>
+				<Item Name="NI_LVConfig.lvlib" Type="Library" URL="/&lt;vilib&gt;/Utility/config.llb/NI_LVConfig.lvlib"/>
+				<Item Name="NI_PackedLibraryUtility.lvlib" Type="Library" URL="/&lt;vilib&gt;/Utility/LVLibp/NI_PackedLibraryUtility.lvlib"/>
+				<Item Name="NI_FileType.lvlib" Type="Library" URL="/&lt;vilib&gt;/Utility/lvfile.llb/NI_FileType.lvlib"/>
+				<Item Name="Check if File or Folder Exists.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/libraryn.llb/Check if File or Folder Exists.vi"/>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 			<Item Name="nivision.dll" Type="Document" URL="nivision.dll">

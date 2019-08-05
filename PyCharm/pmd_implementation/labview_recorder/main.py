@@ -13,6 +13,7 @@ import threading
 import struct
 
 from dependencies.display_util.string_display_util import *
+from dependencies.file_io_util.config_file import ConfigFile
 
 from tqdm import tqdm
 from PIL import Image
@@ -37,6 +38,9 @@ if __name__ == "__main__":
 
     for file in os.listdir(in_dir):
         file = os.path.join(in_dir, file)
+        prefix = os.path.splitext(file)[0].split('\\')[-1]
+        color_name = os.path.join(out_dir, '{}_color.avi'.format(prefix))
+        depth_name = os.path.join(out_dir, '{}_depth.avi'.format(prefix))
 
         print_notification("Converting {}".format(file))
 
@@ -48,10 +52,24 @@ if __name__ == "__main__":
         cap = pipeline.start(config)
 
         scale = cap.get_device().first_depth_sensor().get_depth_scale()
+        intr = cap.get_stream(rs.stream.depth).as_video_stream_profile().get_instrinsics()
 
         # cap = cv2.VideoCapture(0)
 
+        # TODO
+        print('Generating ini file')
+        print('Saving to {}'.format(os.path.join(out_dir, '{}.ini'.format(prefix))))
+        with ConfigFile(os.path.join(out_dir, '{}.ini'.format(prefix))) as ini:
+            ini['Videos']['depth'] = depth_name
+            ini['Videos']['color'] = color_name
+            ini['intrinsics']['ppx'] = intr.ppx
+            ini['intrinsics']['ppy'] = intr.ppy
+            ini['intrinsics']['fx'] = intr.fx
+            ini['intrinsics']['fy'] = intr.fy
+
         print("Depth Scale is {}".format(scale))
+        print('Streaming intrinsics:')
+        print('ppx: {}\nppy: {}\nfx: {}\nfy: {}'.format(intr.ppx, intr.ppy, intr.fx, intr.fy))
 
         fig, ax = plt.subplots()
         ax.axis('off')
@@ -60,7 +78,7 @@ if __name__ == "__main__":
         dist = fig.add_axes([0.1, 0.1, 0.7, 0.4])
 
         print("Saving to {}".format(os.path.join(out_dir,
-                                                 '{}_depth.mp4'.format(os.path.splitext(file)[0].split('\\')[-1]))))
+                                                 '{}_depth.mp4'.format(prefix))))
 
         iteration = 0
 
@@ -129,15 +147,13 @@ if __name__ == "__main__":
             print_notification("Finished conversion")
             plt.close(fig)
 
-            print_notification("Saving file")
-            color_writer = cv2.VideoWriter(os.path.join(out_dir, '{}_color.avi'.format(
-                os.path.splitext(file)[0].split('\\')[-1])), cv2.VideoWriter_fourcc(*'XVID'), 30, (1280, 720))
+            print_notification("Saving video files")
+            color_writer = cv2.VideoWriter(color_name, cv2.VideoWriter_fourcc(*'XVID'), 30, (1280, 720))
             for f in tqdm(range(len(color_dq))):
                 color_writer.write(color_dq.popleft())
             color_writer.release()
 
-            depth_writer = cv2.VideoWriter(os.path.join(out_dir, '{}_depth.avi'.format(
-                os.path.splitext(file)[0].split('\\')[-1])), codec, 30, (640, 480))
+            depth_writer = cv2.VideoWriter(depth_name, codec, 30, (640, 480))
             for f in tqdm(range(len(depth_dq))):
                 depth_writer.write(depth_dq.popleft())
             depth_writer.release()
