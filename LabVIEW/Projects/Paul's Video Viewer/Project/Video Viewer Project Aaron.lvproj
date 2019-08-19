@@ -17,15 +17,69 @@
 					<Item Name="Averager.lvclass" Type="LVClass" URL="../../Classes/Averager/Averager.lvclass"/>
 					<Item Name="Standard Averager.lvclass" Type="LVClass" URL="../../Classes/Standard Averager/Standard Averager.lvclass"/>
 					<Item Name="Standard RMS.lvclass" Type="LVClass" URL="../../Classes/Standard RMS/Standard RMS.lvclass"/>
+					<Item Name="Roughness Averager.lvclass" Type="LVClass" URL="../../Classes/Roughness Averager/Roughness Averager.lvclass"/>
+				</Item>
+				<Item Name="Graham Scan" Type="Folder">
+					<Item Name="Convex Hull Graham Scan.vi" Type="VI" URL="../../Shared/Graham Scan/Convex Hull Graham Scan.vi"/>
+					<Item Name="Graham Scan Point.ctl" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Point.ctl"/>
+					<Item Name="Map Points to Origin.vi" Type="VI" URL="../../Shared/Graham Scan/Map Points to Origin.vi"/>
+					<Item Name="Graham Scan Origin Point STYP.ctl" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Origin Point STYP.ctl"/>
+					<Item Name="Graham Scan Bounding Rectangle STYP.ctl" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Bounding Rectangle STYP.ctl"/>
+					<Item Name="Graham Scan Cross Product.vi" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Cross Product.vi"/>
+					<Item Name="Graham Scan Point Comparison Less Than.vi" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Point Comparison Less Than.vi"/>
+					<Item Name="Convex Hull.vi" Type="VI" URL="../../Shared/Graham Scan/Convex Hull.vi"/>
+					<Item Name="Graham Scan 3-point Cross Product.vi" Type="VI" URL="../../Shared/Graham Scan/Graham Scan 3-point Cross Product.vi"/>
+					<Item Name="Graham Scan Dot Product.vi" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Dot Product.vi"/>
+					<Item Name="UnMap Points From Origin.vi" Type="VI" URL="../../Shared/Graham Scan/UnMap Points From Origin.vi"/>
+					<Item Name="Graham Scan Point to Graph Point.vi" Type="VI" URL="../../Shared/Graham Scan/Graham Scan Point to Graph Point.vi"/>
+					<Item Name="Compute Convex Hull from points.vi" Type="VI" URL="../../Shared/Compute Convex Hull from points.vi"/>
+				</Item>
+				<Item Name="Heapsort" Type="Folder">
+					<Item Name="With Numbers" Type="Folder">
+						<Item Name="Numeric Heapsort.vim" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Numeric Heapsort.vim"/>
+						<Item Name="Numeric Heapify.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Numeric Heapify.vi"/>
+					</Item>
+					<Item Name="Heapsort.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Heapsort.vi"/>
+					<Item Name="Heapify.vi" Type="VI" URL="../../Shared/Graham Scan/Heapsort/Heapify.vi"/>
+				</Item>
+				<Item Name="BFS" Type="Folder">
+					<Item Name="BFS.vi" Type="VI" URL="../../Shared/BFS/BFS.vi"/>
+					<Item Name="BFS Find Neighbors.vi" Type="VI" URL="../../Shared/BFS/BFS Find Neighbors.vi"/>
 				</Item>
 				<Item Name="Filter 1D Array.vim" Type="VI" URL="../../Filter 1D Array.vim"/>
 				<Item Name="Filter 2D Array.vim" Type="VI" URL="../../Filter 2D Array.vim"/>
 				<Item Name="Filter Zeros.vim" Type="VI" URL="../../Filter Zeros.vim"/>
 				<Item Name="Flatten Multidimensional Array.vim" Type="VI" URL="../../Flatten Multidimensional Array.vim"/>
+				<Item Name="Roughness.vi" Type="VI" URL="../../Roughness.vi"/>
+				<Item Name="Array Min Max.vim" Type="VI" URL="../../Array Min Max.vim"/>
+				<Item Name="Segmented Array Average.vim" Type="VI" URL="../../Segmented Array Average.vim"/>
+				<Item Name="Slope Spacing and Counting Roughness.vi" Type="VI" URL="../../Slope Spacing and Counting Roughness.vi"/>
+				<Item Name="Swap Array Elements.vim" Type="VI" URL="../../Swap Array Elements.vim"/>
+				<Item Name="Sequential Range.vim" Type="VI" URL="../../Sequential Range.vim"/>
+				<Item Name="Multi-index 2D Array.vi" Type="VI" URL="../../Multi-index 2D Array.vi"/>
+				<Item Name="Split Array.vim" Type="VI" URL="../../Split Array.vim"/>
+				<Item Name="Split 2D Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Split 2D Array.vim"/>
+				<Item Name="Pad 2D Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Pad 2D Array.vim"/>
+				<Item Name="Binary Search.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Binary Search.vim"/>
 			</Item>
 			<Item Name="Queues" Type="Folder">
 				<Item Name="Resize Queue.vim" Type="VI" URL="../../Resize Queue.vim"/>
 			</Item>
+			<Item Name="Images" Type="Folder">
+				<Item Name="Depth Array To Image.vi" Type="VI" URL="../../Depth Array To Image.vi"/>
+				<Item Name="RGB Depth To Depth Array.vi" Type="VI" URL="../../RGB Depth To Depth Array.vi"/>
+				<Item Name="RGB Depth To Grayscale Depth.vi" Type="VI" URL="../../RGB Depth To Grayscale Depth.vi"/>
+				<Item Name="Skeletonized Watershed.vi" Type="VI" URL="../../Skeletonized Watershed.vi"/>
+			</Item>
+			<Item Name="Integer Division.vim" Type="VI" URL="../../Integer Division.vim"/>
+			<Item Name="Replace if less than zero.vim" Type="VI" URL="../../Replace if less than zero.vim"/>
+			<Item Name="Unpack Vector Array.vim" Type="VI" URL="../../Unpack Vector Array.vim"/>
+			<Item Name="Find Vector Distance.vi" Type="VI" URL="../../Find Vector Distance.vi"/>
+			<Item Name="Number is even.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Comparison/Number is even.vim"/>
+			<Item Name="Numeric Is Divisible By N.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Comparison/Numeric Is Divisible By N.vim"/>
+			<Item Name="Depth Parameters to inches.vi" Type="VI" URL="../../Shared/Depth Parameters to inches.vi"/>
+			<Item Name="Depth Parameters to Array.vi" Type="VI" URL="../../Shared/Depth Parameters to Array.vi"/>
+			<Item Name="Calculate Percent Complete.vim" Type="VI" URL="../../Calculate Percent Complete.vim"/>
 		</Item>
 		<Item Name="Frames" Type="Folder">
 			<Item Name="ROIed Video Frame.lvclass" Type="LVClass" URL="../../Classes/ROIed Video Frame/ROIed Video Frame.lvclass"/>
@@ -34,19 +88,63 @@
 		<Item Name="Tests" Type="Folder">
 			<Item Name="Frame Conversion Test.vi" Type="VI" URL="../../Testbenches/Frame Conversion Test.vi"/>
 			<Item Name="Camera Viewing Test.vi" Type="VI" URL="../../Testbenches/Camera Viewing Test.vi"/>
+			<Item Name="Segmented Averager Test.vi" Type="VI" URL="../../Testbenches/Segmented Averager Test.vi"/>
+			<Item Name="RGB U32 Color Byte Location Test.vi" Type="VI" URL="../../Testbenches/RGB U32 Color Byte Location Test.vi"/>
+			<Item Name="Convex Hull Test.vi" Type="VI" URL="../../Testbenches/Convex Hull Test.vi"/>
+			<Item Name="Heapsort Test.vi" Type="VI" URL="../../Testbenches/Heapsort Test.vi"/>
+			<Item Name="Data Plopper.vi" Type="VI" URL="../../Testbenches/Data Plopper.vi"/>
+			<Item Name="Modular Test.vi" Type="VI" URL="../../Testbenches/Modular Test.vi"/>
+			<Item Name="Enhanced Data Plopper.vi" Type="VI" URL="../../Testbenches/Enhanced Data Plopper.vi"/>
+			<Item Name="Headless Modular Test.vi" Type="VI" URL="../../Testbenches/Headless Modular Test.vi"/>
 		</Item>
 		<Item Name="Realsense Camera" Type="Folder">
-			<Item Name="libRealSense3.lvlib" Type="Library" URL="../../../../../../../Temp/realsense_labview_sdk/RealSense SDK2.11.0 for LabVIEW/libRealSense3.lvlib"/>
 			<Item Name="Realsense Cam.lvclass" Type="LVClass" URL="../../Classes/Realsense Cam/Realsense Cam.lvclass"/>
+			<Item Name="Realsense Cam File Wrapper.lvclass" Type="LVClass" URL="../../Classes/Realsense Cam Video File Wrapper/Realsense Cam File Wrapper.lvclass"/>
+			<Item Name="Video Cam Processor.lvclass" Type="LVClass" URL="../../Classes/Video Cam Processor/Video Cam Processor.lvclass"/>
+		</Item>
+		<Item Name="Modules" Type="Folder">
+			<Item Name="Image Processing Handler" Type="Folder">
+				<Item Name="Headless" Type="Folder">
+					<Item Name="Messages" Type="Folder">
+						<Item Name="Depth Data Message.lvclass" Type="LVClass" URL="../../Classes/Depth Data Message/Depth Data Message.lvclass"/>
+					</Item>
+					<Item Name="Headless Image Processing Handler.lvclass" Type="LVClass" URL="../../Classes/Headless Image Processing Handler/Headless Image Processing Handler.lvclass"/>
+				</Item>
+				<Item Name="Image Processing Handler.lvclass" Type="LVClass" URL="../../Classes/Image Processing Handler/Image Processing Handler.lvclass"/>
+				<Item Name="Image Processing Handler Module.vi" Type="VI" URL="../../Classes/Image Processing Handler/Image Processing Handler Module.vi"/>
+			</Item>
+			<Item Name="Communication" Type="Folder">
+				<Item Name="Message.lvclass" Type="LVClass" URL="../../Classes/Message/Message.lvclass"/>
+				<Item Name="STOP.lvclass" Type="LVClass" URL="../../Classes/STOP Message/STOP.lvclass"/>
+				<Item Name="Frame Data Message.lvclass" Type="LVClass" URL="../../Classes/Frame Data Message/Frame Data Message.lvclass"/>
+			</Item>
+			<Item Name="Data Logging Handler" Type="Folder">
+				<Item Name="Data Logger Module.vi" Type="VI" URL="../../Shared/Data Logger Module.vi"/>
+			</Item>
+			<Item Name="Folder Processor" Type="Folder">
+				<Item Name="private" Type="Folder">
+					<Item Name="Video Processor main Status STYP.ctl" Type="VI" URL="../../Video Processor main Status STYP.ctl"/>
+					<Item Name="Video Processor main Core Status STYP.ctl" Type="VI" URL="../../Video Processor main Core Status STYP.ctl"/>
+					<Item Name="Video Processor main File Status STYP.ctl" Type="VI" URL="../../Video Processor main File Status STYP.ctl"/>
+					<Item Name="Video Processor main Core Status Indicator STYP.ctl" Type="VI" URL="../../Video Processor main Core Status Indicator STYP.ctl"/>
+				</Item>
+				<Item Name="Video Processor main.vi" Type="VI" URL="../../Video Processor main.vi"/>
+				<Item Name="Headless Modular Test W Events.vi" Type="VI" URL="../../Testbenches/Headless Modular Test W Events.vi"/>
+			</Item>
+			<Item Name="main" Type="Folder">
+				<Item Name="main.vi" Type="VI" URL="../../main.vi"/>
+				<Item Name="Status STYP.ctl" Type="VI" URL="../../Classes/Main/Status STYP.ctl"/>
+			</Item>
 		</Item>
 		<Item Name="build_icon.ico" Type="Document" URL="../../build_icon.ico"/>
 		<Item Name="Calculate Playback Position.vi" Type="VI" URL="../../Classes/Main/Calculate Playback Position.vi"/>
 		<Item Name="Determine Playable.vi" Type="VI" URL="../../Classes/Main/Determine Playable.vi"/>
 		<Item Name="Find Timeout.vi" Type="VI" URL="../../Classes/Main/Find Timeout.vi"/>
-		<Item Name="main.vi" Type="VI" URL="../../main.vi"/>
 		<Item Name="Video File.lvclass" Type="LVClass" URL="../../Classes/Video File/Video File.lvclass"/>
 		<Item Name="Video Processor.lvclass" Type="LVClass" URL="../../Classes/Video Processor/Video Processor.lvclass"/>
-		<Item Name="Status STYP.ctl" Type="VI" URL="../../Classes/Main/Status STYP.ctl"/>
+		<Item Name="Get Video Processor.vi" Type="VI" URL="../../Get Video Processor.vi"/>
+		<Item Name="Report File.lvclass" Type="LVClass" URL="../../Classes/Report File/Report File.lvclass"/>
+		<Item Name="Create Delimitted Data Line.vim" Type="VI" URL="../../Shared/Create Delimitted Data Line.vim"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="user.lib" Type="Folder">
 				<Item Name="JET_QSM - Add State [Array API].vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET_QSM/Code/Private/JET_QSM - Add State [Array API].vi"/>
@@ -66,6 +164,11 @@
 				<Item Name="JET_QSM_InvalidOption STYP.ctl" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET_QSM/Code/Private/JET_QSM_InvalidOption STYP.ctl"/>
 				<Item Name="JET_QSM_Refnum STYP.ctl" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET_QSM/Code/Private/JET_QSM_Refnum STYP.ctl"/>
 				<Item Name="VI Control - Disable Control.vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET VI Control/VI Control - Disable Control.vi"/>
+				<Item Name="Ranged Random Number.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Random/Ranged Random Number.vim"/>
+				<Item Name="Random Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Random/Random Array.vim"/>
+				<Item Name="Pythagorean Theorem.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Math/Pythagorean Theorem.vim"/>
+				<Item Name="Split Array.vim" Type="VI" URL="/&lt;userlib&gt;/Aaron/Data Manipulation/Arrays/Split Array.vim"/>
+				<Item Name="File - File Name - Parse.vi" Type="VI" URL="/&lt;userlib&gt;/Jet Engineering/JET File-Dir-Path/File - File Name - Parse.vi"/>
 			</Item>
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="BuildHelpPath.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/BuildHelpPath.vi"/>
@@ -126,6 +229,15 @@
 				<Item Name="Flatten Pixmap.vi" Type="VI" URL="/&lt;vilib&gt;/picture/pixmap.llb/Flatten Pixmap.vi"/>
 				<Item Name="ex_CorrectErrorChain.vi" Type="VI" URL="/&lt;vilib&gt;/express/express shared/ex_CorrectErrorChain.vi"/>
 				<Item Name="subFile Dialog.vi" Type="VI" URL="/&lt;vilib&gt;/express/express input/FileDialogBlock.llb/subFile Dialog.vi"/>
+				<Item Name="Color (U64)" Type="VI" URL="/&lt;vilib&gt;/vision/Image Controls.llb/Color (U64)"/>
+				<Item Name="IMAQ ArrayToColorImage" Type="VI" URL="/&lt;vilib&gt;/vision/Basics.llb/IMAQ ArrayToColorImage"/>
+				<Item Name="NI_Gmath.lvlib" Type="Library" URL="/&lt;vilib&gt;/gmath/NI_Gmath.lvlib"/>
+				<Item Name="IMAQ ArrayToImage" Type="VI" URL="/&lt;vilib&gt;/vision/Basics.llb/IMAQ ArrayToImage"/>
+				<Item Name="IMAQ ColorImageToArray" Type="VI" URL="/&lt;vilib&gt;/vision/Basics.llb/IMAQ ColorImageToArray"/>
+				<Item Name="Assert Fractional Numeric Type.vim" Type="VI" URL="/&lt;vilib&gt;/Utility/TypeAssert/Assert Fractional Numeric Type.vim"/>
+				<Item Name="Assert Integer Type.vim" Type="VI" URL="/&lt;vilib&gt;/Utility/TypeAssert/Assert Integer Type.vim"/>
+				<Item Name="NI_AAL_Geometry.lvlib" Type="Library" URL="/&lt;vilib&gt;/Analysis/NI_AAL_Geometry.lvlib"/>
+				<Item Name="Get LV Class Name.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/LVClass/Get LV Class Name.vi"/>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 			<Item Name="nivision.dll" Type="Document" URL="nivision.dll">
@@ -134,7 +246,15 @@
 			<Item Name="nivissvc.dll" Type="Document" URL="nivissvc.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
-			<Item Name="realsense2.dll" Type="Document" URL="../../../../../../../Temp/realsense_labview_sdk/RealSense SDK2.11.0 for LabVIEW/realsense2.dll"/>
+			<Item Name="libRealSense3.lvlib" Type="Library" URL="../../Classes/Realsense Cam/realsense_wrapper_api/libRealSense3.lvlib"/>
+			<Item Name="realsense2.dll" Type="Document" URL="../../Classes/Realsense Cam/realsense_wrapper_api/realsense2.dll"/>
+			<Item Name="Datalogger Status STYP.ctl" Type="VI" URL="../../Modules/Datalogger/Datalogger Status STYP.ctl"/>
+			<Item Name="Roughness Parameters STYP.ctl" Type="VI" URL="../../Shared/Roughness Parameters STYP.ctl"/>
+			<Item Name="Datalogger Path Set Message.lvclass" Type="LVClass" URL="../../Modules/Datalogger/Messages/Datalogger Path Set Message/Datalogger Path Set Message.lvclass"/>
+			<Item Name="Datalogger Headers Set Message.lvclass" Type="LVClass" URL="../../Modules/Datalogger/Messages/Datalogger Headers Set Message/Datalogger Headers Set Message.lvclass"/>
+			<Item Name="Initialize Event Handler.vi" Type="VI" URL="../../Shared/Message Handling/Initialize Event Handler.vi"/>
+			<Item Name="Message Handling Daemon.vi" Type="VI" URL="../../Shared/Message Handling/Message Handling Daemon.vi"/>
+			<Item Name="Get Message Event Name.vi" Type="VI" URL="../../Shared/Message Handling/Get Message Event Name.vi"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
 			<Item Name="Depth Comparator" Type="EXE">
@@ -153,7 +273,7 @@
 				<Property Name="Bld_localDestDirType" Type="Str">relativeToCommon</Property>
 				<Property Name="Bld_modifyLibraryFile" Type="Bool">true</Property>
 				<Property Name="Bld_previewCacheID" Type="Str">{6242D609-D6AA-4BE1-93A6-56F5C5D0F999}</Property>
-				<Property Name="Bld_version.build" Type="Int">7</Property>
+				<Property Name="Bld_version.build" Type="Int">8</Property>
 				<Property Name="Bld_version.major" Type="Int">1</Property>
 				<Property Name="Destination[0].destName" Type="Str">depth_comparator.exe</Property>
 				<Property Name="Destination[0].path" Type="Path">../builds/Depth Comparator/depth_comparator.exe</Property>
@@ -166,7 +286,7 @@
 				<Property Name="Source[0].itemID" Type="Str">{A9DF8057-7EA9-4C45-811D-9363E3CF947B}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[1].itemID" Type="Ref">/My Computer/main.vi</Property>
+				<Property Name="Source[1].itemID" Type="Ref">/My Computer/Modules/main/main.vi</Property>
 				<Property Name="Source[1].sourceInclusion" Type="Str">TopLevel</Property>
 				<Property Name="Source[1].type" Type="Str">VI</Property>
 				<Property Name="SourceCount" Type="Int">2</Property>

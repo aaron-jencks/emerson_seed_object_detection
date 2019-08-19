@@ -1,0 +1,49 @@
+@startuml
+
+class Video_Frame{
+}
+
+abstract class Video_File{
+}
+
+class Realsense_Cam{
+}
+
+class Realsense_Cam_File_Wrapper{
+}
+
+Realsense_Cam *.. Realsense_Cam_File_Wrapper
+Video_File <|-- Realsense_Cam_File_Wrapper
+
+abstract class Message{
+}
+
+class STOP_Message{
+}
+
+Message <|-- STOP_Message
+
+class Depth_Data_Message{
+}
+
+Message <|-- Depth_Data_Message
+
+abstract class Module{
+    {field} +Queue Tx
+    {field} +Queue Rx
+    {field} +Queue Stop_q
+}
+
+Message *.. Module
+
+class Report_File{
+}
+
+class Data_Logger_Module{
+}
+
+Module <|-- Data_Logger_Module
+Report_File *.. Data_Logger_Module
+Depth_Data_Message *.. Data_Logger_Module
+
+@enduml

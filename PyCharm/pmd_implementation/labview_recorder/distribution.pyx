@@ -4,6 +4,8 @@ from cython.parallel import prange
 cimport numpy as np
 import numpy as np
 
+import struct
+
 
 cdef extern from "math.h":
     double sqrt(double x)
@@ -12,14 +14,18 @@ cdef extern from "math.h":
 cpdef compute_depth_bytes(unsigned short[:, :] data):
     cdef int i, j, height = data.shape[0], width = data.shape[1]
     cdef unsigned short current
+    cdef unsigned char[:] current_bytes
 
     cdef unsigned char[:, :, :] result = np.ones(shape=(height, width, 3), dtype=np.uint8)
 
     for i in range(height):
         for j in range(width):
             current = data[i, j]
+            # current_bytes = struct.pack('H', current)
             result[i, j, 0] = current & 0xFF
             result[i, j, 1] = current >> 8
+            # result[i, j, 0] = current_bytes[0]
+            # result[i, j, 1] = current_bytes[1]
 
     return np.asarray(result)
 
