@@ -52,24 +52,24 @@ if __name__ == "__main__":
         cap = pipeline.start(config)
 
         scale = cap.get_device().first_depth_sensor().get_depth_scale()
-        intr = cap.get_stream(rs.stream.depth).as_video_stream_profile().get_instrinsics()
-
-        # cap = cv2.VideoCapture(0)
-
-        # TODO
-        print('Generating ini file')
-        print('Saving to {}'.format(os.path.join(out_dir, '{}.ini'.format(prefix))))
-        with ConfigFile(os.path.join(out_dir, '{}.ini'.format(prefix))) as ini:
-            ini['Videos']['depth'] = depth_name
-            ini['Videos']['color'] = color_name
-            ini['intrinsics']['ppx'] = intr.ppx
-            ini['intrinsics']['ppy'] = intr.ppy
-            ini['intrinsics']['fx'] = intr.fx
-            ini['intrinsics']['fy'] = intr.fy
-
-        print("Depth Scale is {}".format(scale))
-        print('Streaming intrinsics:')
-        print('ppx: {}\nppy: {}\nfx: {}\nfy: {}'.format(intr.ppx, intr.ppy, intr.fx, intr.fy))
+        # intr = cap.get_stream(rs.stream.depth).as_video_stream_profile().get_instrinsics()
+        #
+        # # cap = cv2.VideoCapture(0)
+        #
+        # # TODO
+        # print('Generating ini file')
+        # print('Saving to {}'.format(os.path.join(out_dir, '{}.ini'.format(prefix))))
+        # with ConfigFile(os.path.join(out_dir, '{}.ini'.format(prefix))) as ini:
+        #     ini['Videos']['depth'] = depth_name
+        #     ini['Videos']['color'] = color_name
+        #     ini['intrinsics']['ppx'] = intr.ppx
+        #     ini['intrinsics']['ppy'] = intr.ppy
+        #     ini['intrinsics']['fx'] = intr.fx
+        #     ini['intrinsics']['fy'] = intr.fy
+        #
+        # print("Depth Scale is {}".format(scale))
+        # print('Streaming intrinsics:')
+        # print('ppx: {}\nppy: {}\nfx: {}\nfy: {}'.format(intr.ppx, intr.ppy, intr.fx, intr.fy))
 
         fig, ax = plt.subplots()
         ax.axis('off')
@@ -153,7 +153,7 @@ if __name__ == "__main__":
                 color_writer.write(color_dq.popleft())
             color_writer.release()
 
-            depth_writer = cv2.VideoWriter(depth_name, codec, 30, (640, 480))
+            depth_writer = cv2.VideoWriter(depth_name, codec, 30, (848, 480))
             for f in tqdm(range(len(depth_dq))):
                 depth_writer.write(depth_dq.popleft())
             depth_writer.release()
