@@ -70,7 +70,7 @@ mots-vides==2015.5.11
 multidict==4.5.2
 nbconvert==5.4.0
 nbformat==4.4.0
-notebook==5.7.4
+notebook==6.1.5
 numpy==1.16.2
 object-detection==0.1
 opencv-python==3.4.4
