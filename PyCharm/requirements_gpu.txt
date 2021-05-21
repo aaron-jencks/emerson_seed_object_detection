@@ -123,7 +123,7 @@ sklearn==0.0
 slim==0.1.0
 soupsieve==1.8
 tensorboard==1.13.1
-tensorflow==1.15.2
+tensorflow==2.5.0
 tensorflow-estimator==1.13.0
 tensorflow-gpu==1.15.2
 tensorflow-hub==0.3.0
