@@ -22,7 +22,7 @@ cycler==0.10.0
 Cython==0.29.6
 decorator==4.3.0
 defusedxml==0.5.0
-Django==2.2.10
+Django==2.2.21
 django-blog-zinnia==0.20
 django-ckeditor==5.6.1
 django-contrib-comments==1.9.1
