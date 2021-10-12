@@ -73,7 +73,7 @@ nbformat==4.4.0
 notebook==5.7.4
 numpy==1.16.2
 object-detection==0.1
-opencv-python==3.4.4
+opencv-python==3.4.7.28
 pandas==0.24.2
 pandocfilters==1.4.2
 parso==0.3.1
