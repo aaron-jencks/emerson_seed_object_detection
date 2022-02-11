@@ -133,7 +133,7 @@ testpath==0.4.2
 tornado==5.1.1
 tqdm==4.31.1
 traitlets==4.3.2
-Twisted==18.9.0
+Twisted==22.1.0
 txaio==18.8.1
 typing-extensions==3.7.2
 VideoCapture==0.9.5
