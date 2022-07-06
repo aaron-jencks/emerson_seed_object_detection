@@ -40,7 +40,7 @@ glog==0.3.1
 gobject==0.1.0
 grpcio==1.19.0
 h5py==2.9.0
-html5lib==0.9999999
+html5lib==0.999999999
 hyperlink==18.0.0
 idna==2.8
 idna-ssl==1.1.0
